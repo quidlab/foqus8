@@ -266,6 +266,6 @@ $FoQusdatabase->db_connect();
 
 if (!$FoQusdatabase->is_connected) { // added by mostafa
     echo "Connection Faild";
-    die( print_r( sqlsrv_errors(), true));
+    die( print_r( sqlsrv_errors(), true)); // TODO => return exhiption
 }
 
