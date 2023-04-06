@@ -1,24 +1,13 @@
-<?php 
-$routes = [];
+<?php
 
-route('/public/', function(){
-    echo "root";
+define('REQUEST_START_TIME',microtime(true));
+
+session_start();
+
+require_once __DIR__ . '/../lib/db.php';
+require_once __DIR__ . '/../lib/gettranslations.php';
+spl_autoload_register(function(string $name) {
+    require_once('../'.$name.'.php'); 
 });
+require_once __DIR__ . '/../lib/autoload.php';
 
-
-
-function route(string $path, callable $callback){
-    global $routes;
-    $routes[$path] = $callback;
-}
-
-run();
-
-function run(){
-    global $routes;
-    $uri = $_SERVER['REQUEST_URI'];
-    foreach ($routes as $path => $callback) {
-        if ($path !== $uri) continue;
-        $callback();
-    }
-}
