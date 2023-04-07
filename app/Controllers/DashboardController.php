@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . 'en' . "'";
         $params = array();
         $company_name = $this->DB->Select($sql, $params);
-        return view('/admin/dashboard', [
+        return view('/admin/index', [
             'DashboardInfo' => $DashboardInfo,
             'languages' => $languages,
             'company_name' => $company_name

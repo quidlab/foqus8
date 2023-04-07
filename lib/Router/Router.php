@@ -2,7 +2,7 @@
 
 namespace LIB\Router;
 
-
+use App\Middleware\Middleware;
 use Exception;
 use LIB\Router\Method;
 
@@ -10,42 +10,38 @@ use LIB\Router\Method;
 class Router
 {
     protected $routes = [];
-
-    public function get(string $path, array $handler): object
+    public const HOME = '/admin/dashboard';
+    public function get(string $path, array $handler, Middleware ...$middlewares): object
     {
-        $this->addRoute($path, Method::GET, $handler);
-        return $this;
+        return $this->addRoute($path, Method::GET, $handler, $middlewares);
     }
 
-    public function post(string $path, array $handler): object
+    public function post(string $path, array $handler, Middleware ...$middlewares): object
     {
-        $this->addRoute($path, Method::POST, $handler);
-        return $this;
+        return $this->addRoute($path, Method::POST, $handler, $middlewares);
     }
 
-    protected function addRoute(string $path, Method $method, array $handler): void
+    protected function addRoute(string $path, Method $method, array $handler, array $middlewares): object
     {
         $this->routes[$method->value . $path] = [
             'path' => $path,
             'method' => $method,
-            'handler' => $handler
+            'handler' => $handler,
+            'middlewares' =>  $middlewares
         ];
+        return $this;
     }
 
     public function run()
     {
-        $uri = parse_url($_SERVER['REQUEST_URI']);
-        $path = $uri['path'];
-        $method = $_SERVER['REQUEST_METHOD'];
-        $callback = null;
-        foreach ($this->routes as $key => $route) {
-            if ($route['path'] == $path && $method === $route['method']->value) {
-                $callback = $route['handler'];
-            }
-        }
-        if ($callback == null) {
+        $matchedRoute = $this->matchedRoute();
+        if ($matchedRoute == null) {
             $this->notFoundHandler();
         } else {
+            foreach ($matchedRoute['middlewares'] as $middleware) {
+                call_user_func([$middleware,'handler']);
+            }
+            $callback = $matchedRoute['handler'];
             $controller = new $callback[0]();
             call_user_func_array([$controller, $callback[1]], [
                 array_merge($_GET, $_POST)
@@ -53,18 +49,33 @@ class Router
         }
     }
 
-    public function auth(...$auth)
+
+    protected function matchedRoute()
     {
-        foreach ($auth as $key => $value) {
-            if (isset($_SESSION[$value])) {
-                return true;
+        $uri = parse_url($_SERVER['REQUEST_URI']);
+        $path = $uri['path'];
+        $method = $_SERVER['REQUEST_METHOD'];
+        $matchedRoute = null;
+        foreach ($this->routes as $key => $route) {
+            if ($route['path'] == $path && $method === $route['method']->value) {
+                $matchedRoute = $route;
             }
         }
-
-        // if the user not auth
-        $this->notAuthHandler();
+        return $matchedRoute;
     }
 
+
+
+
+    /*     public function guest(...$auth){
+        return;
+        header('location: /' );
+        foreach ($auth as $key => $value) {
+            if (isset($_SESSION[$value])) {
+            }
+        }
+    }
+ */
 
     public function notFoundHandler()
     {
@@ -73,9 +84,5 @@ class Router
     }
 
 
-    public function notAuthHandler()
-    {
-        view('errors/401'); // TODO => create a NotAuth Exception and add this view function in it's handler
-        throw new Exception("NOT Auth", 1, null); // TODO => make the second param depends on a env variable called production 
-    }
+
 }

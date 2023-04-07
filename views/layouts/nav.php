@@ -23,7 +23,6 @@
             echo ('<i class="flag-icon flag-icon-' . $language['Flag_ID'] . ' mr-2"></i>' . $language['Language_Name']);
             echo ('</a>');
           }
-
           ?>
 
 
