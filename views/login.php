@@ -12,8 +12,7 @@ include "layouts/meta.php";
         <h3 class="text-center"><? echo $company_name[0]['Company_Name'] ?></h3>
         <h3 class="text-center"><? echo $company_name[0]['Meeting_Place'] ?><h3>
     </div>
-    <a href="/back">sss</a>
-    <?= $_SESSION['messagesBag'][0] ?>
+    <?= isset($_SESSION['messagesBag'])?$_SESSION['messagesBag'][0]:'' ?>
     <div class="login-box ">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">

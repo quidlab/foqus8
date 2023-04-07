@@ -1,35 +1,87 @@
-<?php include __DIR__."/../layouts/meta.php"; ?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <?php include __DIR__ . "/../layouts/company_name_header.php"; ?>
+  <!-- /.content-header -->
 
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-  <!-- Logout Modal-->
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Info boxes -->
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box">
+            <span class="info-box-icon bg-info elevation-1" style="height:70px;"><i class="fas fa-user-friends"></i></span>
 
-<div class="wrapper">
-<?php include __DIR__."/../layouts/preloader.php"; ?>
-<?php include __DIR__."/../layouts/popuplogout.php"; ?>
-<?php include __DIR__."/../layouts/nav.php"; ?>
-<?php include __DIR__."/../layouts/sidebar.php"; ?>
-  <!-- Content Wrapper. Contains page content -->
-  <?php include "dashboard2.php"; ?>
-  <!-- /.content-wrapper -->
+            <div class="info-box-content">
+              <span class="info-box-text"><? echo constant('TR_TOTAL_SHAREHOLDERS'); ?></span>
+              <span class="info-box-number">
+                <? echo number_format($DashboardInfo[0]['TotalShareHolders']) . ' ' .  constant('TR_PERSONS'); ?>
+              </span>
+              <span class="info-box-number">
+                <? echo number_format($DashboardInfo[0]['TotalShares']) . ' ' . 'Shares'; ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1" style="height:70px;"><i class="fas fa-user-check"></i></span>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+            <div class="info-box-content">
+              <span class="info-box-text">Approved for Online</span>
+              <span class="info-box-number">
+                <? echo number_format($DashboardInfo[0]['TotalApprovedForOnline']??'') . ' ' .  constant('TR_PERSONS'); ?>
+              </span>
+              <span class="info-box-number">
+                <?= $DashboardInfo[0]['SharesApprovedforOnline'] ? number_format($DashboardInfo[0]['SharesApprovedforOnline']):'' . ' ' . 'Shares'; ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
 
- <?php include __DIR__."/../layouts/footer.php"; ?>
-<script>
-function changeLanguage(lang){
-    // Replace "lang" cookie with new language
-    document.cookie = "lang="+lang;
-    // Get html of current URI and replace page contents.
-    $("body").load(window.location.href);
-}
+        <!-- fix for small devices only -->
+        <div class="clearfix hidden-md-up"></div>
 
-// Call this to switch to German, for example
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-warning elevation-1" style="height:70px;"><i class="fas fa-id-card"></i></span>
 
-</script>
+            <div class="info-box-content">
+              <span class="info-box-text">Total Registered</span>
+              <span class="info-box-number">
+                <? echo number_format($DashboardInfo[0]['TotalDocumentRegistred']) . ' ' .  constant('TR_PERSONS'); ?>
+              </span>
+              <span class="info-box-number">
+                <?= $DashboardInfo[0]['TotalDocumentRegistredShares']? number_format($DashboardInfo[0]['TotalDocumentRegistredShares']):'' . ' ' . 'Shares'; ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-danger elevation-1" style="height:70px;"><i class="fas fa-user-times"></i></span>
 
-</body>
-</html>
+            <div class="info-box-content">
+              <span class="info-box-text">Still To Approve</span>
+              <span class="info-box-number">2,000</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+    </div><!--/. container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>

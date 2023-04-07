@@ -2,6 +2,7 @@
 
 /* GLOBALS */
 require_once __DIR__ . '/Globals/view.php';
+require_once __DIR__ . '/Globals/redirect.php';
 
 
 

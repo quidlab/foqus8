@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use LIB\Request\Request;
+use LIB\Router\Router;
 
 class AuthController extends Controller
 {
@@ -41,39 +42,31 @@ class AuthController extends Controller
         $FoQusdatabase = $this->DB;
 
         $sql = "SELECT * from Users where USER_ID=?  ";
-        $params = array($_POST['loginID']);
+        $params = array(/* $_POST['loginID'] */'admin');// TODO => remove 'admin'
         $getUser = $FoQusdatabase->Select($sql, $params);
+        if ($getUser) {
+            $hash = $getUser[0]['Password'];
+            $input = $_POST['password'];
+            if (true /* MC_REQUIRE_PHONE_OTP == false && MC_REQUIRE_EMAIL_OTP == false */) { // TODO uncomment
+                if (/* password_verify($input, $hash) */true) {
+                    $_SESSION['uname'] = $getUser[0]['USER_ID'];
+                    $_SESSION['ROLE_ID'] = $getUser[0]['Role_ID'];
+                    // redirect to index page
+                    redirect(Router::HOME);
+                } else {
 
-
-        if (isset($_POST['submit'])) {
-            //$sql="SELECT * from Users where USER_ID=? and Role_ID=? ";
-            //$params = array($_POST['loginID'],'1');
-            $sql = "SELECT * from Users where USER_ID=?  ";
-            $params = array($_POST['loginID']);
-            $getUser = $FoQusdatabase->Select($sql, $params);
-
-            if ($getUser) {
-                $hash = $getUser[0]['Password'];
-                $input = $_POST['password'];
-                if (MC_REQUIRE_PHONE_OTP == false && MC_REQUIRE_EMAIL_OTP == false) {
-                    if (password_verify($input, $hash)) {
-                        $_SESSION['uname'] = $getUser[0]['USER_ID'];
-                        $_SESSION['ROLE_ID'] = $getUser[0]['Role_ID'];
-                        // redirect to index page
-                    } else {
-                    }
-                    echo "correct ";
                 }
-            } else {
-                $request->back()->withMessage('password not correct');
             }
+        } else {
+            $request->back()->withMessage('password not correct');
         }
     }
 
 
 
-    public function logout(){
+    public function logout()
+    {
         session_destroy();
-        return view('/admin/login');
+        return redirect('/admin/login');
     }
 }
