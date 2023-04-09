@@ -28,26 +28,25 @@
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="/admin/dashboard" class="nav-link">
                   <i class="nav-icon fas fa-table-columns"></i>
-
                   <p>
                     <? echo constant('TR_DASHBOARD'); ?>
                   </p>
                 </a>
               </li>
-<!--               <? if ($_SESSION['ROLE_ID'] != 1) {
+              <? if ($_SESSION['ROLE_ID'] != 1) {
                 goto RegistrationStaff;
               }  ?>
               <li class="nav-item">
-                <a href="admin_tools.php?lang=<?php echo $lang; ?>" class="nav-link">
+                <a href="/admin/admin-tools" class="nav-link">
                   <i class="nav-icon fa-solid fa-user-gear"></i>
                   <p>
                     Admin Tools
                   </p>
                 </a>
               </li>
-              <li class="nav-item">
+<!--               <li class="nav-item">
                 <a href="company.php?lang=<? echo $lang; ?>" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>

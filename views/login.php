@@ -12,7 +12,7 @@ include "layouts/meta.php";
         <h3 class="text-center"><? echo $company_name[0]['Company_Name'] ?></h3>
         <h3 class="text-center"><? echo $company_name[0]['Meeting_Place'] ?><h3>
     </div>
-    <?= isset($_SESSION['messagesBag'])?$_SESSION['messagesBag'][0]:'' ?>
+    <?= isset($_SESSION['messagesBag']) ? $_SESSION['messagesBag'][0] : '' ?>
     <div class="login-box ">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
@@ -78,7 +78,18 @@ include "layouts/meta.php";
         <div class="col-12 text-center"><a style="color:black;" href="https://quidlab.com/img/security_policy.pdf" target="blank">นโยบายความปลอดภัยของข้อมูล Quidlab <br>Quidlab Information Security Management Policy</a></div>
     </div>
     </div>
-    <?php include "layouts/footer.php"; ?>
+    <!-- Main Footer -->
+    <footer class="main-footer" style="margin-left:0;padding:5px;">
+        Copyright &copy; <a href="https://quidlab.com">Quidlab FoQus</a>.
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 3.0.0
+        </div>
+    </footer>
+
+    </div>
+
+    <?php include "layouts/scripts.php"; ?>
 
 
     <script>
