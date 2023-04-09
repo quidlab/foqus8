@@ -11,7 +11,7 @@ class AuthController extends Controller
     public function login()
     {
         $FoQusdatabase = $this->DB;
-        $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . 'en' . "'";
+        $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . $this->app->local . "'";
         $params = array();
         $company_name = $FoQusdatabase->Select($sql, $params);
 

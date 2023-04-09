@@ -76,10 +76,6 @@ include "layouts/meta.php";
         </div>
         <div class="col-12 text-center"><a style="color:black;" href="https://quidlab.com/img/Privacy_policy.pdf" target="blank">นโยบายความเป็นส่วนตัว นโยบายการคุ้มครองข้อมูลและเงื่อนไขการใช้งานของระบบ <br>Quidlab Privacy Policy, Data Protection Policy & Terms of use </a></div>
         <div class="col-12 text-center"><a style="color:black;" href="https://quidlab.com/img/security_policy.pdf" target="blank">นโยบายความปลอดภัยของข้อมูล Quidlab <br>Quidlab Information Security Management Policy</a></div>
-        <!--BANK-->
-        <div class="col-12 text-center">
-
-        </div>
     </div>
     </div>
     <?php include "layouts/footer.php"; ?>
