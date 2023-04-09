@@ -11,17 +11,20 @@ class Router
 {
     protected $routes = [];
     public const HOME = '/admin/dashboard';
-    public function get(string $path, array $handler, Middleware ...$middlewares): object
+
+
+    
+    public function get(string $path, $handler, Middleware ...$middlewares): object
     {
         return $this->addRoute($path, Method::GET, $handler, $middlewares);
     }
 
-    public function post(string $path, array $handler, Middleware ...$middlewares): object
+    public function post(string $path, $handler, Middleware ...$middlewares): object
     {
         return $this->addRoute($path, Method::POST, $handler, $middlewares);
     }
 
-    protected function addRoute(string $path, Method $method, array $handler, array $middlewares): object
+    protected function addRoute(string $path, Method $method, $handler, array $middlewares): object
     {
         $this->routes[$method->value . $path] = [
             'path' => $path,
@@ -38,14 +41,23 @@ class Router
         if ($matchedRoute == null) {
             $this->notFoundHandler();
         } else {
+            /* call middlewares */
             foreach ($matchedRoute['middlewares'] as $middleware) {
-                call_user_func([$middleware,'handler']);
+                call_user_func([$middleware, 'handler']);
             }
+            /* call middlewares end */
+
             $callback = $matchedRoute['handler'];
-            $controller = new $callback[0]();
-            call_user_func_array([$controller, $callback[1]], [
-                array_merge($_GET, $_POST)
-            ]);
+            if (is_callable($callback)) {
+                call_user_func_array($callback, [
+                    array_merge($_GET, $_POST)
+                ]);
+            } else {
+                $controller = new $callback[0]();
+                call_user_func_array([$controller, $callback[1]], [
+                    array_merge($_GET, $_POST)
+                ]);
+            }
         }
     }
 
@@ -82,7 +94,4 @@ class Router
         view('errors/404'); // TODO => create a NotFound Exception and add this view function in it's handler
         throw new Exception("NOT Found", 1, null); // TODO => make the second param depends on a env variable called production 
     }
-
-
-
 }

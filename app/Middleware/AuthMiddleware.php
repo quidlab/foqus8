@@ -1,6 +1,7 @@
 <?php
 namespace App\Middleware;
 
+use App\Exceptions\NotAuthException;
 use Exception;
 
 class AuthMiddleware extends Middleware{
@@ -18,7 +19,7 @@ class AuthMiddleware extends Middleware{
             }
         }
         // if the user not auth
-        throw new Exception("NOT Auth", 1, null); // TODO => make the second param depends on a env variable called production 
+        throw new NotAuthException("NOT Auth", 1, null); // TODO => make the second param depends on a env variable called production 
     }
 
 }

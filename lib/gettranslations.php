@@ -1,8 +1,6 @@
 <?php 
-if (!isset($_GET['lang'])){$lang='en';  } else {$lang= $_GET['lang']; }
-if (!in_array($lang,['en','th'])) {
-    $lang = 'en';
-}
+$lang = $app->local;
+
 $sql= "select ID,Tname,Tvalue from Translations where Tlang =?";
 $params=array($lang);
 $translations = $FoQusdatabase->Select($sql,$params);

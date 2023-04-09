@@ -27,14 +27,12 @@ function parse_azure_connection_string($conn_str)
 // ** SQL Azure settings - Automatically read from env variables ** //
 // added by mostafa 
 if (getenv('SQLCONNSTR_conn')) {
-    $conn1 = parse_azure_connection_string(getenv('SQLCONNSTR_conn'));
+    $connString= getenv('SQLCONNSTR_conn');
 }else{
-    $conn1['Initial Catalog'] = "foqus3";
-    $conn1['User ID'] = "foqus3";
-    $conn1['Password'] = "Foqus123#*";
-    $conn1['Server'] = "tcp:foqus3.database.windows.net,1433";
+    // for development environment
+    $connString = "Server=tcp:foqus3.database.windows.net,1433;Initial Catalog=foqus3;Persist Security Info=False;User ID=foqus3;Password=Mostafa$$123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 }
-
+$conn1 = parse_azure_connection_string($connString);
 /** The name of the database for WordPress */
 define('DB_NAME', $conn1['Initial Catalog']);
 
@@ -50,18 +48,18 @@ define('DB_HOST', $conn1['Server']);
 //$url = 'http://www.example.com';
 
 
-$url = '';
+
 foreach (getallheaders() as $name => $value) {
-    if ($name == 'X-Forwarded-Host') {
+    if ($name == 'Host') {
         $url = $value;
     }
 }
 //$db=array_shift((explode('.', $_SERVER['X-Forwarded-Host'])));
 $urlexplode = explode('.', $url);
+
 //$db=array_shift((explode('.', $url))); 
 $dbname = array_shift($urlexplode);
 
-$dbname = "foqus3"; // remove ,added by mostafa
 
 
 //echo($conn1);

@@ -11,4 +11,5 @@ class Request{
     public function withMessage($message){
         $_SESSION['messagesBag'][] = $message;
     }
+
 }
