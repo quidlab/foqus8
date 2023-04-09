@@ -4,9 +4,9 @@ namespace App\Controllers;
 
 use LIB\Request\Request;
 
-class DashboardController extends Controller
+class RoutesController extends Controller
 {
-    public function index()
+    public function adminTools()
     {
         $sql = "SELECT (SELECT COUNT(*) from egm)  AS TotalShareHolders , ( select sum(q_share) from egm )  as TotalShares , (select count(*) from egm  where approvedforonline = 'Y' ) as TotalApprovedForOnline , (select sum(q_share) from egm where approvedforonline=  'Y' ) as SharesApprovedforOnline , ( select count(*) from egm where doc_received= 'Y' ) as TotalDocumentRegistred , (SELECT sum(q_share) from egm where doc_received= 'Y') as TotalDocumentRegistredShares , ( select count(*) from egm where doc_received= 'Y' and ApprovedForOnline<>'Y' ) as ShareholdersStillToApprove , (SELECT sum(q_share) from egm where doc_received= 'Y' and ApprovedForOnline<>'Y') as TotalSharesStillToApprove";
         //$DashboardInfo = $FoQusdatabase -> get_row($sql ,'array');
@@ -20,9 +20,7 @@ class DashboardController extends Controller
         $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . $this->app->local . "'";
         $params = array();
         $company_name = $this->DB->Select($sql, $params);
-        return view('/admin/dashboard', [
-            'DashboardInfo' => $DashboardInfo,
-            'languages' => $languages,
+        return view('/admin/admin-tools', [
             'company_name' => $company_name
         ],'/admin/index');
     }
