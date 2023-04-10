@@ -20,5 +20,3 @@ function getUserIP()
     //return filter_var($ipaddress, FILTER_VALIDATE_IP);
 
 	}
-
-?>
