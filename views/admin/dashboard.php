@@ -10,10 +10,10 @@
           <div class="info-box-content">
             <span class="info-box-text"><? echo constant('TR_TOTAL_SHAREHOLDERS'); ?></span>
             <span class="info-box-number">
-              <? echo number_format($DashboardInfo[0]['TotalShareHolders']) . ' ' .  constant('TR_PERSONS'); ?>
+              <? echo number_format($DashboardInfo[0]['TotalShareHolders']?:0) . ' ' .  constant('TR_PERSONS'); ?>
             </span>
             <span class="info-box-number">
-              <? echo number_format($DashboardInfo[0]['TotalShares']) . ' ' . 'Shares'; ?>
+              <? echo number_format($DashboardInfo[0]['TotalShares']?:0) . ' ' . 'Shares'; ?>
             </span>
           </div>
           <!-- /.info-box-content -->
