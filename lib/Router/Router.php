@@ -92,6 +92,6 @@ class Router
     public function notFoundHandler()
     {
         view('errors/404'); // TODO => create a NotFound Exception and add this view function in it's handler
-        throw new Exception("NOT Found", 1, null); // TODO => make the second param depends on a env variable called production 
+        throw new Exception("NOT Found", 404, null); // TODO => make the second param depends on a env variable called production 
     }
 }

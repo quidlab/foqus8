@@ -22,6 +22,7 @@ class RoutesController extends Controller
         $company_name = $this->DB->Select($sql, $params);
         return view('/admin/admin-tools', [
             'company_name' => $company_name
-        ],'/admin/index');
+        ], '/admin/index');
     }
+
 }
