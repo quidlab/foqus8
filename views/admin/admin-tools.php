@@ -49,58 +49,22 @@
 <script>
     //presenter data delete
     function deleteAllRows() {
-        //console.log(actionData);
-        //alert(actionData);
-        var geVal = 'eData';
         $("tbody").remove();
         $.ajax({
-            url: "admin-tools-script.php",
+            url: "/database/truncate",
             method: "POST",
-            data: {
-                'deleteAllRows': geVal
-            },
+            data: {},
             success: function(regResponse) {
                 let regResponseData = JSON.parse(regResponse);
-                if (regResponseData.message == '1') {
-                    new PNotify({
-                        title: 'Success!',
-                        text: regResponseData.status,
-                        type: 'success',
-                        nonblock: {
-                            nonblock: true
-                        },
-                        styling: 'bootstrap3'
-                    });
+                if (regResponseData.status) {
+                    toastr.success('Success!', regResponseData.message)
                 } else {
-                    new PNotify({
-                        title: 'Command Failed!',
-                        text: regResponseData.status,
-                        type: 'danger',
-                        nonblock: {
-                            nonblock: true
-                        },
-                        styling: 'bootstrap3'
-                    });
+                    toastr.error('Something went wrong!', regResponseData.message)
                 }
             },
             error: function(error) {
-                new PNotify({
-                    title: 'Error!',
-                    text: 'Something went wrong, refresh the page and check later.',
-                    type: 'error',
-                    nonblock: {
-                        nonblock: true
-                    },
-                    styling: 'bootstrap3'
-                });
+                toastr.error('Something went wrong!', '')
             }
         });
     }
-
-
-    // $('.modal_remove_pres').on('show.bs.modal', function(event) {
-    // 	var button = $(event.relatedTarget)
-    // 	var remid = button.data('remid')
-    // 	$('#remid').val(remid);
-    // })
 </script>

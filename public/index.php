@@ -4,6 +4,9 @@ define('REQUEST_START_TIME',microtime(true));
 
 session_start();
 
+require __DIR__.'/../vendor/autoload.php';
+
+
 /* Starting The app */
 require_once __DIR__ . '/../lib/app.php';
 $app = new LIB\App\App();
