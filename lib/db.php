@@ -30,6 +30,7 @@ if (getenv('SQLCONNSTR_conn')) {
     $connString= getenv('SQLCONNSTR_conn');
 }else{
     // for development environment
+    $connString = "Server=tcp:foqus3.database.windows.net,1433;Initial Catalog=foqus3;Persist Security Info=False;User ID=foqus3;Password=Mostafa$$123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 }
 $conn1 = parse_azure_connection_string($connString);
 /** The name of the database for WordPress */

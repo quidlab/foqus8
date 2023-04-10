@@ -11,7 +11,7 @@ class DatabaseController extends Controller
 {
     public function truncate()
     {
-
+      
         $SelectMeetingInfo = "SELECT TOP(1) SYMBOL + 'Log_'+ CONVERT(nvarchar,login_allowed_time,6) as uploadfolder from Co_info";
         $FetchInfo = $this->DB->Select($SelectMeetingInfo)[0];
         // print_r($FetchInfo);return;
@@ -40,6 +40,9 @@ class DatabaseController extends Controller
         );
 
         $loginDetails = json_encode($value);
+
+        // TODO use Response instance       
+
         echo ($loginDetails);
         return;
 
