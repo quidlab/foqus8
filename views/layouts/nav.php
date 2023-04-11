@@ -34,11 +34,11 @@
           <i class="fas fa-th-large"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="lockscreen" href="logout.php" role="button">
+<!--       <li class="nav-item">
+        <a class="nav-link" data-widget="lockscreen" href="/admin/logout" role="button">
           <i class="fas fa-lock"></i>
         </a>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link" data-toggle="modal" data-target="#logoutModal" href="#" role="button">
           <i class="fas fa-sign-out-alt"></i>

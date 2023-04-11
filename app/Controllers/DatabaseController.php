@@ -39,12 +39,8 @@ class DatabaseController extends Controller
             "status" => $status
         );
 
-        $loginDetails = json_encode($value);
 
-        // TODO use Response instance       
-
-        echo ($loginDetails);
-        return;
+        return response()->json($value);
 
     }
 

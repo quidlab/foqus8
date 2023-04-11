@@ -15,11 +15,12 @@
 
       <?php include __DIR__ . "/../layouts/company_name_header.php"; ?> <!-- Page Header -->
       <section class="content">
+
+
         <?php include $slot; ?> <!-- Page Content -->
       </section>
     </div>
-
-
+    <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -27,18 +28,6 @@
     </aside>
     <!-- /.control-sidebar -->
 
-    <?php include __DIR__ . "/../layouts/footer.php"; ?>
-    <?php include __DIR__ . "/../layouts/scripts.php"; ?>
-    <script>
-      function changeLanguage(lang) {
-        // Replace "lang" cookie with new language
-        document.cookie = "lang=" + lang;
-        // Get html of current URI and replace page contents.
-        $("body").load(window.location.href);
-      }
-
-      // Call this to switch to German, for example
-    </script>
 
 </body>
 

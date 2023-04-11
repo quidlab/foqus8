@@ -10,14 +10,8 @@
     </div>
 </div><!--/. container-fluid -->
 
-<!-- /.content -->
-
-<!-- /.content-wrapper -->
-<!-- Control Sidebar -->
-<aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-</aside>
-<!-- /.control-sidebar -->
+<?php include __DIR__ . "/../layouts/footer.php"; ?>
+<?php include __DIR__ . "/../layouts/scripts.php"; ?>
 
 <!-- Remove Modal Start -->
 <div class="modal modal_remove_pres" id="myDeleteModal">
@@ -55,11 +49,12 @@
             method: "POST",
             data: {},
             success: function(regResponse) {
-                let regResponseData = JSON.parse(regResponse);
+                let regResponseData = regResponse;
+                console.log(regResponseData);
                 if (regResponseData.status) {
-                    toastr.success('Success!', regResponseData.message)
+                    toastr.success(regResponseData.message)
                 } else {
-                    toastr.error('Something went wrong!', regResponseData.message)
+                    toastr.error(regResponseData.message)
                 }
             },
             error: function(error) {
