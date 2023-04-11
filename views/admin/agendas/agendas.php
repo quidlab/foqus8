@@ -456,7 +456,6 @@
                     });
                 },
                 updateItem: function(item) {
-
                     return $.ajax({
                         type: "PUT",
                         url: "/admin/agenda-details",
@@ -472,7 +471,6 @@
                     });
                 },
                 deleteItem: function(item) {
-
                     return $.ajax({
                         type: "DELETE",
                         url: "/admin/agenda-details",
