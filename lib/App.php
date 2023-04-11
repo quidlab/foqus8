@@ -23,7 +23,8 @@ class App
     {
         $ipaddress = '';
         if (key_exists('HTTP_X_FORWARDED_FOR',$_SERVER))
-            $ipaddress = reset(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])); // there is warning here on the server
+           //$ipaddress = reset(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])); 
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR']; // there is warning here on the server
         else if (key_exists('HTTP_CLIENT_IP',$_SERVER))
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
         else if (key_exists('HTTP_X_FORWARDED',$_SERVER))

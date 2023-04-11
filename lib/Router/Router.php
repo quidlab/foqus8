@@ -24,6 +24,17 @@ class Router
         return $this->addRoute($path, Method::POST, $handler, $middlewares);
     }
 
+    public function put(string $path, $handler, Middleware ...$middlewares): object
+    {
+        return $this->addRoute($path, Method::PUT, $handler, $middlewares);
+    }
+    public function delete(string $path, $handler, Middleware ...$middlewares): object
+    {
+        return $this->addRoute($path, Method::DELETE, $handler, $middlewares);
+    }
+
+
+
     protected function addRoute(string $path, Method $method, $handler, array $middlewares): object
     {
         $this->routes[$method->value . $path] = [
@@ -77,17 +88,6 @@ class Router
     }
 
 
-
-
-    /*     public function guest(...$auth){
-        return;
-        header('location: /' );
-        foreach ($auth as $key => $value) {
-            if (isset($_SESSION[$value])) {
-            }
-        }
-    }
- */
 
     public function notFoundHandler()
     {

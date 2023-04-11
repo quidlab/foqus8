@@ -14,8 +14,7 @@ class DashboardController extends Controller
         $DashboardInfo = $this->DB->Select($sql, $params);
 
         $sql = "select Language_Name, Language_ID, Flag_ID from Languages where Active=?";
-        $params = array('1');
-        $languages = $this->DB->Select($sql, $params);
+        $languages = $this->DB->Select($sql, ['1']);
 
         $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . $this->app->local . "'";
         $params = array();

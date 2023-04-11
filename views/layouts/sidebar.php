@@ -3,8 +3,8 @@
         <!-- Brand Logo -->
 
         <a href="#" class="brand-link logo-switch">
-          <img src="../assets/img/FOQUS_cam150.png" alt="FoQus Logo Small" class="brand-image-xl logo-xs">
-          <img src="../assets/img/FOQUS_logo_633x144.png" alt="FoQus Logo Large" class="brand-image-xs logo-xl" style="left: 12px">
+          <img src="<?= assets('/assets/img/FOQUS_cam150.png') ?>" alt="FoQus Logo Small" class="brand-image-xl logo-xs">
+          <img src="<?= assets('/assets/img/FOQUS_logo_633x144.png') ?>" alt="FoQus Logo Large" class="brand-image-xs logo-xl" style="left: 12px">
           <!--  <span class="brand-text font-weight-light">FoQus</span> -->
         </a>
         <? if (!isset($_SESSION['uname'])) {
@@ -16,7 +16,7 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-              <img src="../assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+              <img src="<?= assets('/assets/img/user2-160x160.jpg') ?>" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
               <a href="#" class="d-block"><? echo $_SESSION['uname']; ?></a>
@@ -46,16 +46,16 @@
                   </p>
                 </a>
               </li>
-<!--               <li class="nav-item">
-                <a href="company.php?lang=<? echo $lang; ?>" class="nav-link">
+            <li class="nav-item">
+                <a href="/admin/manage-company" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
                     Manage Company
                   </p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="meeting_constants.php?lang=<? echo $lang; ?>" class="nav-link">
+                 <li class="nav-item">
+                <a href="/admin/meeting-constants" class="nav-link">
                   <i class="nav-icon fa-solid fa-users-rectangle"></i>
                   <p>
                     Meeting Constants
@@ -63,14 +63,14 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="system_constants.php?lang=<? echo $lang; ?>" class="nav-link">
+                <a href="/admin/system-constants" class="nav-link">
                   <i class="nav-icon fa-solid fa-users-rectangle"></i>
                   <p>
                     System Constants
                   </p>
                 </a>
               </li>
-              <li class="nav-item">
+<!--              <li class="nav-item">
                 <a href="maintainagenda.php?lang=<? echo $lang; ?>" class="nav-link">
                   <i class="nav-icon fa-solid fa-list-check"></i>
                   <p>
