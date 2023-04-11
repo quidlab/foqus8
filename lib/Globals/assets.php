@@ -1,5 +1,5 @@
 <?php
 
 function assets($path = ""){
-    return "http://".$_SERVER['HTTP_HOST'] .$path;
+    return "https://".$_SERVER['HTTP_HOST'] .$path;
 }

@@ -30,7 +30,6 @@ if (getenv('SQLCONNSTR_conn')) {
     $connString= getenv('SQLCONNSTR_conn');
 }else{
     // for development environment
-   
 }
 $conn1 = parse_azure_connection_string($connString);
 /** The name of the database for WordPress */
