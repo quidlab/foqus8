@@ -70,14 +70,14 @@
                   </p>
                 </a>
               </li>
-<!--              <li class="nav-item">
-                <a href="maintainagenda.php?lang=<? echo $lang; ?>" class="nav-link">
+            <li class="nav-item">
+                <a href="/admin/agendas/view" class="nav-link">
                   <i class="nav-icon fa-solid fa-list-check"></i>
                   <p>
                     Maintain Agendas
                   </p>
                 </a>
-              </li>
+ <!--               </li>
               <li class="nav-item">
                 <a href="shareholderimport.php?lang=<? echo $lang; ?>" class="nav-link">
                   <i class="nav-icon fa-solid fa-file-import"></i>

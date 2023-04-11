@@ -20,7 +20,6 @@ class View
         $this->layout = $layout;
         $root = $_SERVER["DOCUMENT_ROOT"];
 
-        echo $root;
         if ($this->layout) {
             $slot = $root . '/../views/' . $this->filePath . '.php';
             require_once $root . '/../views/' . $this->layout . '.php';
