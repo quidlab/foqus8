@@ -1,5 +1,5 @@
 <?
-$sql= 'select ID,Constant_Name,Constant_Value,Description from Meeting_Constants';
+$sql= 'select ID,Constant_Name,Constant_Value,Description from Meeting_Constants_Str';
 $params=array();
 $meeting_constants = $FoQusdatabase ->Select($sql,$params);
 foreach($meeting_constants as $meeting_constant){

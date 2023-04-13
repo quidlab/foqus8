@@ -9,6 +9,8 @@ class Request{
     }
 
     public function withMessage($message){
+        $_SESSION['messagesBag']= [];
+        echo "plpl";
         $_SESSION['messagesBag'][] = $message;
     }
 

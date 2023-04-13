@@ -1,6 +1,3 @@
-<!-- /.content-header -->
-
-<!-- Main content -->
 <section class="content">
     <div class="container-fluid">
         <!-- Info boxes -->
@@ -8,11 +5,8 @@
     </div><!--/. container-fluid -->
 </section>
 
-
-
-<?php include __DIR__ . "/../layouts/footer.php"; ?>
-<?php include __DIR__ . "/../layouts/scripts.php"; ?>
-
+<?php include __DIR__ . "/../../layouts/footer.php"; ?>
+<?php include __DIR__ . "/../../layouts/scripts.php"; ?>
 <script>
     $("#meetingConstantsGrid").jsGrid({
         width: "100%",
@@ -30,15 +24,14 @@
             loadData: function(filter) {
                 return $.ajax({
                     type: "GET",
-                    url: "/admin/constants/meeting",
+                    url: "/admin/constants/system",
                     data: filter
                 });
             },
             updateItem: function(item) {
-
                 return $.ajax({
                     type: "PUT",
-                    url: "/admin/constants/meeting",
+                    url: "/admin/constants/system",
                     data: item
                 }).then(res => {
                     if (res.status) {
@@ -48,7 +41,6 @@
                     }
                 });
             },
-
         },
 
         fields: [

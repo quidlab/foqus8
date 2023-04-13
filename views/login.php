@@ -12,7 +12,9 @@ include "layouts/meta.php";
         <h3 class="text-center"><? echo $company_name[0]['Company_Name'] ?></h3>
         <h3 class="text-center"><? echo $company_name[0]['Meeting_Place'] ?><h3>
     </div>
-    <?= isset($_SESSION['messagesBag']) ? $_SESSION['messagesBag'][0] : '' ?>
+
+
+
     <div class="login-box ">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
@@ -21,7 +23,11 @@ include "layouts/meta.php";
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-
+                <?
+                    foreach (errors() as $error) {
+                        echo '<span class="text-red" >'.$error.'</span>';
+                    }
+                ?>
                 <form action="/admin/login" method="post">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="User Name" required="required" name="loginID">

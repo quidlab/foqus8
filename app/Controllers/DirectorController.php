@@ -89,6 +89,7 @@ class DirectorController extends Controller
     */
 
     public function truncate(){ // TODO NOTWORKING ASK
+        
         parse_str(file_get_contents("php://input"), $_DELETE); 
         $sql="DELETE FROM Directors WHERE AGENDAID=?";
         $params=array($_DELETE['ID']);

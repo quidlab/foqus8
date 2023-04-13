@@ -42,23 +42,22 @@ class AuthController extends Controller
         $FoQusdatabase = $this->DB;
 
         $sql = "SELECT * from Users where USER_ID=?  ";
-        $params = array(/* $_POST['loginID'] */'admin');// TODO => remove 'admin'
+        $params = array($_POST['loginID']);
         $getUser = $FoQusdatabase->Select($sql, $params);
         if ($getUser) {
             $hash = $getUser[0]['Password'];
             $input = $_POST['password'];
-            if (true /* MC_REQUIRE_PHONE_OTP == false && MC_REQUIRE_EMAIL_OTP == false */) { // TODO uncomment
-                if (/* password_verify($input, $hash) */true) {
+            if (MC_REQUIRE_PHONE_OTP == false && MC_REQUIRE_EMAIL_OTP == false ) { // TODO uncomment
+                if (password_verify($input, $hash)) {
                     $_SESSION['uname'] = $getUser[0]['USER_ID'];
                     $_SESSION['ROLE_ID'] = $getUser[0]['Role_ID'];
-                    // redirect to index page
                     redirect(Router::HOME);
                 } else {
-
+                    $request->back()->withMessage('Wrong Password');
                 }
             }
         } else {
-            $request->back()->withMessage('password not correct');
+            $request->back()->withMessage('Username not correct');
         }
     }
 

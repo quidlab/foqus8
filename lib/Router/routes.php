@@ -39,8 +39,17 @@ $router->put('/admin/constants/meeting', [ConstantController::class, 'meetingUpd
 $router->get('/admin/constants/system', [ConstantController::class, 'systemIndex'], new AuthMiddleware('uname'));
 $router->put('/admin/constants/system', [ConstantController::class, 'systemUpdate'], new AuthMiddleware('uname'));
 
+$router->get('/admin/constants/date', [ConstantController::class, 'dateConstants'], new AuthMiddleware('uname'));
+$router->put('/admin/constants/date', [ConstantController::class, 'dateUpdate'], new AuthMiddleware('uname'));
+
+$router->get('/admin/constants/bool', [ConstantController::class, 'boolConstants'], new AuthMiddleware('uname'));
+$router->put('/admin/constants/bool', [ConstantController::class, 'boolUpdate'], new AuthMiddleware('uname'));
+
+$router->get('/admin/constants/int', [ConstantController::class, 'intConstants'], new AuthMiddleware('uname'));
+$router->put('/admin/constants/int', [ConstantController::class, 'intUpdate'], new AuthMiddleware('uname'));
 /* Agendas */
 $router->get('/admin/agendas', [AgendaController::class, 'index'], new AuthMiddleware('uname'));
+$router->get('/admin/agendas/create', [RoutesController::class, 'createAgenda'], new AuthMiddleware('uname'));
 $router->post('/admin/agendas', [AgendaController::class, 'store'], new AuthMiddleware('uname'));
 $router->put('/admin/agendas', [AgendaController::class, 'update'], new AuthMiddleware('uname'));
 $router->delete('/admin/agendas', [AgendaController::class, 'truncate'], new AuthMiddleware('uname'));
