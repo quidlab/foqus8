@@ -11,16 +11,7 @@ class DatabaseController extends Controller
 {
     public function truncate()
     {
-      
-        $SelectMeetingInfo = "SELECT TOP(1) SYMBOL + 'Log_'+ CONVERT(nvarchar,login_allowed_time,6) as uploadfolder from Co_info";
-        $FetchInfo = $this->DB->Select($SelectMeetingInfo)[0];
-        // print_r($FetchInfo);return;
-        $SYMBOLLog = $FetchInfo['uploadfolder'];
-        $doc_root = $_SERVER["DOCUMENT_ROOT"];
-        $uploads_dir_Log = $doc_root . '/uploads/' . $SYMBOLLog . "/";
-
-        $logger = new Logger('Admin');
-        $logger->pushHandler(new StreamHandler($uploads_dir_Log . '/adminlog.log', Logger::DEBUG));
+        $logger = logger();
 
         $ipaddress = $this->app->getUserIP();
         mb_internal_encoding("UTF-8");
@@ -45,13 +36,12 @@ class DatabaseController extends Controller
     }
 
     protected function realTruncate()
-    {
+    { // TODO =>z
         $query = "DELETE FROM AgendaResults";
         
         $execute =  $this->DB->Run($query,[]);
         
         
-
         $query1 = "UPDATE EGM SET q_share = org_q_share,n_first=org_n_first,n_last=org_n_last,I_ref=org_i_ref";
         $execute1 = $this->DB->Run($query1,[]);
 

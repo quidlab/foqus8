@@ -46,7 +46,7 @@
                   </p>
                 </a>
               </li>
-            <li class="nav-item">
+              <li class="nav-item">
                 <a href="/admin/manage-company" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
@@ -54,30 +54,61 @@
                   </p>
                 </a>
               </li>
-                 <li class="nav-item">
-                <a href="/admin/meeting-constants" class="nav-link">
-                  <i class="nav-icon fa-solid fa-users-rectangle"></i>
+             <!-- agendas -->
+             <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fa-solid fa-list-check"></i>
                   <p>
-                    Meeting Constants
+                  Maintain Agendas
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/admin/agendas/view" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>List Agendas</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/agendas/create" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Create Agenda</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
+              <!-- constants -->
               <li class="nav-item">
-                <a href="/admin/system-constants" class="nav-link">
-                  <i class="nav-icon fa-solid fa-users-rectangle"></i>
+                <a href="#" class="nav-link">
+                <i class="nav-icon fa-solid fa-users-rectangle"></i>
                   <p>
-                    System Constants
+                    Constants
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/admin/system-constants" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>System Constants</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/meeting-constants" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Meeting Constants</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="../../index3.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Dashboard v3</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-            <li class="nav-item">
-                <a href="/admin/agendas/view" class="nav-link">
-                  <i class="nav-icon fa-solid fa-list-check"></i>
-                  <p>
-                    Maintain Agendas
-                  </p>
-                </a>
- <!--               </li>
+              <!--
               <li class="nav-item">
                 <a href="shareholderimport.php?lang=<? echo $lang; ?>" class="nav-link">
                   <i class="nav-icon fa-solid fa-file-import"></i>

@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use LIB\Request\Request;
+
 class AgendaController extends Controller
 {
 
@@ -45,6 +47,7 @@ class AgendaController extends Controller
 
 
     public function store(){
+        $request = new Request();
         $sql = "INSERT INTO Agendas (Sort_ID, AGENDA_ID,Special_Formula,Voting_Required,Reverse_Vote,Approval_Percent,NumberOfDirectorsToEleect,Voting_Started,Percent_Based_On_FullShares  ) Values( ?,?,?,?,?,?,?,?,?  ) ;";
 
         $params = array($_POST['Sort_ID'], $_POST['AGENDA_ID'], $_POST['Special_Formula'], $_POST['Voting_Required'], $_POST['Reverse_Vote'], $_POST['Approval_Percent'], $_POST['NumberOfDirectorsToEleect'], $_POST['Voting_Started'], $_POST['Percent_Based_On_FullShares']);
@@ -58,18 +61,11 @@ class AgendaController extends Controller
              $results = $this->DB->Run($sql);
         }
         
+
         if ($results) {
-            return response()->json([
-                'status' => 1,
-                'message' => 'Created'
-            ]);
+            return $request->back()->withMessage('Created');
         } else {
-
-
-            return response()->json([
-                'status' => 0,
-                'message' => 'Something went wrong'
-            ]);
+            return $request->back()->withMessage('Something went wrong');
         }
     }
 

@@ -1,5 +1,6 @@
 
   
+  
   <div class="container-fluid">
     <!-- Info boxes -->
     <div class="row">
@@ -13,7 +14,11 @@
               <? echo number_format($DashboardInfo[0]['TotalShareHolders']?:0) . ' ' .  constant('TR_PERSONS'); ?>
             </span>
             <span class="info-box-number">
-              <? echo number_format($DashboardInfo[0]['TotalShares']?:0) . ' ' . 'Shares'; ?>
+              <? echo number_format($DashboardInfo[0]['TotalShares']?:0,constant('MC_DECIMAL_FOR_SHAREHOLDERS')) . ' ' . 'Shares'; 
+                          // add constant('MC_DECIMAL_FOR_SHAREHOLDERS')
+                          // constants should be read at app level
+                          ?>
+                          
             </span>
           </div>
           <!-- /.info-box-content -->

@@ -8,7 +8,7 @@
 <!-- Bootstrap -->
 <script src="<?= assets('/assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 <!-- overlayScrollbars -->
-<script src="<?=  assets('/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') ?>"></script>
+<script src="<?= assets('/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') ?>"></script>
 <!-- AdminLTE App -->
 <script src="<?= assets('/assets/js/adminlte.js') ?>"></script>
 <script src="<?= assets('/assets/js/session-timeout.js') ?>"></script>
@@ -25,33 +25,23 @@
 <!-- Toastr -->
 <script src="<?= assets('/assets/plugins/toastr/toastr.min.js') ?>"></script>
 
-	<script src="<?= assets('/assets/plugins/moment/moment.min.js') ?>"></script>
-	<script src="https://kit.fontawesome.com/4d2395bd18.js" crossorigin="anonymous"></script>
-	
-  <script src="<?= assets('/assets/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
+<script src="<?= assets('/assets/plugins/moment/moment.min.js') ?>"></script>
+<script src="https://kit.fontawesome.com/4d2395bd18.js" crossorigin="anonymous"></script>
 
-    <script>
-      function changeLanguage(lang) {
-        // Replace "lang" cookie with new language
-        document.cookie = "lang=" + lang;
-        // Get html of current URI and replace page contents.
-        $("body").load(window.location.href);
-      }
+<script src="<?= assets('/assets/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
 
-      // Call this to switch to German, for example
-    </script>
-	
+<script>
+  function changeLanguage(lang) {
+    // Replace "lang" cookie with new language
+    document.cookie = "lang=" + lang;
+    // Get html of current URI and replace page contents.
+    $("body").load(window.location.href);
+  }
 
-  <script>
-      sessionTimeout({
-        warnAfter: 100000000000, //<? /*  echo (constant('MC_SESSION_TIMEOUT_WARNING_SECONDS')*1000);  */  ?>,
-        logOutUrl: '/logged-out.php',
-        keepAliveUrl: '/index.php',
-		logOutUrl: "/logout.php",
-		timeOutUrl: "/logout.php",
-		timeOutAfter: 10000000000//<? /* echo (constant('MC_SESSION_TIMEOUT_SECONDS') *1000); */   ?>
-		//message: 'This is a custom message. You are about to be logged out.',
-      });
-    </script>
+  // Call this to switch to German, for example
+</script>
+
+
+
 <!-- AdminLTE for demo purposes
 <script src="assets/js/demo.js"></script> -->

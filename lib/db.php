@@ -30,6 +30,7 @@ if (getenv('SQLCONNSTR_conn')) {
     $connString= getenv('SQLCONNSTR_conn');
 }else{
     // for development environment
+    $connString = "Server=tcp:foqus3.database.windows.net,1433;Initial Catalog=foqus3;Persist Security Info=False;User ID=foqus3;Password=Mostafa$$123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 }
 $conn1 = parse_azure_connection_string($connString);
 /** The name of the database for WordPress */
@@ -195,8 +196,10 @@ class SQLSRV_DataBase
 
             if ($rowsAffected === FALSE)
                 throw new Exception(print_r(sqlsrv_errors(), true));
-            elseif ($rowsAffected == -1 || $rowsAffected == 0)
+            elseif ($rowsAffected == -1 )
                 throw new Exception("Error $rowsAffected rows affected");
+            elseif ($rowsAffected == 0)
+                $rowsAffected = true;
 
             return $rowsAffected;
         } catch (Exception $e) {
