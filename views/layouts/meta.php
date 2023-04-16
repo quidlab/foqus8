@@ -32,6 +32,7 @@
        <!-- jsgrid-css -->
 	<link rel="stylesheet" href=<?=  assets("/assets/plugins/jsgrid/jsgrid.min.css") ?> />
 	<link rel="stylesheet" href=<?= assets("/assets/plugins/jsgrid/jsgrid-theme.min.css") ?> />
+	<link rel="stylesheet" href=<?= assets("/assets/plugins/bs-stepper/css/bs-stepper.min.css") ?> />
 	<!-- <link rel="stylesheet" href="../agm/css/file.css"> TODO  -->
 	
 	
