@@ -49,23 +49,21 @@ class AgendaController extends Controller
     public function store()
     {
         $request = new Request();
-        $result = $this->DB->transaction(function(){
-            // TODO Trunsaction
+        $result = $this->DB->transaction(function () {
             $sql = "INSERT INTO Agendas (Sort_ID, AGENDA_ID,Special_Formula,Voting_Required,Reverse_Vote,Approval_Percent,NumberOfDirectorsToEleect,Voting_Started,Percent_Based_On_FullShares  ) Values( ?,?,?,?,?,?,?,?,?) ;";
-    
+
             $params = array($_POST['Sort_ID'], $_POST['AGENDA_ID'], $_POST['Special_Formula'], $_POST['Voting_Required'], $_POST['Reverse_Vote'], $_POST['Approval_Percent'], $_POST['NumberOfDirectorsToEleect'], $_POST['Voting_Started'], $_POST['Percent_Based_On_FullShares']);
             $pk = $this->DB->InsertAndGetPK($sql, $params);
             $agendaTextsResults = $this->storeAgendaTexts($pk);
-    
+
             // $sql = "INSERT INTO Agendas_Text (AGENDAID,Agenda_Name,Agenda_Info,Approve_Text,DisApprove_Text,Abstain_Text,NoVote_Text,Language) Select '" . $pk . "' ,'Agenda','info',Approve ,DisApprove ,Abstain ,NoVote, Language_ID from Languages";
             // $results = $this->DB->Run($sql);
             $directorsResults = [1];
             if ($_POST['Voting_Required'] == 'C' || $_POST['Voting_Required'] == 'S') {
                 $directorsResults = $this->storeDirerctors($pk);
             }
-
-            return count(array_intersect([1], $agendaTextsResults)) === count($agendaTextsResults) &&
-            count(array_intersect([1], $directorsResults)) === count($directorsResults);
+            return $directorsResults;
+            return ((count(array_intersect([1], $agendaTextsResults)) === count($agendaTextsResults)) && (count(array_intersect([1], $directorsResults)) === count($directorsResults)));
         });
 
 
@@ -136,11 +134,12 @@ class AgendaController extends Controller
 
 
 
-    protected function storeAgendaTexts($agendaID){
+    protected function storeAgendaTexts($agendaID)
+    {
         $results = [];
         foreach ($this->agendaTextFormatter() as $key => $value) {
             $sql = "INSERT INTO Agendas_Text (AGENDAID,Agenda_Name,Approve_Text,DisApprove_Text,Abstain_Text,NoVote_Text,Language,Agenda_Info) VALUES (?,?,?,?,?,?,?,?)";
-            $results[] = $this->DB->Run($sql,[
+            $results[] = $this->DB->Run($sql, [
                 $agendaID,
                 $value[0],
                 $value[1],
@@ -154,11 +153,12 @@ class AgendaController extends Controller
         return $results;
     }
 
-    protected function storeDirerctors($agendaID){
+    protected function storeDirerctors($agendaID)
+    {
         $results = [];
         foreach ($this->directorsFormatter() as $key => $value) {
-            $sql = "INSERT INTO Directors (Agenda_ID,Director_Nam,Director_Name_Thai ,Director_ID,Language) VALUES (?,?,?,?,?)";
-            $results[] = $this->DB->Run($sql,[
+            $sql = "INSERT INTO Directors (Agenda_ID,Director_Name,Director_Name_Thai ,Director_ID,Language) VALUES (?,?,?,?,?)";
+            $results[] = $this->DB->Run($sql, [
                 $agendaID,
                 $value[0],
                 $value[1],
