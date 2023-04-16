@@ -38,7 +38,6 @@ class Translation
 
     protected function loadTranslations()
     {
-        logger()->Info("Translation loaded");
         global $FoQusdatabase;
         global $app;
 
