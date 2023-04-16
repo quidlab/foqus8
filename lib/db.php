@@ -27,8 +27,8 @@ function parse_azure_connection_string($conn_str)
 // ** SQL Azure settings - Automatically read from env variables ** //
 // added by mostafa 
 if (getenv('SQLCONNSTR_conn')) {
-    $connString= getenv('SQLCONNSTR_conn');
-}else{
+    $connString = getenv('SQLCONNSTR_conn');
+} else {
     // for development environment
     $connString = "Server=tcp:foqus3.database.windows.net,1433;Initial Catalog=foqus3;Persist Security Info=False;User ID=foqus3;Password=Mostafa$$123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 }
@@ -196,7 +196,7 @@ class SQLSRV_DataBase
 
             if ($rowsAffected === FALSE)
                 throw new Exception(print_r(sqlsrv_errors(), true));
-            elseif ($rowsAffected == -1 )
+            elseif ($rowsAffected == -1)
                 throw new Exception("Error $rowsAffected rows affected");
             elseif ($rowsAffected == 0)
                 $rowsAffected = true;
@@ -258,6 +258,21 @@ class SQLSRV_DataBase
             //     sqlsrv_close($conn);
         }
     }
+
+
+    public function transaction(callable $function)
+    {
+        sqlsrv_begin_transaction($this->db);
+        $results = $function();
+
+        if ($results) {
+            sqlsrv_commit($this->db);
+        } else {
+            sqlsrv_rollback($this->db);
+        }
+
+        return $results;
+    }
 }
 //for testing only
 //$dbname='trial1';
@@ -266,6 +281,5 @@ $FoQusdatabase->db_connect();
 
 if (!$FoQusdatabase->is_connected) { // added by mostafa
     echo "Connection Faild";
-    die( print_r( sqlsrv_errors(), true)); // TODO => return exhiption
+    die(print_r(sqlsrv_errors(), true)); // TODO => return exhiption
 }
-
