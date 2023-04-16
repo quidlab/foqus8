@@ -31,7 +31,7 @@
                 <a href="/admin/dashboard" class="nav-link">
                   <i class="nav-icon fas fa-table-columns"></i>
                   <p>
-                    <? echo constant('TR_DASHBOARD'); ?>
+                    <?= __('dashboard') ?>
                   </p>
                 </a>
               </li>
@@ -98,12 +98,6 @@
                     <a href="/admin/meeting-constants" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Meeting Constants</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="../../index3.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v3</p>
                     </a>
                   </li>
                 </ul>

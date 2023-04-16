@@ -29,7 +29,7 @@ class  Log
     {
         if (!isset(self::$instance)) {
             global $FoQusdatabase;
-            $SelectMeetingInfo = "SELECT Constant_Value + 'LOG_' as 'uploadfolder'  FROM [Meeting_Constants] Where Constant_Name = 'SYMBOL'";
+            $SelectMeetingInfo = "SELECT Constant_Value + 'LOG_' as 'uploadfolder'  FROM [Meeting_Constants_Str] Where Constant_Name = 'SYMBOL'";
             $FetchInfo = $FoQusdatabase->Select($SelectMeetingInfo)[0];
             $SYMBOLLog = $FetchInfo['uploadfolder'];
             $doc_root = $_SERVER["DOCUMENT_ROOT"];
