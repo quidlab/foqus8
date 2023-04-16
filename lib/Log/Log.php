@@ -33,7 +33,7 @@ class  Log
             $FetchInfo = $FoQusdatabase->Select($SelectMeetingInfo)[0];
             $SYMBOLLog = $FetchInfo['uploadfolder'];
             $doc_root = $_SERVER["DOCUMENT_ROOT"];
-            $uploads_dir_Log = str_replace('"\"','/',$doc_root). '/uploads/' . $SYMBOLLog . "/";
+            $uploads_dir_Log = str_replace('"\"','/',$doc_root). '/../storage/logs/' . $SYMBOLLog . "/";
     
 
             self::$instance = new Logger($name);
