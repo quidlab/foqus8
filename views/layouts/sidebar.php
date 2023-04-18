@@ -54,12 +54,20 @@
                   </p>
                 </a>
               </li>
-             <!-- agendas -->
-             <li class="nav-item">
-                <a href="#" class="nav-link">
-                <i class="nav-icon fa-solid fa-list-check"></i>
+              <li class="nav-item">
+                <a href="/admin/system-constants" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
-                  Maintain Agendas
+                    System Constants
+                  </p>
+                </a>
+              </li>
+              <!-- agendas -->
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fa-solid fa-list-check"></i>
+                  <p>
+                    Maintain Agendas
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
@@ -76,28 +84,10 @@
                       <p>Create Agenda</p>
                     </a>
                   </li>
-                </ul>
-              </li>
-              <!-- constants -->
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                <i class="nav-icon fa-solid fa-users-rectangle"></i>
-                  <p>
-                    Constants
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="/admin/system-constants" class="nav-link">
+                    <a href="/admin/agendas/create2" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>System Constants</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/admin/meeting-constants" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Meeting Constants</p>
+                      <p>Create Agenda 2</p>
                     </a>
                   </li>
                 </ul>
