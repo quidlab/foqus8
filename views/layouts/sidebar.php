@@ -7,9 +7,6 @@
           <img src="<?= assets('/assets/img/FOQUS_logo_633x144.png') ?>" alt="FoQus Logo Large" class="brand-image-xs logo-xl" style="left: 12px">
           <!--  <span class="brand-text font-weight-light">FoQus</span> -->
         </a>
-        <? if (!isset($_SESSION['uname'])) {
-          goto FinishSidebar;
-        } ?>
 
         <!-- Sidebar -->
         <div class="sidebar">
@@ -35,9 +32,7 @@
                   </p>
                 </a>
               </li>
-              <? if ($_SESSION['ROLE_ID'] != 1) {
-                goto RegistrationStaff;
-              }  ?>
+
               <li class="nav-item">
                 <a href="/admin/admin-tools" class="nav-link">
                   <i class="nav-icon fa-solid fa-user-gear"></i>
@@ -92,11 +87,9 @@
                   </li>
                 </ul>
               </li>
-              <? RegistrationStaff: ?>
             </ul>
           </nav>
           <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->
       </aside>
-      <? FinishSidebar: ?>
