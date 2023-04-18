@@ -92,6 +92,7 @@
                   </li>
                 </ul>
               </li>
+              <? RegistrationStaff: ?>
             </ul>
           </nav>
           <!-- /.sidebar-menu -->
