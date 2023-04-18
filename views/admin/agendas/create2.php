@@ -1,31 +1,13 @@
-    <?
+<?
     foreach (errors() as $error) {
         echo '<section class="ml-4 text-xl text-bold">' . $error . '</section>'; // TODO add script and use toastr
     }
     ?>
     <form id="MainForm" method="POST" action="/admin/agendas">
 
-        <div class="bs-stepper">
-            <div class="bs-stepper-header" role="tablist">
-                <!-- your steps here -->
-                <div class="step" data-target="#logins-part">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+        <div class="">
 
-                    </button>
-                </div>
-                <div class="line"></div>
-                <div class="step" data-target="#information-part">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
-
-                    </button>
-                </div>
-                <div class="step" data-target="#oo-part">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="oo-part" id="oo-part-trigger">
-
-                    </button>
-                </div>
-            </div>
-            <div class="bs-stepper-content">
+            <div class="-content">
                 <!-- your steps content here -->
                 <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
                     <div class="card card-primary mx-4">
@@ -114,7 +96,6 @@
                         </div>
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-success" onclick="next()">Next</button>
 
                         </div>
                     </div>
@@ -184,9 +165,7 @@
                         </div>
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-success" onclick="previous()">Previous</button>
 
-                            <button type="button" id="nextBtn" class="btn btn-success" onclick="next()">Next</button>
                             <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
@@ -223,7 +202,6 @@
                         </div>
                         <button type="button" class="btn btn-success mx-4" onclick="addOneMore()">Add one more +</button>
                         <div class="card-footer">
-                            <button type="button" class="btn btn-success" onclick="previous()">Previous</button>
                             <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
 
                         </div>
@@ -241,7 +219,7 @@
 
     <?php include __DIR__ . "/../../layouts/footer.php"; ?>
     <?php include __DIR__ . "/../../layouts/scripts.php"; ?>
-    <script src="<?= assets("/assets/plugins/bs-stepper/js/bs-stepper.min.js") ?>"></script>
+    <script src="<?= assets("/assets/plugins//js/.min.js") ?>"></script>
     <script>
         $("[type='submit']").on("click", function() {
             $('#MainForm').submit();
@@ -249,7 +227,7 @@
 
         var stepper;
         document.addEventListener('DOMContentLoaded', function() {
-            stepper = new Stepper(document.querySelector('.bs-stepper'))
+            stepper = new Stepper(document.querySelector('.'))
         })
 
         function next() {
@@ -271,7 +249,8 @@
 
     <script>
         let directorsCount = 0;
-        console.log('here');
+        $('#directorsCard').fadeOut(0);
+
         var langs = <?= json_encode($languages); ?>;
         langs = langs.map(l => l.Language_ID);
 

@@ -9,11 +9,13 @@ use App\Controllers\RoutesController;
 use App\Controllers\AgendaController;
 use App\Controllers\AgendaDetailsController;
 use App\Controllers\DirectorController;
+use App\Controllers\SystemConstantController;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\RoleMiddleware;
 use LIB\Router\Router;
-use LIB\Request\Request;
 
 $router = new Router();
+
 
 $router->get('/', function () {redirect(Router::HOME);});
 $router->get('/admin', function () {redirect(Router::HOME);});
@@ -23,8 +25,7 @@ $router->get('/admin/login', [AuthController::class, 'login']);
 $router->get('/admin/dashboard', [DashboardController::class, 'index'], new AuthMiddleware('uname'));
 $router->get('/admin/admin-tools', [RoutesController::class, 'adminTools'], new AuthMiddleware('uname'));
 $router->get('/admin/manage-company', [RoutesController::class, 'manageCompany'], new AuthMiddleware('uname'));
-$router->get('/admin/meeting-constants', [RoutesController::class, 'meetingConstants'], new AuthMiddleware('uname'));
-$router->get('/admin/system-constants', [RoutesController::class, 'systemConstants'], new AuthMiddleware('uname'));
+$router->get('/admin/system-constants', [RoutesController::class, 'systemConstants'], new AuthMiddleware('uname'),new RoleMiddleware('sper-admin'));
 $router->get('/admin/agendas/view', [RoutesController::class, 'agendas'], new AuthMiddleware('uname'));
 
 /* Company */
@@ -32,12 +33,22 @@ $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMid
 $router->put('/admin/company', [CompanyController::class, 'update'], new AuthMiddleware('uname'));
 
 
+/* System Constants */
+$router->get('/admin/system-constants/string', [SystemConstantController::class, 'getString'], new AuthMiddleware('uname'));
+$router->put('/admin/system-constants/string', [SystemConstantController::class, 'updateString'], new AuthMiddleware('uname'));
+
+$router->get('/admin/system-constants/date', [SystemConstantController::class, 'getDate'], new AuthMiddleware('uname'));
+$router->put('/admin/system-constants/date', [SystemConstantController::class, 'updateDate'], new AuthMiddleware('uname'));
+
+$router->get('/admin/system-constants/bool', [SystemConstantController::class, 'getBool'], new AuthMiddleware('uname'));
+$router->put('/admin/system-constants/bool', [SystemConstantController::class, 'updateBool'], new AuthMiddleware('uname'));
+
+$router->get('/admin/system-constants/number', [SystemConstantController::class, 'getNumber'], new AuthMiddleware('uname'));
+$router->put('/admin/system-constants/number', [SystemConstantController::class, 'updateNumber'], new AuthMiddleware('uname'));
 /* Constants */
 $router->get('/admin/constants/meeting', [ConstantController::class, 'meetingIndex'], new AuthMiddleware('uname'));
 $router->put('/admin/constants/meeting', [ConstantController::class, 'meetingUpdate'], new AuthMiddleware('uname'));
 
-$router->get('/admin/constants/system', [ConstantController::class, 'systemIndex'], new AuthMiddleware('uname'));
-$router->put('/admin/constants/system', [ConstantController::class, 'systemUpdate'], new AuthMiddleware('uname'));
 
 $router->get('/admin/constants/date', [ConstantController::class, 'dateConstants'], new AuthMiddleware('uname'));
 $router->put('/admin/constants/date', [ConstantController::class, 'dateUpdate'], new AuthMiddleware('uname'));
@@ -50,6 +61,7 @@ $router->put('/admin/constants/int', [ConstantController::class, 'intUpdate'], n
 /* Agendas */
 $router->get('/admin/agendas', [AgendaController::class, 'index'], new AuthMiddleware('uname'));
 $router->get('/admin/agendas/create', [RoutesController::class, 'createAgenda'], new AuthMiddleware('uname'));
+$router->get('/admin/agendas/create2', [RoutesController::class, 'createAgenda2'], new AuthMiddleware('uname'));
 $router->post('/admin/agendas', [AgendaController::class, 'store'], new AuthMiddleware('uname'));
 $router->put('/admin/agendas', [AgendaController::class, 'update'], new AuthMiddleware('uname'));
 $router->delete('/admin/agendas', [AgendaController::class, 'truncate'], new AuthMiddleware('uname'));

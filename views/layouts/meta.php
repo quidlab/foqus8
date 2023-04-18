@@ -14,7 +14,7 @@
    <!-- Toastr -->
    <link rel="stylesheet" href=<?= assets('/assets/plugins/toastr/toastr.min.css') ?> />
   <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="<?= assets('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') ?>">
+  <link rel="stylesheet" href="<?= assets('/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') ?>">
   <!-- iCheck -->
   <link rel="stylesheet" href="<?= assets('/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
   <!-- JQVMap -->
@@ -39,4 +39,9 @@
 <!-- 	<script src="https://kit.fontawesome.com/4d2395bd18.js" crossorigin="anonymous"></script>-->
 
 	<style> .hideoverflow {overflow: hidden;} </style>
+  <style>
+    .w-full{
+      width: 100%;
+    }
+  </style>
 </head>

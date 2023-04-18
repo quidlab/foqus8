@@ -7,7 +7,7 @@ abstract class Model{
     protected $columns;
     
 
-    public static function get($columns = ['*']){
+    public function get($columns = ['*']){
         
     }
     
