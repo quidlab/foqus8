@@ -8,6 +8,7 @@
         "phpoffice/phpspreadsheet": "1.25.0.0",
         "firebase/php-jwt": "6.3.0.0",
         "mpdf/mpdf": "8.1.5.0",
-        "monolog/monolog": "^3.3"
+        "monolog/monolog": "^3.3",
+        "microsoft/azure-storage-blob": "*"
     }
 }

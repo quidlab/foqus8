@@ -10,6 +10,7 @@ require __DIR__.'/../vendor/autoload.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/Globals/database.php';
 require_once __DIR__ . '/../lib/local/local.php';
+require_once __DIR__ . '/../lib/AzureBlobStorageHandler.php';
 
 /* Starting The app */
 require_once __DIR__ . '/../lib/app.php';
