@@ -55,7 +55,6 @@ class AgendaController extends Controller
 
             $params = array($_POST['Sort_ID'], $_POST['AGENDA_ID'], $_POST['Special_Formula'], $_POST['Voting_Required'], $_POST['Reverse_Vote'], $_POST['Approval_Percent'], $_POST['NumberOfDirectorsToEleect'], $_POST['Voting_Started'], $_POST['Percent_Based_On_FullShares']);
             $pk = $this->DB->InsertAndGetPK($sql, $params);
-            print_r($this->storeAgendaTexts($pk));
             $agendaTextsResults = $this->storeAgendaTexts($pk);
 
             $directorsResults = [1];
@@ -65,11 +64,12 @@ class AgendaController extends Controller
             return $directorsResults;
             return ((count(array_intersect([1], $agendaTextsResults)) === count($agendaTextsResults)) && (count(array_intersect([1], $directorsResults)) === count($directorsResults)));
         });
-
-
+        
         if ($result) {
+            logger()->info("Created new agenda.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return $request->back()->withMessage('Created');
         } else {
+            logger()->info("Faild to create agenda.  User_ID: ".session()->get('uname')." IP ADDRESS: " .app()->getUserIP(). " Time:" .date('Y-m-d H:i:s'));
             return $request->back()->withMessage('Something went wrong');
         }
     }
@@ -116,13 +116,13 @@ class AgendaController extends Controller
 
 
         if (/* $results1 && $results2 && $results3 */true) { // TODO same problem for Run method rerturn value (affected rows count)
+            logger()->info("Deleted agenda.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 1,
                 'message' => 'Deleted'
             ]);
         } else {
-
-
+            logger()->info("Faild to delete agenda.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 0,
                 'message' => 'Something went wrong'
@@ -139,7 +139,7 @@ class AgendaController extends Controller
         $results = [];
         foreach ($this->agendaTextFormatter() as $key => $value) {
             $sql = "INSERT INTO Agendas_Text (AGENDAID,Agenda_Name,Agenda_Info,Language,Approve_Text,DisApprove_Text,Abstain_Text,NoVote_Text,VoidText) VALUES (?,?,?,?,?,?,?,?,?)";
-            $results[] = $this->DB->Run($sql, [
+            $result = $this->DB->Run($sql, [
                 $agendaID,
                 $value[0],
                 $value[1],
@@ -150,6 +150,8 @@ class AgendaController extends Controller
                 $value[6],
                 $value[7]
             ]);
+
+            $results[] = $result;
         }
         return $results;
     }
@@ -187,14 +189,13 @@ class AgendaController extends Controller
         foreach ($_POST as $key => $value) {
             if (strstr($key, "director")) {
                 $index =  substr($key, 9, 1);
-                if (explode('-',$key)[2] == 'id') {
+                if (explode('-', $key)[2] == 'id') {
                     $id = $value;
                 }
-                if (explode('-',$key)[2] == 'name') {
-                    $directors[explode('-',$key)[1]]['id'] = $id;
-                    $directors[explode('-',$key)[1]][explode('-',$key)[3]] = $value;
+                if (explode('-', $key)[2] == 'name') {
+                    $directors[explode('-', $key)[1]]['id'] = $id;
+                    $directors[explode('-', $key)[1]][explode('-', $key)[3]] = $value;
                 }
-            
             }
         }
         $out = [];
@@ -211,7 +212,6 @@ class AgendaController extends Controller
                 }
             }
             $inx2++;
-
         }
         return $out;
     }

@@ -17,7 +17,7 @@ class AuthController extends Controller
 
         $sql = "select Language_Name, Language_ID, Flag_ID from Languages where Active=?";
         $params = array('1');
-        $languages = $FoQusdatabase->Select($sql, $params);
+        $languages = $FoQusdatabase->Select($sql, $params)??[];
         $languagesHTML = '';
         foreach ($languages as $language) {
             $languagesHTML .= '<a href="?lang=' . $language['Language_ID'] . '" class="dropdown-item">';
@@ -51,13 +51,16 @@ class AuthController extends Controller
                 if (password_verify($input, $hash)) {
                     $_SESSION['uname'] = $getUser[0]['USER_ID'];
                     $_SESSION['ROLE_ID'] = $getUser[0]['Role_ID'];
+                    logger()->info('User logged in successfully.  IP: '.app()->getUserIP() .' time:'.date('Y-m-d H:i:s'));
                     redirect(Router::HOME);
                 } else {
-                    $request->back()->withMessage('Wrong Password');
+                    logger()->info('User Faild to login.  IP: '.app()->getUserIP() .' time:'.date('Y-m-d H:i:s'));
+                    $request->back()->withMessage('Username OR Password not correct');
                 }
             }
         } else {
-            $request->back()->withMessage('Username not correct');
+            logger()->info('User Faild to login. User_ID:'.$getUser[0]['USER_ID'].' IP: '.app()->getUserIP() .' time:'.date('Y-m-d H:i:s'));
+            $request->back()->withMessage('Username OR Password not correct');
         }
     }
 

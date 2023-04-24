@@ -11,7 +11,7 @@ class ConstantController extends Controller
 
     public function meetingIndex()
     {
-        $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='Meeting' ORDER BY ID ";
+        $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='Meeting' AND Options is NULL ORDER BY ID ";
         $params = array();
         $results = $this->DB->Select($sql, $params);
         foreach ($results as $row) {
@@ -19,12 +19,13 @@ class ConstantController extends Controller
                 'ID'    => $row['ID'],
                 'Constant_Name'  => $row['Constant_Name'],
                 'Constant_Value'   => $row['Constant_Value'],
-                'Description'    => $row['Description']
+                'Description'    => $row['Description'],
+                'Options' => $row['Options']?json_decode($row['Options']):null
 
             );
         }
 
-        return response()->json($results, 200);
+        return response()->json($output, 200);
     }
 
 
@@ -185,5 +186,26 @@ class ConstantController extends Controller
                 'message' => 'Some thing went wrong'
             ]);
         }
+    }
+
+    /* 
+    
+    */
+
+    public function getSelect(){
+        $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='Meeting' AND Options is Not NULL ORDER BY ID ";
+        $results = $this->DB->Select($sql, []);
+        foreach ($results as $row) {
+            $output[] = array(
+                'ID'    => $row['ID'],
+                'Constant_Name'  => $row['Constant_Name'],
+                'Constant_Value'   => $row['Constant_Value'],
+                'Description'    => $row['Description'],
+                'Options' => $row['Options']
+
+            );
+        }
+        // print_r($output);die;
+        return response()->json($output, 200);
     }
 }

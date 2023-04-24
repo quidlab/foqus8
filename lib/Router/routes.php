@@ -11,6 +11,7 @@ use App\Controllers\AgendaDetailsController;
 use App\Controllers\DirectorController;
 use App\Controllers\SystemConstantController;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\GuestMiddleware;
 use App\Middleware\RoleMiddleware;
 use LIB\Router\Router;
 
@@ -21,12 +22,13 @@ $router->get('/', function () {redirect(Router::HOME);});
 $router->get('/admin', function () {redirect(Router::HOME);});
 
 
-$router->get('/admin/login', [AuthController::class, 'login']);
+$router->get('/admin/login', [AuthController::class, 'login'],new GuestMiddleware('uname'));
 $router->get('/admin/dashboard', [DashboardController::class, 'index'], new AuthMiddleware('uname'));
 $router->get('/admin/admin-tools', [RoutesController::class, 'adminTools'], new AuthMiddleware('uname'));
 $router->get('/admin/manage-company', [RoutesController::class, 'manageCompany'], new AuthMiddleware('uname'));
 $router->get('/admin/system-constants', [RoutesController::class, 'systemConstants'], new AuthMiddleware('uname'),new RoleMiddleware('sper-admin'));
 $router->get('/admin/agendas/view', [RoutesController::class, 'agendas'], new AuthMiddleware('uname'));
+$router->get('/admin/translations', [RoutesController::class, 'translations'], new AuthMiddleware('uname'));
 
 /* Company */
 $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMiddleware('uname'));
@@ -45,9 +47,13 @@ $router->put('/admin/system-constants/bool', [SystemConstantController::class, '
 
 $router->get('/admin/system-constants/number', [SystemConstantController::class, 'getNumber'], new AuthMiddleware('uname'));
 $router->put('/admin/system-constants/number', [SystemConstantController::class, 'updateNumber'], new AuthMiddleware('uname'));
+
+$router->get('/admin/system-constants/select', [SystemConstantController::class, 'getSelect'], new AuthMiddleware('uname'));
+
 /* Constants */
 $router->get('/admin/constants/meeting', [ConstantController::class, 'meetingIndex'], new AuthMiddleware('uname'));
 $router->put('/admin/constants/meeting', [ConstantController::class, 'meetingUpdate'], new AuthMiddleware('uname'));
+$router->get('/admin/constants/select', [ConstantController::class, 'getSelect'], new AuthMiddleware('uname'));
 
 
 $router->get('/admin/constants/date', [ConstantController::class, 'dateConstants'], new AuthMiddleware('uname'));
@@ -82,4 +88,5 @@ $router->post('/database/truncate', [DatabaseController::class, 'truncate'], new
 $router->post('/admin/login', [AuthController::class, 'auth']);
 $router->post('/admin/logout', [AuthController::class, 'logout']);
 
+require_once 'api.php';
 $router->run();

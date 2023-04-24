@@ -36,7 +36,6 @@
 	<!-- <link rel="stylesheet" href="../agm/css/file.css"> TODO  -->
 	
 	
-<!-- 	<script src="https://kit.fontawesome.com/4d2395bd18.js" crossorigin="anonymous"></script>-->
 
 	<style> .hideoverflow {overflow: hidden;} </style>
   <style>

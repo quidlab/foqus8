@@ -87,6 +87,15 @@
                   </li>
                 </ul>
               </li>
+              <!-- translations -->
+              <li class="nav-item">
+                <a href="/admin/translations" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('translations') ?>
+                  </p>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- /.sidebar-menu -->

@@ -127,15 +127,13 @@
                         </div>
                         <div class="card-body">
                             <div id="agendaTextBody">
-                                <table style="table-layout: fixed; " class="w-full">
+                                <table class="w-full">
                                     <thead>
                                         <tr>
                                             <th>Language</th>
                                             <th>Agenda Name</th>
                                             <th>Agenda Info</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -143,11 +141,10 @@
                                         foreach ($languages as $key => $value) {
                                             echo '<tr>
                                                 <td>' .'<i class="flag-icon flag-icon-' . $value['Flag_ID'] . ' mr-2"></i>'  . $value['Language_Name'] . '</td>
-                                                <td> <textarea required name="agenda_text-' . $key + 1 . '-name-' . $value['Language_ID'] . '" placeholder="Name in ' . $value['Language_Name'] . '"> </textarea> </td>
-                                                <td> <textarea  required name="agenda_text-' . $key + 1 . '-info-' . $value['Language_ID'] . '" placeholder="Info in ' . $value['Language_Name'] . '" > </textarea> </td>
-                                                <td> <input type="hidden"  required name="agenda_text-' . $key + 1 . '-lang-' . $value['Language_ID'] . '" value="'.$value['Language_ID'].'" /> </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td> <textarea  class="w-full" required name="agenda_text-' . $key + 1 . '-name-' . $value['Language_ID'] . '" placeholder="Name in ' . $value['Language_Name'] . '"> </textarea> </td>
+                                                <td> <textarea   class="w-full" required name="agenda_text-' . $key + 1 . '-info-' . $value['Language_ID'] . '" placeholder="Info in ' . $value['Language_Name'] . '" > </textarea> </td>
+                                                <td style="display:none"> <input type="hidden"  required name="agenda_text-' . $key + 1 . '-lang-' . $value['Language_ID'] . '" value="'.$value['Language_ID'].'" /> </td>
+  
                                                 </tr>';
                                         }
                                         ?>
@@ -271,7 +268,6 @@
 
     <script>
         let directorsCount = 0;
-        console.log('here');
         var langs = <?= json_encode($languages); ?>;
         langs = langs.map(l => l.Language_ID);
 

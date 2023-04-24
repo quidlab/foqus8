@@ -29,6 +29,7 @@
 <script src="https://kit.fontawesome.com/4d2395bd18.js" crossorigin="anonymous"></script>
 
 <script src="<?= assets('/assets/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
+<script src="<?= assets('/assets/plugins/daterangepicker/daterangepicker.js') ?>"></script>
 
 <script>
   function changeLanguage(lang) {
