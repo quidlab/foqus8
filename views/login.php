@@ -23,11 +23,6 @@ include "layouts/meta.php";
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-                <?
-                    foreach (errors() as $error) {
-                        echo '<span class="text-red" >'.$error.'</span>';
-                    }
-                ?>
                 <form action="/admin/login" method="post">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="User Name" required="required" name="loginID">
@@ -80,8 +75,16 @@ include "layouts/meta.php";
         <div class="col-12 text-center">
             <p>©<?php echo date('Y'); ?> <? echo getenv("REGION_NAME");  ?></p>
         </div>
-        <div class="col-12 text-center"><a style="color:black;" href="https://quidlab.com/img/Privacy_policy.pdf" target="blank">นโยบายความเป็นส่วนตัว นโยบายการคุ้มครองข้อมูลและเงื่อนไขการใช้งานของระบบ <br>Quidlab Privacy Policy, Data Protection Policy & Terms of use </a></div>
-        <div class="col-12 text-center"><a style="color:black;" href="https://quidlab.com/img/security_policy.pdf" target="blank">นโยบายความปลอดภัยของข้อมูล Quidlab <br>Quidlab Information Security Management Policy</a></div>
+        <div class="col-12 text-center">
+            <a style="color:black;" href="<?= MC_Privacy_Policy_URL ?>" target="blank">
+                <?= __('privacy-text')  ?>
+            </a>
+        </div>
+        <div class="col-12 text-center">
+            <a style="color:black;" href="<?= MC_Security_Policy_URL ?>" target="blank"><!-- TODo crete constants sigletone -->
+                <?= __('information-text') ?>
+            </a>
+        </div>
     </div>
     </div>
     <!-- Main Footer -->
@@ -120,6 +123,14 @@ include "layouts/meta.php";
             if (match) return match[2];
         }
     </script>
+    <?
+    foreach (errors() as $error) {
+        echo
+        '<script>
+            ShowError("' . $error . '");
+        </script>';
+    }
+    ?>
 </body>
 
 </html>

@@ -13,18 +13,18 @@ class SystemConstantController extends Controller
 
     public function getString()
     {
-        $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='System' ORDER BY ID ";
+        $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='System' AND Options is NULL ORDER BY ID ";
         $results = $this->DB->Select($sql, []);
         foreach ($results as $row) {
             $output[] = array(
                 'ID'    => $row['ID'],
                 'Constant_Name'  => $row['Constant_Name'],
                 'Constant_Value'   => $row['Constant_Value'],
-                'Description'    => $row['Description']
+                'Description'    => $row['Description'],
+                "Options" => $row['Options']
 
             );
         }
-
         return response()->json($output, 200);
     }
 
@@ -167,5 +167,25 @@ class SystemConstantController extends Controller
                 'status' => 0,
             ]);
         }
+    }
+
+    /* 
+    
+    */
+    public function getSelect(){
+        $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='System' AND Options is Not NULL ORDER BY ID ";
+        $results = $this->DB->Select($sql, []);
+        foreach ($results as $row) {
+            $output[] = array(
+                'ID'    => $row['ID'],
+                'Constant_Name'  => $row['Constant_Name'],
+                'Constant_Value'   => $row['Constant_Value'],
+                'Description'    => $row['Description'],
+                'Options' => $row['Options']
+
+            );
+        }
+        // print_r($output);die;
+        return response()->json($output, 200);
     }
 }

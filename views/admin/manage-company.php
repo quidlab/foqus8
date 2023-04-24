@@ -14,6 +14,9 @@
 
         <p class="mt-4 mb-2 text-bold">String Constants</p>
         <div id="StrGrid"></div>
+
+        <p class="mt-4 mb-2 text-bold">Select Constants</p>
+        <div id="SelectGrid"></div>
     </div>
 </section>
 <!-- /.content -->
@@ -140,6 +143,9 @@
     });
 </script>
 
+
+
+
 <script>
     $(function() {
 
@@ -152,97 +158,125 @@
             }, */
 
             itemTemplate: function(value) {
-                return moment(value).locale('en').format('YYYY-MM-DD HH:mm:ss');
+                if (value === null) {
+                    return '';
+                } else {
+                    return value;
+                    /* formatedvalue=moment(value).format("YYYY-MM-DDThh:mm");
+                    this._editPicker = $('<input type="datetime-local"  value=' + formatedvalue+'>');
+                    return this._editPicker; */
 
+                }
             },
 
-
+            insertTemplate: function(value) {
+                this._insertPicker = $('<input type="datetime-local">')
+                return this._insertPicker;
+            },
 
             editTemplate: function(value) {
-                return moment(value).locale('en').format('YYYY-MM-DD HH:mm:ss');
+                formatedvalue = moment(value).format("YYYY-MM-DDThh:mm");
+                this._editPicker = $('<input type="datetime-local" value=' + formatedvalue + '>');
+                return this._editPicker;
+            },
+
+            insertValue: function() {
+                var insertValue = moment(this._editPicker.val()).format("YYYY-MM-DDThh:mm:ss");
+                if (typeof insertDate !== 'undefined' && insertDate !== null) {
+                    return insertDate.format('L LTS');
+                } else {
+                    return null;
+                }
+            },
+
+            editValue: function() {
+
+                var editValue = moment(this._editPicker.val()).format("YYYY-MM-DDThh:mm:ss");
+                //var editValue= moment(this._editPicker.value).format('L LTS');
+                console.log(editValue); // always returns current date and time
+                if (typeof editValue !== 'undefined' && editValue !== null) {
+                    return editValue;
+                } else {
+                    return null;
+                }
             },
 
         });
         jsGrid.fields.FoQusDateTimeField = FoQusDateTimeField;
 
-
-    });
-</script>
-
-
-<script>
-    $("#DatesGrid").jsGrid({
-        width: "100%",
-        height: "auto",
-        editing: true,
-        deleting: false,
-        sorting: false,
-        paging: true,
-        autoload: true,
-        pageSize: 10,
-        pageButtonCount: 5,
-        deleteConfirm: "Do you really want to delete data?",
-        filtering: false,
-        controller: {
-            loadData: function(filter) {
-                return $.ajax({
-                    type: "GET",
-                    url: "/admin/constants/date",
-                    data: filter
-                });
+        $("#DatesGrid").jsGrid({
+            width: "100%",
+            height: "auto",
+            editing: true,
+            deleting: false,
+            sorting: false,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+            deleteConfirm: "Do you really want to delete data?",
+            filtering: false,
+            controller: {
+                loadData: function(filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/admin/constants/date",
+                        data: filter
+                    });
+                },
+                updateItem: function(item) {
+                    return $.ajax({
+                        type: "PUT",
+                        url: "/admin/constants/date",
+                        data: item
+                    }).then(res => {
+                        res.status ? toastr.success(res.message) : toastr.error(res.message);
+                    });
+                },
             },
-            updateItem: function(item) {
-                return $.ajax({
-                    type: "PUT",
-                    url: "/admin/constants/date",
-                    data: item
-                }).then(res => {
-                    res.status?toastr.success(res.message):toastr.error(res.message);
-                });
-            },
-        },
 
-        fields: [
+            fields: [
 
-            {
-                name: "ID",
-                type: "text",
-                editing: false,
-                visible: false,
-                width: 10
-            },
-            {
-                name: "Constant_Name",
-                title: "Constant Name",
-                type: "text",
-                editing: false,
-                width: 100,
-                validate: "required"
-            },
-            {
-                name: "Constant_Value",
-                title: "Constant Value",
-                type: "text",
-                css: "hideoverflow",
-                width: 200,
-                validate: "required"
-            },
-            {
-                name: "Description",
-                title: "Description",
-                type: "text",
-                width: 200,
-                editing: false,
+                {
+                    name: "ID",
+                    type: "text",
+                    editing: false,
+                    visible: false,
+                    width: 10
+                },
+                {
+                    name: "Constant_Name",
+                    title: "Constant Name",
+                    type: "text",
+                    editing: false,
+                    width: 100,
+                    validate: "required"
+                },
+                {
+                    name: "Constant_Value",
+                    title: "Constant Value",
+                    type: "FoQusDateTimeField",
+                    css: "hideoverflow",
+                    width: 200,
+                    validate: "required"
+                },
+                {
+                    name: "Description",
+                    title: "Description",
+                    type: "text",
+                    width: 200,
+                    editing: false,
 
-            },
-            {
-                type: "control",
-                editButton: true, // show edit button
-                deleteButton: false, // show delete button
+                },
+                {
+                    type: "control",
+                    editButton: true, // show edit button
+                    deleteButton: false, // show delete button
 
-            }
-        ]
+                }
+            ]
 
+        });
     });
 </script>
 
@@ -275,7 +309,7 @@
                     url: "/admin/constants/bool",
                     data: item
                 }).then(res => {
-                    res.status?toastr.success(res.message):toastr.error(res.message);
+                    res.status ? toastr.success(res.message) : toastr.error(res.message);
                 });
             },
         },
@@ -386,7 +420,7 @@
                     url: "/admin/constants/int",
                     data: item
                 }).then(res => {
-                    res.status?toastr.success(res.message):toastr.error(res.message);
+                    res.status ? toastr.success(res.message) : toastr.error(res.message);
                 });
             },
         },
@@ -415,7 +449,7 @@
                 css: "hideoverflow",
                 valueType: "number", // the data type of the value
                 visible: true,
-                type:'number'
+                type: 'number'
             },
             {
                 name: "Description",
@@ -435,11 +469,111 @@
     });
 </script>
 
+<!--  SELECT Constants -->
+<script>
+    $("#SelectGrid").jsGrid({
+        width: "100%",
+        editing: true,
+        deleting: false,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        deleteConfirm: "Do you really want to delete data?",
+        filtering: false,
+        controller: {
+            loadData: function(filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: "/admin/constants/select",
+                    data: filter
+                });
+            },
+            updateItem: function(item) {
+
+                return $.ajax({
+                    type: "PUT",
+                    url: "/admin/constants/meeting",
+                    data: item
+                }).then(res => {
+                    if (res.status) {
+                        toastr.success(res.message)
+                    } else {
+                        toastr.error(res.message)
+                    }
+                });
+            }
+
+        },
+
+        fields: [
+
+            {
+                name: "ID",
+                type: "text",
+                editing: false,
+                visible: false,
+                width: 10
+            },
+            {
+                name: "Constant_Name",
+                title: "Constant Name",
+                type: "text",
+                editing: false,
+                width: 200,
+
+                validate: "required"
+            },
+            {
+                name: "Constant_Value",
+                title: "Constant Value",
+                css: "hideoverflow",
+                type: "select",
+                editTemplate: function(value, row) {
+                    let options = '';
+                    this.items = JSON.parse(row.Options);
+
+                    JSON.parse(row.Options).forEach(element => {
+                        options += `<option ${element.value == value  ? 'selected':''}  value="${element.value}">${element.name}</option>`;
+                    });
+                    this.$select =$(`<select>${options}</select>`);
+                    return this.$select;
+                },
+                itemTemplate: function(value, row) {
+
+                    return JSON.parse(row.Options).find((op) => op.value == value)?.name;
+                },
+                editValue: function() {
+                    return this.$select.val();
+                },
+
+                width: 100,
+                validate: "required",
+                items: []
+            },
+            {
+                name: "Description",
+                title: "Description",
+                type: "text",
+                width: 200,
+                editing: false,
+
+            },
+            {
+                type: "control",
+                editButton: true, // show edit button
+                deleteButton: false, // show delete button
+
+            }
+        ]
+
+    });
+</script>
 <!--  Str Constants -->
 <script>
     $("#StrGrid").jsGrid({
         width: "100%",
-        height: "600px",
         editing: true,
         deleting: false,
         sorting: true,

@@ -20,7 +20,7 @@ class RoutesController extends Controller
         $company_name = $this->DB->Select($sql);
         return view('/admin/admin-tools', [
             'company_name' => $company_name,
-            'languages'=>$languages
+            'languages' => $languages
         ], '/admin/index');
     }
 
@@ -35,7 +35,7 @@ class RoutesController extends Controller
         $sql = "select Language_Name, Language_ID, Flag_ID from Languages where Active=?";
         $languages = $this->DB->Select($sql, ['1']);
 
-        return view('/admin/manage-company', ['company_name' => $company_name,'languages'=>$languages], '/admin/index');
+        return view('/admin/manage-company', ['company_name' => $company_name, 'languages' => $languages], '/admin/index');
     }
 
 
@@ -47,9 +47,7 @@ class RoutesController extends Controller
         $sql = "select Language_Name, Language_ID, Flag_ID from Languages where Active=?";
         $languages = $this->DB->Select($sql, ['1']);
 
-        return view('/admin/constants/system-constants', ['company_name' => $company_name,'languages'=>$languages], '/admin/index');
-
-
+        return view('/admin/constants/system-constants', ['company_name' => $company_name, 'languages' => $languages], '/admin/index');
     }
     public function agendas()
     {
@@ -59,7 +57,7 @@ class RoutesController extends Controller
         $sql = "select Language_Name, Language_ID, Flag_ID from Languages where Active=?";
         $languages = $this->DB->Select($sql, ['1']);
 
-        return view('/admin/agendas/agendas', ['company_name' => $company_name,'languages'=>$languages], '/admin/index');
+        return view('/admin/agendas/agendas', ['company_name' => $company_name, 'languages' => $languages], '/admin/index');
     }
 
 
@@ -73,8 +71,9 @@ class RoutesController extends Controller
 
         $sql = "select Language_Name, Language_ID, Flag_ID,Approve,DisApprove,Abstain,NoVote,Void from Languages where Active=?";
         $languages = $this->DB->Select($sql, ['1']);
-        return view('/admin/agendas/create', ['company_name' => $company_name,'languages'=>$languages], '/admin/index');
+        return view('/admin/agendas/create', ['company_name' => $company_name, 'languages' => $languages], '/admin/index');
     }
+
     public function createAgenda2()
     {
         $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . $this->app->local . "'";
@@ -82,6 +81,17 @@ class RoutesController extends Controller
 
         $sql = "select Language_Name, Language_ID, Flag_ID,Approve,DisApprove,Abstain,NoVote,Void from Languages where Active=?";
         $languages = $this->DB->Select($sql, ['1']);
-        return view('/admin/agendas/create2', ['company_name' => $company_name,'languages'=>$languages], '/admin/index');
+        return view('/admin/agendas/create2', ['company_name' => $company_name, 'languages' => $languages], '/admin/index');
+    }
+
+    public function translations()
+    {
+        $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . $this->app->local . "'";
+        $company_name = $this->DB->Select($sql);
+
+        $sql = "select Language_Name, Language_ID, Flag_ID,Approve,DisApprove,Abstain,NoVote,Void from Languages where Active=?";
+        $languages = $this->DB->Select($sql, ['1']);
+
+        return view('/admin/translations', ['company_name' => $company_name, 'languages' => $languages], '/admin/index');
     }
 }

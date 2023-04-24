@@ -29,11 +29,11 @@ class  Log
     {
         if (!isset(self::$instance)) {
             global $FoQusdatabase;
-            $SelectMeetingInfo = "SELECT Constant_Value + 'LOG_' as 'uploadfolder'  FROM [Meeting_Constants_Str] Where Constant_Name = 'SYMBOL'";
+            $SelectMeetingInfo = "SELECT Constant_Value  as 'uploadfolder'  FROM [Meeting_Constants_Str] Where Constant_Name = 'SYMBOL'";
             $FetchInfo = $FoQusdatabase->Select($SelectMeetingInfo)[0];
             $SYMBOLLog = $FetchInfo['uploadfolder'];
             $doc_root = $_SERVER["DOCUMENT_ROOT"];
-            $uploads_dir_Log = str_replace('"\"','/',$doc_root). '/../storage/logs/' . $SYMBOLLog . "/";
+            $uploads_dir_Log = str_replace('"\"','/',$doc_root). '/../storage/logs/' . $SYMBOLLog . "/".date('Y-m-d').'/';
     
 
             self::$instance = new Logger($name);
