@@ -22,10 +22,10 @@ include "layouts/meta.php";
                 <h1><b>FoQus </b>Admin</h1>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg"><?= __('sign-in-to-start-your-session') ?></p>
                 <form action="/admin/login" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="User Name" required="required" name="loginID">
+                        <input type="text" class="form-control" placeholder="<?= __('user-name') ?>" required="required" name="loginID">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -33,7 +33,7 @@ include "layouts/meta.php";
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" required="required" name="password">
+                        <input type="password" class="form-control" placeholder="<?= __('password') ?>" required="required" name="password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -58,7 +58,7 @@ include "layouts/meta.php";
 
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <button type="submit" name="submit" class="btn btn-primary btn-block"><?= __('sign-in') ?></button>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -76,12 +76,12 @@ include "layouts/meta.php";
             <p>©<?php echo date('Y'); ?> <? echo getenv("REGION_NAME");  ?></p>
         </div>
         <div class="col-12 text-center">
-            <a style="color:black;" href="<?= MC_Privacy_Policy_URL ?>" target="blank">
+            <a style="color:black;" href="<?= constant('MC_Privacy_Policy_URL') ?>" target="blank">
                 <?= __('privacy-text')  ?>
             </a>
         </div>
         <div class="col-12 text-center">
-            <a style="color:black;" href="<?= MC_Security_Policy_URL ?>" target="blank"><!-- TODo crete constants sigletone -->
+            <a style="color:black;" href="<?= constant('MC_Security_Policy_URL') ?>" target="blank"><!-- TODo crete constants sigletone -->
                 <?= __('information-text') ?>
             </a>
         </div>
@@ -127,7 +127,7 @@ include "layouts/meta.php";
     foreach (errors() as $error) {
         echo
         '<script>
-            ShowError("' . $error . '");
+            ShowError("' . __($error) . '");
         </script>';
     }
     ?>

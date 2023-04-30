@@ -21,7 +21,7 @@ class DatabaseController extends Controller
         
         if ($this->realTruncate()) { // realTruncate should be a method of DB Model(class)
             $status = true;
-            $message = "Test Data is removed successfully.";
+            $message = __('test-data-deleted-msg');
             $logger->Info('Test Data Deleted ', ['user' => $_SESSION['uname'], 'IP' => $ipaddress]);
         }
 
@@ -69,26 +69,6 @@ class DatabaseController extends Controller
         $query9 = "TRUNCATE TABLE registrationlog";
         $execute9 = $this->DB->Run($query9,[]);
 
-            /*        echo $execute;
-        echo '/';
-        echo $execute1;
-        echo '/';
-        echo $execute2;
-        echo '/';
-        echo $execute3;
-        echo '/';
-        echo $execute4;
-        echo '/';
-        echo $execute5;
-        echo '/';
-        echo $execute6;
-        echo '/';
-        echo $execute7;
-        echo '/';
-        echo $execute8;
-        echo '/';
-        echo $execute9;
-        echo '/'; */
 
         return true;
         return ($execute && $execute1 && $execute2 && $execute3 && $execute4 && $execute5 && $execute6 && $execute7 && $execute8 && $execute9);
