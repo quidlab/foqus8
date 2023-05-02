@@ -53,7 +53,12 @@ class RoutesController extends Controller
 
     public function translations()
     {
-
         return view('/admin/translations', [], '/admin/index');
+    }
+
+
+    public function users()
+    {
+        return view('/admin/users/index', [], '/admin/index');
     }
 }

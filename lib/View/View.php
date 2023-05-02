@@ -30,7 +30,7 @@ class View
             $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . app()->local . "'";
             $company_name = database()->Select($sql);
 
-            $sql = "select Language_Name, Language_ID, Flag_ID from Languages where Active=?";
+            $sql = "select * from Languages where Active=?";
             $languages = database()->Select($sql, ['1']);
 
             return ['company_name' => $company_name, 'languages' => $languages];

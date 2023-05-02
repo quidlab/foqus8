@@ -41,25 +41,25 @@ class AuthController extends Controller
         $request = new Request();
         $FoQusdatabase = $this->DB;
 
-        $sql = "SELECT * from Users where USER_ID=?  ";
+        $sql = "SELECT * from users where [user-id]=?  ";
         $params = array($_POST['loginID']);
         $getUser = $FoQusdatabase->Select($sql, $params);
         if ($getUser) {
-            $hash = $getUser[0]['Password'];
+            $hash = $getUser[0]['password'];
             $input = $_POST['password'];
             if (constant('MC_REQUIRE_PHONE_OTP') == false && constant('MC_REQUIRE_EMAIL_OTP') == false) { // TODO uncomment
                 if (password_verify($input, $hash)) {
-                    $_SESSION['uname'] = $getUser[0]['USER_ID'];
-                    $_SESSION['ROLE_ID'] = $getUser[0]['Role_ID'];
-                    logger()->info('User logged in successfully. User_ID:' . $getUser[0]['USER_ID'] . '  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
+                    $_SESSION['uname'] = $getUser[0]['user-id'];
+                    $_SESSION['ROLE_ID'] = $getUser[0]['role-id'];
+                    logger()->info('User logged in successfully. user-id:' . $getUser[0]['user-id'] . '  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
                     redirect(Router::HOME);
                 } else {
-                    logger()->info('User Faild to login. User_ID:' . $getUser[0]['USER_ID'] . '  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
+                    logger()->info('User Faild to login. user-id:' . $getUser[0]['user-id'] . '  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
                     $request->back()->withMessage('auth-faild');
                 }
             }
         } else {
-            logger()->info('User Faild to login. User_ID:' . $getUser[0]['USER_ID'] . ' IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
+            logger()->info('User Faild to login. user-id:' . $getUser[0]['user-id'] . ' IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
             $request->back()->withMessage('auth-faild');
         }
     }

@@ -89,6 +89,15 @@
               </li>
               <!-- translations -->
               <li class="nav-item">
+                <a href="/admin/users" class="nav-link">
+                  <i class="nav-icon fa-solid fa-users"></i>
+                  <p>
+                    <?= __('users') ?>
+                  </p>
+                </a>
+              </li>
+              <!-- translations -->
+              <li class="nav-item">
                 <a href="/admin/translations" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>

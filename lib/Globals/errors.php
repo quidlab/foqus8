@@ -1,13 +1,13 @@
 <?php
 
-function errors($name = null)
+function errors($name = null):string|array
 {
     if (!$name) {
-        $re = isset($_SESSION['messagesBag']) && count($_SESSION['messagesBag']) > 0 ? $_SESSION['messagesBag']: [];
+        $re = isset($_SESSION['errorsBag']) && count($_SESSION['errorsBag']) > 0 ? $_SESSION['errorsBag']: [];
+        unset($_SESSION['errorsBag']);
     }else{
-        $re = [];
+        $re = isset($_SESSION['errorsBag']) && isset($_SESSION['errorsBag'][$name]) ? $_SESSION['errorsBag'][$name] : '';
     }
-    unset($_SESSION['messagesBag']);
     return $re;
 
 }

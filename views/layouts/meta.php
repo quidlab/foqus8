@@ -51,5 +51,9 @@
     .jsgrid-nodata-row .jsgrid-cell {
       color: red;
     }
+
+    .cursor-pointer{
+      cursor: pointer;
+    }
   </style>
 </head>
