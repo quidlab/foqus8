@@ -1,19 +1,19 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <p class="mt-4 mb-2 text-bold">Date Constants</p>
+        <p class="mt-4 mb-2 text-bold"><?= __('date-constants') ?></p>
         <div id="DatesGrid"></div>
 
-        <p class="mt-4 mb-2 text-bold">Boolean Constants</p>
+        <p class="mt-4 mb-2 text-bold"><?= __('boolean-constants') ?></p>
         <div id="BooleanGrid"></div>
 
-        <p class="mt-4 mb-2 text-bold">Number Constants</p>
+        <p class="mt-4 mb-2 text-bold"><?= __('number-constants') ?></p>
         <div id="IntGrid"></div>
 
-        <p class="mt-4 mb-2 text-bold">String Constants</p>
+        <p class="mt-4 mb-2 text-bold"><?= __('string-constants') ?></p>
         <div id="StrGrid"></div>
 
-        <p class="mt-4 mb-2 text-bold">Select Constants</p>
+        <p class="mt-4 mb-2 text-bold"><?= __('select-constants') ?></p>
         <div id="SelectGrid"></div>
     </div>
 </section>
@@ -70,7 +70,7 @@
             },
             {
                 name: "Constant_Name",
-                title: "Constant Name",
+                title: <?="'".__('name')."'" ?>,
                 type: "text",
                 editing: false,
                 width: 200,
@@ -79,7 +79,7 @@
             },
             {
                 name: "Constant_Value",
-                title: "Constant Value",
+                title: <?="'".__('value')."'" ?>,
                 css: "hideoverflow",
                 type: "text",
                 width: 100,
@@ -87,7 +87,7 @@
             },
             {
                 name: "Description",
-                title: "Description",
+                title:  <?="'".__('description')."'" ?>,
                 type: "text",
                 width: 200,
                 editing: false,
@@ -204,7 +204,7 @@
                 },
                 {
                     name: "Constant_Name",
-                    title: "Constant Name",
+                    title:  <?="'".__('name')."'" ?>,
                     type: "text",
                     editing: false,
                     width: 100,
@@ -212,7 +212,7 @@
                 },
                 {
                     name: "Constant_Value",
-                    title: "Constant Value",
+                    title:  <?="'".__('value')."'" ?>,
                     type: "FoQusDateTimeField",
                     css: "hideoverflow",
                     width: 200,
@@ -220,7 +220,7 @@
                 },
                 {
                     name: "Description",
-                    title: "Description",
+                    title:   <?="'".__('description')."'" ?>,
                     type: "text",
                     width: 200,
                     editing: false,
@@ -283,7 +283,7 @@
             },
             {
                 name: "Constant_Name",
-                title: "Constant_Name",
+                title:  <?="'".__('name')."'" ?>,
                 type: "text",
                 editing: false,
                 width: 100,
@@ -292,7 +292,7 @@
             },
             {
                 name: "Constant_Value",
-                title: "Constant_Value",
+                title:  <?="'".__('value')."'" ?>,
                 css: "hideoverflow",
                 type: "select",
                 //////
@@ -333,7 +333,7 @@
             },
             {
                 name: "Description",
-                title: "Description",
+                title:   <?="'".__('description')."'" ?>,
                 type: "text",
                 editing: false,
 
@@ -394,7 +394,7 @@
             },
             {
                 name: "Constant_Name",
-                title: "Constant_Name",
+                title:  <?="'".__('name')."'" ?>,
                 type: "text",
                 editing: false,
                 width: 100,
@@ -403,7 +403,7 @@
             },
             {
                 name: "Constant_Value",
-                title: "Constant_Value",
+                title:  <?="'".__('value')."'" ?>,
                 css: "hideoverflow",
                 valueType: "number", // the data type of the value
                 visible: true,
@@ -411,7 +411,7 @@
             },
             {
                 name: "Description",
-                title: "Description",
+                title:   <?="'".__('description')."'" ?>,
                 type: "text",
                 editing: false,
 
@@ -476,7 +476,7 @@
             },
             {
                 name: "Constant_Name",
-                title: "Constant Name",
+                title:  <?="'".__('name')."'" ?>,
                 type: "text",
                 editing: false,
                 width: 200,
@@ -485,7 +485,7 @@
             },
             {
                 name: "Constant_Value",
-                title: "Constant Value",
+                title:  <?="'".__('value')."'" ?>,
                 css: "hideoverflow",
                 type: "select",
                 editTemplate: function(value, row) {
@@ -512,7 +512,7 @@
             },
             {
                 name: "Description",
-                title: "Description",
+                title:   <?="'".__('description')."'" ?>,
                 type: "text",
                 width: 200,
                 editing: false,

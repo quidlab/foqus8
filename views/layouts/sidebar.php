@@ -37,7 +37,7 @@
                 <a href="/admin/admin-tools" class="nav-link">
                   <i class="nav-icon fa-solid fa-user-gear"></i>
                   <p>
-                    Admin Tools
+                  <?= __('admin-tools') ?>
                   </p>
                 </a>
               </li>
@@ -45,7 +45,7 @@
                 <a href="/admin/manage-company" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
-                    Manage Company
+                  <?= __('manage-company') ?>
                   </p>
                 </a>
               </li>
@@ -53,7 +53,7 @@
                 <a href="/admin/system-constants" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
-                    System Constants
+                  <?= __('system-constants') ?>
                   </p>
                 </a>
               </li>
@@ -62,7 +62,7 @@
                 <a href="#" class="nav-link">
                   <i class="nav-icon fa-solid fa-list-check"></i>
                   <p>
-                    Maintain Agendas
+                    <?= __('maintain-agendas') ?>
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
@@ -70,22 +70,31 @@
                   <li class="nav-item">
                     <a href="/admin/agendas/view" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>List Agendas</p>
+                      <p><?= __('list-agendas') ?></p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="/admin/agendas/create" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Create Agenda</p>
+                      <p><?= __('create-agenda') ?></p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="/admin/agendas/create2" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Create Agenda 2</p>
+                      <p><?= __('create-agenda') ?> 2</p>
                     </a>
                   </li>
                 </ul>
+              </li>
+              <!-- translations -->
+              <li class="nav-item">
+                <a href="/admin/users" class="nav-link">
+                  <i class="nav-icon fa-solid fa-users"></i>
+                  <p>
+                    <?= __('users') ?>
+                  </p>
+                </a>
               </li>
               <!-- translations -->
               <li class="nav-item">

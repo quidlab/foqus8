@@ -29,6 +29,7 @@ $router->get('/admin/manage-company', [RoutesController::class, 'manageCompany']
 $router->get('/admin/system-constants', [RoutesController::class, 'systemConstants'], new AuthMiddleware('uname'),new RoleMiddleware('sper-admin'));
 $router->get('/admin/agendas/view', [RoutesController::class, 'agendas'], new AuthMiddleware('uname'));
 $router->get('/admin/translations', [RoutesController::class, 'translations'], new AuthMiddleware('uname'));
+$router->get('/admin/users', [RoutesController::class, 'users'], new AuthMiddleware('uname'));
 
 /* Company */
 $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMiddleware('uname'));
@@ -87,6 +88,10 @@ $router->delete('/admin/agenda-details', [AgendaDetailsController::class, 'trunc
 $router->post('/database/truncate', [DatabaseController::class, 'truncate'], new AuthMiddleware('uname'));
 $router->post('/admin/login', [AuthController::class, 'auth']);
 $router->post('/admin/logout', [AuthController::class, 'logout']);
+
+
+
+
 
 require_once 'api.php';
 $router->run();

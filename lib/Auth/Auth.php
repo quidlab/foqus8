@@ -11,10 +11,10 @@ class  Auth
     private function __construct()
     {
         if ($_SESSION['uname']) {
-            $data =  database()->Select("SELECT * from Users where USER_ID=?", [$_SESSION['uname']])[0];
+            $data =  database()->Select("SELECT * from users where [user-id]=?", [$_SESSION['uname']])[0];
             $user = new User();
             $user->role = "super-admin";
-            $user->role_id = $data['Role_ID'];
+            $user->role_id = $data['role-id'];
             $this->user = $user;
         }
     }

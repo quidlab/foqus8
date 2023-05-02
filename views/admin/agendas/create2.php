@@ -12,7 +12,7 @@
                 <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
                     <div class="card card-primary mx-4">
                         <div class="card-header">
-                            <h3 class="card-title">Create New Agenda</h3>
+                            <h3 class="card-title"><?= __('create-new-agenda') ?></h3>
                         </div>
 
                         <div class="card-body">

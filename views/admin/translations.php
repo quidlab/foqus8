@@ -1,3 +1,8 @@
+<section class="mb-2">
+    <label class="d-block" for=""><?= __('filter-by-module') ?></label>
+    <input type="text" id="moduleFilter" placeholder="EX: global,dashboard-page" />
+    <button id="searchBtn"><?= __('search') ?></button>
+</section>
 <table id="TranslationGrid"></table>
 
 
@@ -5,17 +10,27 @@
 <?php include __DIR__ . "/../layouts/scripts.php"; ?>
 
 
-<!--  SELECT Constants -->
+<!-- Filters -->
+<script>
+    var MODULE_FILTER_VALUE = '';
+    $('#searchBtn').on("click", function() {
+        MODULE_FILTER_VALUE = $('#moduleFilter').val();
+        $("#TranslationGrid").jsGrid("option", "data", []);
+        $("#TranslationGrid").jsGrid("loadData");
+    });
+</script>
+
+
 <script>
     $("#TranslationGrid").jsGrid({
         width: "100%",
-        editing: false,
-        inserting: true,
-        deleting: true,
+        editing: true,
+        inserting: false,
+        deleting: false,
         sorting: true,
         paging: true,
         autoload: true,
-        pageSize: 10,
+        pageSize: 20,
         pageButtonCount: 5,
         deleteConfirm: "Do you really want to delete data?",
         filtering: false,
@@ -23,11 +38,11 @@
             loadData: function(filter) {
                 return $.ajax({
                     type: "GET",
-                    url: "/api/admin/translations",
+                    url: "/api/admin/translations?module="+MODULE_FILTER_VALUE,
                     data: filter
                 });
             },
-/*             updateItem: function(item) {
+            updateItem: function(item) {
 
                 return $.ajax({
                     type: "PUT",
@@ -40,7 +55,7 @@
                         toastr.error(res.message)
                     }
                 });
-            }, */
+            },
             insertItem: function(item) {
                 return $.ajax({
                     type: "POST",
@@ -71,6 +86,7 @@
 
         fields: [{
                 name: "Key",
+                title: <?= "'" . __('key') . "'" ?>,
                 type: "text",
                 editing: false,
             },
@@ -88,10 +104,16 @@
                 },
                 ';
             }
-            ?> {
+            ?>{
+                name: "Module",
+                title: <?= "'" . __('module') . "'" ?>,
+                type: "text",
+                editing: false,
+            },
+            {
                 type: "control",
-                editButton: false, // show edit button
-                deleteButton: true, // show delete button
+                editButton: true, // show edit button
+                deleteButton: false, // show delete button
             }
         ]
 

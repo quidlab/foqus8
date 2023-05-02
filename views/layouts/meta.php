@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -8,11 +9,11 @@
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href=<?= assets('/assets/plugins/fontawesome-free/css/all.min.css') ?> />
-   <!-- Toastr -->
-   <link rel="stylesheet" href=<?= assets('/assets/plugins/toastr/toastr.min.css') ?> />
+  <!-- Toastr -->
+  <link rel="stylesheet" href=<?= assets('/assets/plugins/toastr/toastr.min.css') ?> />
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="<?= assets('/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') ?>">
   <!-- iCheck -->
@@ -27,20 +28,32 @@
   <link rel="stylesheet" href=<?= assets("/assets/plugins/daterangepicker/daterangepicker.css") ?> />
   <!-- summernote -->
   <link rel="stylesheet" href=<?= assets("/assets/plugins/summernote/summernote-bs4.min.css") ?> />
-    <!-- flag-icon-css -->
+  <!-- flag-icon-css -->
   <link rel="stylesheet" href=<?= assets("/assets/plugins/flag-icon-css/css/flag-icon.min.css") ?> />
-       <!-- jsgrid-css -->
-	<link rel="stylesheet" href=<?=  assets("/assets/plugins/jsgrid/jsgrid.min.css") ?> />
-	<link rel="stylesheet" href=<?= assets("/assets/plugins/jsgrid/jsgrid-theme.min.css") ?> />
-	<link rel="stylesheet" href=<?= assets("/assets/plugins/bs-stepper/css/bs-stepper.min.css") ?> />
-	<!-- <link rel="stylesheet" href="../agm/css/file.css"> TODO  -->
-	
-	
+  <!-- jsgrid-css -->
+  <link rel="stylesheet" href=<?= assets("/assets/plugins/jsgrid/jsgrid.min.css") ?> />
+  <link rel="stylesheet" href=<?= assets("/assets/plugins/jsgrid/jsgrid-theme.min.css") ?> />
+  <link rel="stylesheet" href=<?= assets("/assets/plugins/bs-stepper/css/bs-stepper.min.css") ?> />
+  <!-- <link rel="stylesheet" href="../agm/css/file.css"> TODO  -->
 
-	<style> .hideoverflow {overflow: hidden;} </style>
+
+
   <style>
-    .w-full{
+    .hideoverflow {
+      overflow: hidden;
+    }
+  </style>
+  <style>
+    .w-full {
       width: 100%;
+    }
+
+    .jsgrid-nodata-row .jsgrid-cell {
+      color: red;
+    }
+
+    .cursor-pointer{
+      cursor: pointer;
     }
   </style>
 </head>
