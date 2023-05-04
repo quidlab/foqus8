@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use LIB\Request\Request;
 use LIB\Router\Router;
 
@@ -38,32 +39,16 @@ class AuthController extends Controller
 
     public function auth()
     {
-        $request = new Request();
-        $FoQusdatabase = $this->DB;
 
-        $sql = "SELECT * from users where [user-id]=?  ";
-        $params = array($_POST['loginID']);
-        $getUser = $FoQusdatabase->Select($sql, $params);
-        if ($getUser) {
-            $hash = $getUser[0]['password'];
-            $input = $_POST['password'];
-            if (constant('MC_REQUIRE_PHONE_OTP') == false && constant('MC_REQUIRE_EMAIL_OTP') == false) { // TODO uncomment
-                if (password_verify($input, $hash)) {
-                    $_SESSION['uname'] = $getUser[0]['user-id'];
-                    $_SESSION['ROLE_ID'] = $getUser[0]['role-id'];
-                    logger()->info('User logged in successfully. user-id:' . $getUser[0]['user-id'] . '  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
-                    redirect(Router::HOME);
-                } else {
-                    logger()->info('User Faild to login. user-id:' . $getUser[0]['user-id'] . '  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
-                    $request->back()->withMessage('auth-faild');
-                }
-            }
+        if ($user = User::attemptByUserId(request()->data()->loginID, request()->data()->password)) { // TODO => the password should match password complexity exists in Constants Table
+            logger()->info('User logged in successfully.' . ' | login-ID:' . request()->data()->loginID .  '|  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
+            redirect(Router::HOME);
+            /*if (constant('MC_REQUIRE_PHONE_OTP') == false && constant('MC_REQUIRE_EMAIL_OTP') == false) { // TODO uncomment} */
         } else {
-            logger()->info('User Faild to login. user-id:' . $getUser[0]['user-id'] . ' IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
-            $request->back()->withMessage('auth-faild');
+            logger()->info('User Faild to login.| login-ID:' . request()->data()->loginID . '|  IP: ' . app()->getUserIP() . '| time:' . date('Y-m-d H:i:s'));
+            return back()->withErrors(['email' => 'auth-faild']);
         }
     }
-
 
 
     public function logout()

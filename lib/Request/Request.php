@@ -1,8 +1,22 @@
 <?php
 namespace LIB\Request;
 
+use Lib\Traits\IPAddress;
+use Lib\Traits\URL;
 class Request{
 
+    use IPAddress,URL;
+
+    public function __construct()
+    {
+        
+    }
+
+
+
+    /* 
+    
+    */
     public function back($data = null){
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         return $this;
@@ -23,9 +37,17 @@ class Request{
         $_SESSION['successBag'][] = __($message);
     }
 
-    public function withErrors($message){
+    public function withErrors(array $errors){
         $_SESSION['errorsBag']= [];
-        $_SESSION['errorsBag'][] = __($message);
+        foreach ($errors as $key => $err) {
+            $_SESSION['errorsBag'][] = __($err);
+        }
     }
+
+
+
+    /* 
+    
+    */
 
 }

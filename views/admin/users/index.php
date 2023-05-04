@@ -1,7 +1,7 @@
-<? 
-    foreach (successes() as $key => $value) {
-        echo $value;
-    }
+<?
+foreach (successes() as $key => $value) {
+    echo $value;
+}
 ?>
 
 <div class="page">
@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?= __('user-id') ?></label>
-                                <input type="text" class="form-control" name="user-id" >
+                                <input type="text" class="form-control" name="user-id">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputPassword1"><?= __('user-name') ?></label>
@@ -40,11 +40,28 @@
                             </div>
                         </div>
                         <!-- row -->
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"><?= __('preferred-language') ?></label>
+                                <select name="preferred-language" class="form-control" id=" ">
+                                    <?
+                                    foreach ($languages as  $language) {
+                                        echo "<option value='" . $language['Language_ID'] . "'>" . $language['Language_Name'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for=""><?= __('mobile') ?></label>
+                                <input type="text" class="form-control" name="mobile" />
+                            </div>
+                        </div>
+                        <!-- row -->
                         <!-- row -->
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputPassword1"><?= __('role') ?></label>
-                                <select name="role-id"  class="form-control" >
+                                <select name="role-id" class="form-control">
                                     <option value="1">Admin</option>
                                     <option value="2">REGISTRATION STAFF</option>
                                     <option value="3">VOTE COUNTING STAFF</option>
@@ -59,7 +76,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary"><?= __('submit') ?></button>
                     </div>
                 </form>
             </div>
@@ -68,12 +85,18 @@
 
         </div>
     </div>
-    <div class="content">
-        <div class="content-fluid">
-            <p class="mt-4 mb-2 text-bold"><?= __('admin-users') ?></p>
+    <div class="card card-primary">
+        <div class="card-header">
+            <form action="/api/admin/users/import" method="post" class="float-right" enctype="multipart/form-data">
+                <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-users') ?> </button>
+                <input type="file" class=" " name="excel-file" id="" required>
+            </form>
+            <a download="" href="<?= assets('/assets/templates/users.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
+            <p class=" text-bold"><?= __('admin-users') ?></p>
+        </div>
+        <div class="card-body">
             <div id="AdminsGrid"></div>
         </div>
-
     </div>
 </div>
 
@@ -122,15 +145,15 @@
                     res.status ? toastr.success(res.message) : toastr.error(res.message);
                 });
             },
-            insertItem: function(item) {
-                return $.ajax({
-                    type: "POST",
-                    url: "/api/admin/users",
-                    data: item
-                }).then(res => {
-                    res.status ? toastr.success(res.message) : toastr.error(res.message);
-                });
-            },
+            /*             insertItem: function(item) {
+                            return $.ajax({
+                                type: "POST",
+                                url: "/api/admin/users",
+                                data: item
+                            }).then(res => {
+                                res.status ? toastr.success(res.message) : toastr.error(res.message);
+                            });
+                        }, */
             deleteItem: function(item) {
                 return $.ajax({
                     type: "DELETE",
@@ -148,7 +171,7 @@
                 name: "user-id",
                 title: <?= "'" . __('ID') . "'" ?>,
                 type: "text",
-                editing: true,
+                editing: false,
             },
             {
                 name: "user-name",
@@ -205,8 +228,48 @@
 
             },
             {
+                name: "preferred-language",
+                title: <?= "'" . __('preferred-language') . "'" ?>,
+                type: "select",
+                items: [
+                    <?
+                    foreach ($languages as  $language) {
+                        echo "{Id: '" . $language['Language_ID'] . "',Name:'" . $language['Language_Name'] . "'},";
+                    }
+                    ?>
+                ],
+                editing: true,
+                valueField: "Id",
+                textField: "Name",
+            },
+            {
                 name: "mobile",
                 title: <?= "'" . __('mobile') . "'" ?>,
+                type: "text",
+                editing: true,
+
+            },
+            {
+                name: "active",
+                title: <?= "'" . __('active') . "'" ?>,
+                type: "select",
+                items: [{
+                        Id: 1,
+                        Name: <?= "'" . __('active') . "'" ?>
+                    },
+                    {
+                        Id: 0,
+                        Name: <?= "'" . __('inactive') . "'" ?>
+                    }
+                ],
+                valueField: "Id",
+                textField: "Name",
+                editing: true,
+
+            },
+            {
+                name: "password",
+                title: <?= "'" . __('new-password') . "'" ?>,
                 type: "text",
                 editing: true,
 

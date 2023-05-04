@@ -55,5 +55,13 @@
     .cursor-pointer{
       cursor: pointer;
     }
+    .w-max{
+      width: max-content;
+    }
+
+    .btn-excel{
+      background-color: #21a366;
+      color: #fff;
+    }
   </style>
 </head>
