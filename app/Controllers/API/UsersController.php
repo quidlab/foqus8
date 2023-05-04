@@ -105,10 +105,27 @@ class UsersController extends Controller
 
 
 
-    /* 
+    /*
     
     */
-    public function import(){
-        print_r($_FILES);
+    public function import()
+    {
+
+        $validator = validator([ // NEXT create lower-case and other password complexity
+            'name' => 'Jse',
+            'obile' => 'se',
+        ], [
+            'name' => ['required','contains-uppercase'],
+            'mobile' => ['required'],
+        ]);
+
+
+        try {
+            $data = $validator->validate();
+            print_r($data);
+        } catch (\Throwable $th) {
+           print_r($th->errorsBag);
+        }
+
     }
 }
