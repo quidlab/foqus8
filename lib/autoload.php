@@ -16,6 +16,7 @@ require_once __DIR__ . '/Globals/successes.php';
 require_once __DIR__ . '/Globals/translation.php';
 require_once __DIR__ . '/Globals/auth.php';
 require_once __DIR__ . '/Globals/back.php';
+require_once __DIR__ . '/Globals/validator.php';
 
 
 

@@ -5,6 +5,7 @@ namespace App\Controllers\API;
 use App\Controllers\Controller;
 use App\Models\User;
 use Lib\Hash\Hash;
+use Lib\Services\Excel\Excel;
 
 class UsersController extends Controller
 {
@@ -21,34 +22,58 @@ class UsersController extends Controller
     
     */
     public function store()
-    {
-        $data['user-id'] = $_POST['user-id'];
-        $data['user-name'] = $_POST['user-name'];
-        $data['password'] = Hash::make(($_POST['password']));
-        $data['email'] = $_POST['email'];
-        $data['role-id'] = $_POST['role-id'];
-        $data['mobile'] = $_POST['mobile'];
-        $data['preferred-language'] = $_POST['preferred-language'];
+    { //[{"name":"lower-case","value":"contains-lowercase"},{"name":"upper-case","value":"contains-uppercase"},{"name":"special-character","value":"contains-specialcharacter"},{"name":"contains-digit","value":"contains-digit"}]
+
+        $passComp = [
+            'required',
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'l') ? ['contains-lowercase'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'u') ? ['contains-uppercase'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 's') ? ['contains-specialcharacter'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'd') ? ['contains-digit'] : []),
+        ];
 
 
+        $validator = validator(request()->dataArray(), [
+            'user-id' => ['required'],
+            'user-name' => ['required'],
+            'password' => $passComp,
+            'email' => ['required'],
+            'role-id' => ['required'],
+            'mobile' => ['required'],
+            'preferred-language' => ['required'],
+        ]);
 
-        $result = User::create($data);
 
-        if ($result) {
-            logger()->info('User Created New User.'
-                . '| user-id:' . $_SESSION['uname'] .
-                '| new-user-id: ' . $data['user-id'] .
-                '| IP: ' . app()->getUserIP() .
-                '| time:' . date('Y-m-d H:i:s'));
-        } else {
+        try {
+            $data = $validator->validate();
+            $data['password'] = Hash::make($data['password']);
+            $result = User::create($data);
+
+            if ($result) {
+                logger()->info('User Created New User.'
+                    . '| user-id:' . $_SESSION['uname'] .
+                    '| new-user-id: ' . $data['user-id'] .
+                    '| IP: ' . app()->getUserIP() .
+                    '| time:' . date('Y-m-d H:i:s'));
+            } else {
+                logger()->info('User Faild To Created New User.
+                user-id:' . $_SESSION['uname'] .
+                    '| new-user-id: ' . $data['user-id'] .
+                    '| IP: ' . app()->getUserIP() .
+                    '| time:' . date('Y-m-d H:i:s'));
+            }
+
+            back()->withMessage(__($result ? 'created' : 'something-went-wrong'), $result);
+        } catch (\Throwable $th) {
+
             logger()->info('User Faild To Created New User.
             user-id:' . $_SESSION['uname'] .
                 '| new-user-id: ' . $data['user-id'] .
                 '| IP: ' . app()->getUserIP() .
                 '| time:' . date('Y-m-d H:i:s'));
-        }
 
-        back()->withMessage(__($result ? 'created' : 'something-went-wrong'), $result);
+            back()->withErrors($th->errorsBag);
+        }
     }
 
 
@@ -105,10 +130,59 @@ class UsersController extends Controller
 
 
 
-    /* 
+    /*
     
     */
-    public function import(){
-        print_r($_FILES);
+    public function import($data)
+    {
+        $excel = Excel::import('excel-file');
+        $passComp = [
+            'required',
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'l') ? ['contains-lowercase'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'u') ? ['contains-uppercase'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 's') ? ['contains-specialcharacter'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'd') ? ['contains-digit'] : []),
+        ];
+        $data = [];
+
+
+        foreach ($excel->rows() as $row) {
+            $validator = validator($row, [
+                'user-id' => ['required'],
+                'user-name' => ['required'],
+                'password' => $passComp,
+                'email' => ['required'],
+                'role-id' => ['required'],
+                'mobile' => ['required'],
+                'preferred-language' => ['required'],
+            ]);
+            try {
+                $data[] = $validator->validate();
+            } catch (\Throwable $th) {
+                return back()->withErrors($th->errorsBag);
+            }
+        }
+
+        $result = database()->transaction(function () use ($passComp, $excel,$data) {
+            foreach ($data as $row) {
+                $row['password'] = Hash::make($row['password']);
+
+                if (!User::create($row)) {
+                    return false;
+                    break;
+                }
+            }
+            return true;
+        });
+
+        if ($result) {
+            return back()->withSuccess([
+                'excel' => 'data uploaded successfully'
+            ]);
+        } else {
+            return back()->withErrors([
+                'excel' => 'something-went-wrong'
+            ]);
+        }
     }
 }

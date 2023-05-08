@@ -32,6 +32,7 @@ class ConstantController extends Controller
     public function meetingUpdate()
     {
         parse_str(file_get_contents("php://input"), $_PUT);
+
         $sql = "UPDATE Meeting_Constants_Str set Constant_Value = ? where id= ?";
         $params = array($_PUT['Constant_Value'], $_PUT['ID']);
         $results = $this->DB->Run($sql, $params);
@@ -208,4 +209,28 @@ class ConstantController extends Controller
         // print_r($output);die;
         return response()->json($output, 200);
     }
+
+
+    /* 
+    
+    */
+/*     public function updateSelect()
+    {
+        parse_str(file_get_contents("php://input"), $_PUT);
+        $sql = "UPDATE Meeting_Constants_Str set Constant_Value = ? where id= ?";
+        $params = array(json_encode($_PUT['Constant_Value']), $_PUT['ID']);
+        $results = $this->DB->Run($sql, $params);
+
+        if ($results) {
+            return response()->json([
+                'message' => 'Updated',
+                'status' => 1,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'status' => 0,
+            ]);
+        }
+    } */
 }
