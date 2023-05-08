@@ -2,8 +2,7 @@
 
 namespace Lib\Services\Validation\Rules;
 
-class ContainsUppercase extends Rule
-{
+class ContainsSpecialcharacter extends Rule {
     protected $data;
 
     /* 
@@ -11,7 +10,7 @@ class ContainsUppercase extends Rule
     */
     public function name(): string
     {
-        return 'contains-uppercase';
+        return 'contains-specialcharacter';
     }
 
 
@@ -21,7 +20,7 @@ class ContainsUppercase extends Rule
     public function validate(array $data, $key): bool
     {
         return in_array($key, array_keys($data)) && $data[$key]
-            && preg_match('/[A-Z]/', $data[$key]);
+            && preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $data[$key]);
     }
 
 
@@ -30,6 +29,6 @@ class ContainsUppercase extends Rule
     */
     public function message(): string
     {
-        return __('contains-uppercase-message');// the value should contain uppercase letter
+        return __('contains-specialcharacter-text');
     }
 }

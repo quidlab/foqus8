@@ -13,7 +13,7 @@ class Router
     public const HOME = '/admin/dashboard';
 
 
-    
+
     public function get(string $path, $handler, Middleware ...$middlewares): object
     {
         return $this->addRoute($path, Method::GET, $handler, $middlewares);
@@ -61,13 +61,17 @@ class Router
             $callback = $matchedRoute['handler'];
             if (is_callable($callback)) {
                 call_user_func_array($callback, [
-                    array_merge($_GET, $_POST)
+                    array_merge($_GET, $_POST, $_FILES)
                 ]);
             } else {
                 $controller = new $callback[0]();
-                call_user_func_array([$controller, $callback[1]], [
-                    array_merge($_GET, $_POST)
-                ]);
+                try {
+                    call_user_func_array([$controller, $callback[1]], [
+                        array_merge($_GET, $_POST, $_FILES)
+                    ]);
+                } catch (\Throwable $th) {
+                    echo $th->getMessage(); // MOSTAFA_TODO => return data inside response()
+                }
             }
         }
     }

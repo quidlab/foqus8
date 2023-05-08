@@ -14,7 +14,10 @@ class Validator
     private $rules;
     protected $rulesNames = [
         'required' => 'Lib\Services\Validation\Rules\Required',
-        'contains-uppercase' => 'Lib\Services\Validation\Rules\ContainsUppercase'
+        'contains-uppercase' => 'Lib\Services\Validation\Rules\ContainsUppercase',
+        'contains-lowercase' => 'Lib\Services\Validation\Rules\ContainsLowercase',
+        'contains-specialcharacter' => 'Lib\Services\Validation\Rules\ContainsSpecialcharacter',
+        'contains-digit' => 'Lib\Services\Validation\Rules\ContainsDigit',
     ];
 
     public function __construct(array $data, array $rules)

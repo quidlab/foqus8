@@ -1,9 +1,3 @@
-<?
-foreach (successes() as $key => $value) {
-    echo $value;
-}
-?>
-
 <div class="page">
     <div class="row">
         <div class="col-md-12">
@@ -89,7 +83,7 @@ foreach (successes() as $key => $value) {
         <div class="card-header">
             <form action="/api/admin/users/import" method="post" class="float-right" enctype="multipart/form-data">
                 <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-users') ?> </button>
-                <input type="file" class=" " name="excel-file" id="" required>
+                <input type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
             </form>
             <a download="" href="<?= assets('/assets/templates/users.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
             <p class=" text-bold"><?= __('admin-users') ?></p>
@@ -106,6 +100,23 @@ foreach (successes() as $key => $value) {
 
 <?php include __DIR__ . "/../../layouts/footer.php"; ?>
 <?php include __DIR__ . "/../../layouts/scripts.php"; ?>
+
+
+<script>
+    <?
+    foreach (successes() as $key => $value) {
+        echo 'toastr.success("' . $value . '")';
+    }
+    ?>
+</script>
+<script>
+    <?
+    foreach (errors() as $key => $value) {
+        echo 'toastr.error("' . $value . '");console.log("' . $value . '")';
+    }
+    ?>
+</script>
+
 <script>
     $('#createAdminForm').fadeOut(0);
 

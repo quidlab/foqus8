@@ -54,7 +54,9 @@ $router->get('/admin/system-constants/select', [SystemConstantController::class,
 /* Constants */
 $router->get('/admin/constants/meeting', [ConstantController::class, 'meetingIndex'], new AuthMiddleware('uname'));
 $router->put('/admin/constants/meeting', [ConstantController::class, 'meetingUpdate'], new AuthMiddleware('uname'));
+
 $router->get('/admin/constants/select', [ConstantController::class, 'getSelect'], new AuthMiddleware('uname'));
+$router->put('/admin/constants/select', [ConstantController::class, 'updateSelect'], new AuthMiddleware('uname'));
 
 
 $router->get('/admin/constants/date', [ConstantController::class, 'dateConstants'], new AuthMiddleware('uname'));

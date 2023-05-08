@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use Exception;
 use LIB\Request\Request;
 use LIB\Router\Router;
+use SendGrid;
+use SendGrid\Mail\Mail;
 
 class AuthController extends Controller
 {
@@ -51,6 +54,34 @@ class AuthController extends Controller
     }
 
 
+    /* 
+    
+    */
+    protected function mailOTP(object $user)
+    {
+        $email = new Mail();
+        $email->setFrom("mostafa@quidlab.com", "Foqus");
+        $email->setSubject(__('otp-mail-subject'));
+        $email->addTo($user->{'email'}, $user->{'user-name'});
+        $email->addContent("text/plain", "and easy to do anywhere, even with PHP"); // add template
+        $email->addContent(
+            "text/html",
+            "<strong>and easy to do anywhere, even with PHP</strong>"
+        );
+        $sendgrid = new SendGrid(constant('MC_SENDGRID_KEY'));
+        try {
+            $response = $sendgrid->send($email);
+            print $response->statusCode() . "\n";
+            print_r($response->headers());
+            print $response->body() . "\n";
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+    }
+
+    /* 
+    
+    */
     public function logout()
     {
         session_destroy();
