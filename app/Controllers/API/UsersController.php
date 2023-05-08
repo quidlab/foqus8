@@ -11,8 +11,15 @@ class UsersController extends Controller
 {
     public function index()
     {
+
+        if ( $_SESSION['ROLE_ID'] == 7 /* super-admin */) {
+            $users = User::get();
+        }else{
+            $sql = "SELECT  [" . implode("],[", User::$readable) . "] FROM " . User::$table . " Where [role-id] <> 7 ";
+            $users = database()->Select($sql, []);
+        }
         return response()->json(
-            User::get()
+            $users
         );
     }
 

@@ -8,7 +8,7 @@ class User extends AuthenticatableModel {
     static $table = 'users';
     protected static $guardKey = 'uname';
     protected static $primaryKey = 'user-id';
-    protected static $readable = [
+    public static $readable = [
         'user-id',
         'user-name',
         'role-id',
