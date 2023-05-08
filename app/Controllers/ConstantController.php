@@ -196,15 +196,19 @@ class ConstantController extends Controller
     public function getSelect(){
         $sql = "SELECT * FROM Meeting_Constants_Str where Constant_Type='Meeting' AND Options is Not NULL ORDER BY ID ";
         $results = $this->DB->Select($sql, []);
-        foreach ($results as $row) {
-            $output[] = array(
-                'ID'    => $row['ID'],
-                'Constant_Name'  => $row['Constant_Name'],
-                'Constant_Value'   => $row['Constant_Value'],
-                'Description'    => $row['Description'],
-                'Options' => $row['Options']
-
-            );
+        if ($results) {
+            foreach ($results as $row) {
+                $output[] = array(
+                    'ID'    => $row['ID'],
+                    'Constant_Name'  => $row['Constant_Name'],
+                    'Constant_Value'   => $row['Constant_Value'],
+                    'Description'    => $row['Description'],
+                    'Options' => $row['Options']
+    
+                );
+            }
+        }else{
+            $output = [];
         }
         // print_r($output);die;
         return response()->json($output, 200);
