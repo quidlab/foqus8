@@ -63,7 +63,9 @@ class UsersController extends Controller
                     '| time:' . date('Y-m-d H:i:s'));
             }
 
-            back()->withMessage(__($result ? 'created' : 'something-went-wrong'), $result);
+            back()->withSuccess([
+                'user' => __($result ? 'created' : 'something-went-wrong')
+            ]);
         } catch (\Throwable $th) {
 
             logger()->info('User Faild To Created New User.
