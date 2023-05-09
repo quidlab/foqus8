@@ -87,12 +87,21 @@
                   </li>
                 </ul>
               </li>
-              <!-- translations -->
+              <!-- users -->
               <li class="nav-item">
                 <a href="/admin/users" class="nav-link">
                   <i class="nav-icon fa-solid fa-users"></i>
                   <p>
                     <?= __('users') ?>
+                  </p>
+                </a>
+              </li>
+              <!-- presenters -->
+              <li class="nav-item">
+                <a href="/admin/presenters" class="nav-link">
+                  <i class="nav-icon fa-solid fa-users"></i>
+                  <p>
+                    <?= __('presenters') ?>
                   </p>
                 </a>
               </li>

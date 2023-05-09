@@ -12,10 +12,7 @@ class  Auth
     {
         if ($_SESSION['uname']) {
             $data =  database()->Select("SELECT * from users where [user-id]=?", [$_SESSION['uname']])[0];
-            $user = new User();
-/*             $user->role = "super-admin";
-            $user->role_id = $data['role-id']; */
-            $this->user = $user;
+            $this->user = (object) $data;
         }
     }
 

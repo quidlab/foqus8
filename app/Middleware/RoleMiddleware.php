@@ -12,7 +12,7 @@ class RoleMiddleware extends Middleware{
     
     public function handler()
     {
-        if (auth()->user?->role_id != 7 /*SUPER_ADMIN*/) {
+        if (auth()->user?->{'role-id'} != 7 /*SUPER_ADMIN*/) {
             throw new NotAuthorizedException();
         }
         return true;

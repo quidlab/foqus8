@@ -9,7 +9,7 @@ class Validator
 {
 
     private $validatedData = [];
-    private $errorsBag = [];
+    public $errorsBag = [];
     private $data;
     private $rules;
     protected $rulesNames = [
@@ -18,6 +18,7 @@ class Validator
         'contains-lowercase' => 'Lib\Services\Validation\Rules\ContainsLowercase',
         'contains-specialcharacter' => 'Lib\Services\Validation\Rules\ContainsSpecialcharacter',
         'contains-digit' => 'Lib\Services\Validation\Rules\ContainsDigit',
+        'min' => 'Lib\Services\Validation\Rules\MinRule',
     ];
 
     public function __construct(array $data, array $rules)
@@ -47,7 +48,12 @@ class Validator
     {
         foreach ($this->rules as $key => $rules) {
             foreach ($rules as $rule) {
-                $ruleInstance = $this->onGoingRule($rule);
+                $ruleParts = explode(':', $rule);
+                if (count($ruleParts) > 1) {
+                    $ruleInstance = $this->onGoingRule($ruleParts[0], $ruleParts[1]);
+                } else {
+                    $ruleInstance = $this->onGoingRule($ruleParts[0]);
+                }
 
                 if ($ruleInstance->validate($this->data, $key)) {
                     $this->validatedData[$key] = $this->data[$key];
@@ -65,11 +71,11 @@ class Validator
     
     */
 
-    protected function onGoingRule($key)
+    protected function onGoingRule($key, $params = null)
     {
         if (!in_array($key, array_keys($this->rulesNames)))
             throw new NotFoundException('Rule {' . $key . ' } Not Exists');
 
-        return new $this->rulesNames[$key]();
+        return new $this->rulesNames[$key]($params);
     }
 }

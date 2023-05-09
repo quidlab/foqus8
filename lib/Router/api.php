@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\API\LanguagesController;
+use App\Controllers\API\PresentersController;
 use App\Middleware\AuthMiddleware;
 use LIB\Router\Router;
 use App\Controllers\API\TranslationsController;
@@ -26,4 +27,12 @@ $router->post('/api/admin/users', [UsersController::class, 'store'], new AuthMid
 $router->post('/api/admin/users/import', [UsersController::class, 'import'], new AuthMiddleware('uname'));
 $router->delete('/api/admin/users', [UsersController::class, 'destroy'], new AuthMiddleware('uname'));
 $router->put('/api/admin/users', [UsersController::class, 'update'], new AuthMiddleware('uname'));
+
+
+/* Presenters */
+$router->get('/api/admin/presenters', [PresentersController::class, 'index'], new AuthMiddleware('uname'));
+$router->post('/api/admin/presenters', [PresentersController::class, 'store'], new AuthMiddleware('uname'));
+$router->delete('/api/admin/presenters', [PresentersController::class, 'destroy'], new AuthMiddleware('uname'));
+$router->put('/api/admin/presenters', [PresentersController::class, 'update'], new AuthMiddleware('uname'));
+$router->post('/api/admin/users/import', [UsersController::class, 'import'], new AuthMiddleware('uname'));
 

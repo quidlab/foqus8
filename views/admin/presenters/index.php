@@ -4,68 +4,67 @@
 
             <div class="card card-primary">
                 <div class="card-header cursor-pointer" onclick="toggleForm()">
-                    <h3 class="card-title"><?= __('create-admin') ?></h3>
+                    <h3 class="card-title"><?= __('create-presenter') ?></h3>
                 </div>
 
 
-                <form action="/api/admin/users" method="POST" id="createAdminForm">
+                <form action="/api/admin/presenters" method="POST" id="createAdminForm">
                     <div class="card-body">
                         <!-- row -->
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?= __('user-id') ?></label>
-                                <input type="text" class="form-control" name="user-id">
+                                <label><?= __('user-name') ?></label>
+                                <input type="text" class="form-control" name="user-name">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="exampleInputPassword1"><?= __('user-name') ?></label>
-                                <input type="text" class="form-control" name="user-name">
+                                <label><?= __('title') ?></label>
+                                <input type="text" class="form-control" name="title">
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label><?= __('first-name') ?></label>
+                                <input type="text" class="form-control" name="first-name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label><?= __('last-name') ?></label>
+                                <input type="text" class="form-control" name="last-name">
                             </div>
                         </div>
                         <!-- row -->
                         <!-- row -->
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?= __('email') ?></label>
+                                <label><?= __('email') ?></label>
                                 <input type="email" class="form-control" name="email">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="exampleInputPassword1"><?= __('password') ?></label>
+                                <label><?= __('password') ?></label>
                                 <input type="text" class="form-control" name="password" />
                             </div>
                         </div>
                         <!-- row -->
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?= __('preferred-language') ?></label>
-                                <select name="preferred-language" class="form-control" id=" ">
-                                    <?
-                                    foreach ($languages as  $language) {
-                                        echo "<option value='" . $language['Language_ID'] . "'>" . $language['Language_Name'] . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
                                 <label for=""><?= __('mobile') ?></label>
                                 <input type="text" class="form-control" name="mobile" />
                             </div>
-                        </div>
-                        <!-- row -->
-                        <!-- row -->
-                        <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputPassword1"><?= __('role') ?></label>
-                                <select name="role-id" class="form-control">
-                                    <option value="1">Admin</option>
-                                    <option value="2">REGISTRATION STAFF</option>
-                                    <option value="3">VOTE COUNTING STAFF</option>
-                                    <option value="4">MEETING ROOM DISPLAY</option>
-                                    <option value="5">REGISTRATION AND VOTE COUNT</option>
-                                    <option value="6">DOCUMENT CHECK STAFF</option>
-                                    <option value="7">SUPER ADMIN</option>
+                                <label><?= __('role') ?></label>
+                                <select name="role" class="form-control">
+                                    <option value="Company Secretary">Company Secretary</option>
+                                    <option value="Director">Director</option>
+                                    <option value="Guest">Guest</option>
+                                    <option value="Director1">Director1</option>
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <!-- row -->
+                    <!-- row -->
+                    <div class="row">
+
                         <!-- row -->
                     </div>
 
@@ -112,7 +111,7 @@
 <script>
     <?
     foreach (errors() as $key => $value) {
-        echo 'toastr.error("' . $key." => ".$value . '");';
+        echo 'toastr.error("' . $value . '");console.log("' . $value . '")';
     }
     ?>
 </script>
@@ -143,32 +142,30 @@
             loadData: function(filter) {
                 return $.ajax({
                     type: "GET",
-                    url: "/api/admin/users",
+                    url: "/api/admin/presenters",
                     data: filter
                 });
             },
             updateItem: function(item) {
                 return $.ajax({
                     type: "PUT",
-                    url: "/api/admin/users",
+                    url: "/api/admin/presenters",
                     data: item
                 }).then(res => {
                     res.status ? toastr.success(res.message) : toastr.error(res.message);
+                }).catch(re => {
+                    if (re.responseJSON?.errors) {
+                        Object.values(re.responseJSON?.errors).forEach(element => {
+                            toastr.error(element)
+                        });
+                    }
                 });
             },
-            /*             insertItem: function(item) {
-                            return $.ajax({
-                                type: "POST",
-                                url: "/api/admin/users",
-                                data: item
-                            }).then(res => {
-                                res.status ? toastr.success(res.message) : toastr.error(res.message);
-                            });
-                        }, */
+
             deleteItem: function(item) {
                 return $.ajax({
                     type: "DELETE",
-                    url: "/api/admin/users",
+                    url: "/api/admin/presenters",
                     data: item
                 }).then(res => {
                     res.status ? toastr.success(res.message) : toastr.error(res.message);
@@ -179,10 +176,28 @@
         fields: [
 
             {
-                name: "user-id",
-                title: <?= "'" . __('ID') . "'" ?>,
+                name: "title",
+                title: <?= "'" . __('title') . "'" ?>,
                 type: "text",
                 editing: false,
+            },
+            {
+                name: "first-name",
+                title: <?= "'" . __('first-name') . "'" ?>,
+                type: "text",
+                editing: true,
+                width: 100,
+
+                validate: "required"
+            },
+            {
+                name: "last-name",
+                title: <?= "'" . __('last-name') . "'" ?>,
+                type: "text",
+                editing: true,
+                width: 100,
+
+                validate: "required"
             },
             {
                 name: "user-name",
@@ -194,37 +209,25 @@
                 validate: "required"
             },
             {
-                name: "role-id",
-                title: <?= "'" . __('role-id') . "'" ?>,
+                name: "role",
+                title: <?= "'" . __('role') . "'" ?>,
                 type: "select",
                 items: [{
-                        Name: "Admin",
-                        Id: 1
+                        Name: "Company Secretary",
+                        Id: "Company Secretary"
                     },
                     {
-                        Name: "REGISTRATION STAFF",
-                        Id: 2
+                        Name: "Director",
+                        Id: "Director"
                     },
                     {
-                        Name: "VOTE COUNTING STAFF",
-                        Id: 3
+                        Name: "Guest",
+                        Id: "Guest"
                     },
                     {
-                        Name: "MEETING ROOM DISPLAY",
-                        Id: 4
-                    },
-                    {
-                        Name: "REGISTRATION AND VOTE COUNT",
-                        Id: 5
-                    },
-                    {
-                        Name: "DOCUMENT CHECK STAFF",
-                        Id: 6
-                    },
-                    {
-                        Name: "SUPER ADMIN",
-                        Id: 7
-                    },
+                        Name: "Director1",
+                        Id: "Director1"
+                    }
                 ],
                 valueField: "Id",
                 textField: "Name",
@@ -239,42 +242,9 @@
 
             },
             {
-                name: "preferred-language",
-                title: <?= "'" . __('preferred-language') . "'" ?>,
-                type: "select",
-                items: [
-                    <?
-                    foreach ($languages as  $language) {
-                        echo "{Id: '" . $language['Language_ID'] . "',Name:'" . $language['Language_Name'] . "'},";
-                    }
-                    ?>
-                ],
-                editing: true,
-                valueField: "Id",
-                textField: "Name",
-            },
-            {
                 name: "mobile",
                 title: <?= "'" . __('mobile') . "'" ?>,
                 type: "text",
-                editing: true,
-
-            },
-            {
-                name: "active",
-                title: <?= "'" . __('active') . "'" ?>,
-                type: "select",
-                items: [{
-                        Id: 1,
-                        Name: <?= "'" . __('active') . "'" ?>
-                    },
-                    {
-                        Id: 0,
-                        Name: <?= "'" . __('inactive') . "'" ?>
-                    }
-                ],
-                valueField: "Id",
-                textField: "Name",
                 editing: true,
 
             },

@@ -2,6 +2,7 @@
 
 namespace LIB\Router;
 
+use App\Exceptions\NotFoundException;
 use App\Middleware\Middleware;
 use Exception;
 use LIB\Router\Method;
@@ -49,12 +50,18 @@ class Router
     public function run()
     {
         $matchedRoute = $this->matchedRoute();
+
         if ($matchedRoute == null) {
-            $this->notFoundHandler();
+            return new NotFoundException("Page NOT Found", 404, null);
+
         } else {
             /* call middlewares */
             foreach ($matchedRoute['middlewares'] as $middleware) {
-                call_user_func([$middleware, 'handler']);
+                try {
+                    call_user_func([$middleware, 'handler']);
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
             }
             /* call middlewares end */
 
@@ -89,13 +96,5 @@ class Router
             }
         }
         return $matchedRoute;
-    }
-
-
-
-    public function notFoundHandler()
-    {
-        view('errors/404'); // TODO => create a NotFound Exception and add this view function in it's handler
-        throw new Exception("NOT Found", 404, null); // TODO => make the second param depends on a env variable called production 
     }
 }
