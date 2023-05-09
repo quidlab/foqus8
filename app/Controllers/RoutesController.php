@@ -22,8 +22,6 @@ class RoutesController extends Controller
 
     public function manageCompany()
     {
-
-
         return view('/admin/manage-company', [], '/admin/index');
     }
 
@@ -60,5 +58,13 @@ class RoutesController extends Controller
     public function users()
     {
         return view('/admin/users/index', [], '/admin/index');
+    }
+    
+    /*
+    
+    */
+    public function presenters()
+    {
+        return view('/admin/presenters/index', [], '/admin/index');
     }
 }

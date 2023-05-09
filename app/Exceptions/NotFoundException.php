@@ -15,6 +15,6 @@ class NotFoundException extends CustomException
 
     public function __toString()
     {
-        return false;
+        return 'Not Found';
     }
 }

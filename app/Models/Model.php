@@ -19,7 +19,11 @@ abstract class Model
         } else {
             $sql = "SELECT  [" . implode("],[", $columns) . "] FROM " . static::$table;
         }
-        return self::formatter(database()->Select($sql, []));
+        try {
+            return self::formatter(database()->Select($sql, []));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
 
@@ -59,10 +63,10 @@ abstract class Model
     /* 
     
     */
-    public static function update(array $data,$primaryKey = null)
+    public static function update(array $data, $primaryKey = null)
     {
         $primaryKey = $primaryKey == null ? static::$primaryKey : $primaryKey;
-        return $sql = "UPDATE " . static::$table . " SET " . http_build_query($data, '', ', ') . " Where ".static::$primaryKey . " = ?";
+        return $sql = "UPDATE " . static::$table . " SET " . http_build_query($data, '', ', ') . " Where " . static::$primaryKey . " = ?";
         return database()->Run($sql, [$data[$primaryKey]]);
     }
 

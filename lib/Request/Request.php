@@ -48,7 +48,7 @@ class Request
     {
         $_SESSION['errorsBag'] = [];
         foreach ($errors as $key => $err) {
-            $_SESSION['errorsBag'][] = __($err);
+            $_SESSION['errorsBag'][$key] = __($err);
         }
     }
 

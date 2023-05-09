@@ -112,7 +112,7 @@
 <script>
     <?
     foreach (errors() as $key => $value) {
-        echo 'toastr.error("' . $value . '");console.log("' . $value . '")';
+        echo 'toastr.error("' . $key." => ".$value . '");';
     }
     ?>
 </script>

@@ -30,6 +30,7 @@ $router->get('/admin/system-constants', [RoutesController::class, 'systemConstan
 $router->get('/admin/agendas/view', [RoutesController::class, 'agendas'], new AuthMiddleware('uname'));
 $router->get('/admin/translations', [RoutesController::class, 'translations'], new AuthMiddleware('uname'));
 $router->get('/admin/users', [RoutesController::class, 'users'], new AuthMiddleware('uname'));
+$router->get('/admin/presenters', [RoutesController::class, 'presenters'], new AuthMiddleware('uname'));
 
 /* Company */
 $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMiddleware('uname'));

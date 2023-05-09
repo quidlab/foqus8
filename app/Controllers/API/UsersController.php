@@ -12,9 +12,9 @@ class UsersController extends Controller
     public function index()
     {
 
-        if ( $_SESSION['ROLE_ID'] == 7 /* super-admin */) {
+        if ($_SESSION['ROLE_ID'] == 7 /* super-admin */) {
             $users = User::get();
-        }else{
+        } else {
             $sql = "SELECT  [" . implode("],[", User::$readable) . "] FROM " . User::$table . " Where [role-id] <> 7 ";
             $users = database()->Select($sql, []);
         }
@@ -37,6 +37,7 @@ class UsersController extends Controller
             ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'u') ? ['contains-uppercase'] : []),
             ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 's') ? ['contains-specialcharacter'] : []),
             ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'd') ? ['contains-digit'] : []),
+            ...(constant('MC_MINIMUM_PASSWORD_LENGTH') !== NULL ? ['min:' . constant('MC_MINIMUM_PASSWORD_LENGTH')] : [])
         ];
 
 
@@ -50,12 +51,10 @@ class UsersController extends Controller
             'preferred-language' => ['required'],
         ]);
 
-
         try {
             $data = $validator->validate();
             $data['password'] = Hash::make($data['password']);
             $result = User::create($data);
-
             if ($result) {
                 logger()->info('User Created New User.'
                     . '| user-id:' . $_SESSION['uname'] .
@@ -68,18 +67,15 @@ class UsersController extends Controller
                     '| new-user-id: ' . $data['user-id'] .
                     '| IP: ' . app()->getUserIP() .
                     '| time:' . date('Y-m-d H:i:s'));
+
+                return back()->withErrors(['user' => 'something-went-wrong']);
             }
 
-            back()->withSuccess([
-                'user' => __($result ? 'created' : 'something-went-wrong')
+            return back()->withSuccess([
+                'user' => __('created')
             ]);
         } catch (\Throwable $th) {
 
-            logger()->info('User Faild To Created New User.
-            user-id:' . $_SESSION['uname'] .
-                '| new-user-id: ' . $data['user-id'] .
-                '| IP: ' . app()->getUserIP() .
-                '| time:' . date('Y-m-d H:i:s'));
 
             back()->withErrors($th->errorsBag);
         }
@@ -172,7 +168,7 @@ class UsersController extends Controller
             }
         }
 
-        $result = database()->transaction(function () use ($passComp, $excel,$data) {
+        $result = database()->transaction(function () use ($passComp, $excel, $data) {
             foreach ($data as $row) {
                 $row['password'] = Hash::make($row['password']);
 
