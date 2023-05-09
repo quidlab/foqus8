@@ -130,6 +130,66 @@ class PresentersController extends Controller
         );
     }
 
+
+
+
+
+    /*
+    
+    */
+    public function import($data)
+    {
+        $excel = Excel::import('excel-file');
+        $data = [];
+
+
+        foreach ($excel->rows() as $row) {
+            $validator = validator($row, [
+                'user-name' => ['required'],
+                'first-name' => ['required'],
+                'last-name' => ['required'],
+                'title' => ['required'],
+                'email' => ['required'],
+                'mobile' => ['required'],
+                'role' => ['required'],
+            ]);
+            try {
+                $data[] = $validator->validate();
+            } catch (\Throwable $th) {
+                return back()->withErrors($th->errorsBag);
+            }
+        }
+
+        $result = database()->transaction(function () use ( $excel, $data) {
+            foreach ($data as $row) {
+                $row['password'] = Hash::encrypt($this->randomPassword(8), $row['user-name']);
+
+                if (!Presenter::create($row)) {
+                    return false;
+                    break;
+                }
+            }
+            return true;
+        });
+
+        if ($result) {
+            return back()->withSuccess([
+                'excel' => 'data uploaded successfully'
+            ]);
+        } else {
+            return back()->withErrors([
+                'excel' => 'something-went-wrong'
+            ]);
+        }
+    }
+
+
+
+
+
+
+
+
     /* 
     
     */
@@ -142,5 +202,30 @@ class PresentersController extends Controller
                 'status' => $result
             ]
         );
+    }
+
+
+    function randomPassword($len = 8)
+    {
+
+        $sets = array();
+        $sets[] = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $sets[] = 'abcdefghjkmnpqrstuvwxyz';
+        $sets[] = '23456789';
+        $sets[]  = '~!@#$%^&*(){}[],./?';
+
+        $password = '';
+
+        foreach ($sets as $set) {
+            $password .= $set[array_rand(str_split($set))];
+        }
+
+        while (strlen($password) < $len) {
+            $randomSet = $sets[array_rand($sets)];
+
+            $password .= $randomSet[array_rand(str_split($randomSet))];
+        }
+
+        return str_shuffle($password);
     }
 }

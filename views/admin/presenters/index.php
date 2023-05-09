@@ -80,11 +80,11 @@
     </div>
     <div class="card card-primary">
         <div class="card-header">
-            <form action="/api/admin/users/import" method="post" class="float-right" enctype="multipart/form-data">
-                <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-users') ?> </button>
+            <form action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
+                <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?> </button>
                 <input type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
             </form>
-            <a download="" href="<?= assets('/assets/templates/users.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
+            <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
             <p class=" text-bold"><?= __('admin-users') ?></p>
         </div>
         <div class="card-body">
