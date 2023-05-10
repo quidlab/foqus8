@@ -21,8 +21,13 @@ $router = new Router();
 $router->get('/', function () {redirect(Router::HOME);});
 $router->get('/admin', function () {redirect(Router::HOME);});
 
-
+/* AUTH */
 $router->get('/admin/login', [AuthController::class, 'login'],new GuestMiddleware('uname'));
+$router->get('/auth/otp', [AuthController::class, 'otpMailForm'],new GuestMiddleware('uname'));
+$router->get('/auth/mobile-otp', [AuthController::class, 'otpMobileForm'],new GuestMiddleware('uname'));
+$router->post('/auth/otp', [AuthController::class, 'verifyMailOTP'],new GuestMiddleware('uname'));
+/*  */
+
 $router->get('/admin/dashboard', [DashboardController::class, 'index'], new AuthMiddleware('uname'));
 $router->get('/admin/admin-tools', [RoutesController::class, 'adminTools'], new AuthMiddleware('uname'));
 $router->get('/admin/manage-company', [RoutesController::class, 'manageCompany'], new AuthMiddleware('uname'));

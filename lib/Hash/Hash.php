@@ -17,15 +17,32 @@ class Hash
     */
     static function encrypt(string $needle, string $key): string
     {
-        return  openssl_encrypt($needle,"AES-128-ECB",$key);
+        return  openssl_encrypt($needle, "AES-128-ECB", $key);
     }
 
-    
+
     /* 
     
     */
     static function decrypt(string $needle, string $key): string
     {
-        return openssl_decrypt($needle,"AES-128-ECB",$key);
+        return openssl_decrypt($needle, "AES-128-ECB", $key);
+    }
+
+
+    /* 
+    
+    */
+    static function otp(int $length = 6): string
+    {
+        return substr(str_shuffle('1234567890'), 1, $length);
+    }
+
+    /* 
+    
+    */
+    static function randString(int $length = 6): string
+    {
+        return substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWZY'), 1, $length);
     }
 }

@@ -32,6 +32,7 @@ $router->put('/api/admin/users', [UsersController::class, 'update'], new AuthMid
 /* Presenters */
 $router->get('/api/admin/presenters', [PresentersController::class, 'index'], new AuthMiddleware('uname'));
 $router->post('/api/admin/presenters', [PresentersController::class, 'store'], new AuthMiddleware('uname'));
+$router->post('/api/admin/presenters/create-many', [PresentersController::class, 'storeMany'], new AuthMiddleware('uname'));
 $router->delete('/api/admin/presenters', [PresentersController::class, 'destroy'], new AuthMiddleware('uname'));
 $router->put('/api/admin/presenters', [PresentersController::class, 'update'], new AuthMiddleware('uname'));
 $router->post('/api/admin/presenters/import', [PresentersController::class, 'import'], new AuthMiddleware('uname'));

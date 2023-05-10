@@ -52,6 +52,64 @@ class PresentersController extends Controller
         }
     }
 
+    /* 
+    
+    */
+    public function storeMany()
+    {
+        $passComp = [
+            'required',
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'l') ? ['contains-lowercase'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'u') ? ['contains-uppercase'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 's') ? ['contains-specialcharacter'] : []),
+            ...(strpos(constant('MC_PASSWORD_COMPLEXITY'), 'd') ? ['contains-digit'] : []),
+            ...(constant('MC_MINIMUM_PASSWORD_LENGTH') !== NULL ? ['min:' . constant('MC_MINIMUM_PASSWORD_LENGTH')] : [])
+        ];
+        $validator = validator(request()->only(['presenters-count', 'role']), [
+            'presenters-count' => ['required'],
+            'role' => ['required'],
+        ]);
+
+
+        try {
+            $data = $validator->validate();
+        } catch (\Throwable $th) {
+            back()->withErrors($th->errorsBag);
+        }
+
+
+        $result = database()->transaction(function () use ($data) {
+            /* DELETE ALL Presenters With Same Role */
+            $deleteResult = Presenter::deleteByColName('role', $data['role']);
+            /* === */
+            $result = true;
+            for ($i = 1; $i <= $data['presenters-count']; $i++) {
+                $value = [];
+                $value['user-name'] = $data['role'] . $i;
+                $value['role'] = $data['role'];
+                $value['password'] = Hash::encrypt($this->randomPassword(), $value['user-name']);
+                if (!Presenter::create($value)) {
+                    $result = false;
+                    return $result;
+                    break;
+                }
+            }
+
+            return ($deleteResult && $result);
+        });
+
+
+        if ($result) {
+            return back()->withSuccess([
+                'message' => 'creaetd'
+            ]);
+        } else {
+            return back()->withErrors([
+                'message' => 'somthing-went-wrong'
+            ]);
+        }
+    }
+
 
 
     /* 
@@ -146,21 +204,23 @@ class PresentersController extends Controller
         foreach ($excel->rows() as $row) {
             $validator = validator($row, [
                 'user-name' => ['required'],
-                'first-name' => ['required'],
-                'last-name' => ['required'],
-                'title' => ['required'],
+                'first-name' => ['nullable'],
+                'last-name' => ['nullable'],
+                'title' => ['nullable'],
                 'email' => ['required'],
                 'mobile' => ['required'],
                 'role' => ['required'],
             ]);
+
             try {
                 $data[] = $validator->validate();
+                print_r($data);die;
             } catch (\Throwable $th) {
                 return back()->withErrors($th->errorsBag);
             }
         }
 
-        $result = database()->transaction(function () use ( $excel, $data) {
+        $result = database()->transaction(function () use ($excel, $data) {
             foreach ($data as $row) {
                 $row['password'] = Hash::encrypt($this->randomPassword(8), $row['user-name']);
 

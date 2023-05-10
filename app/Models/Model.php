@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Exceptions\QueryException;
+
 abstract class Model
 {
     protected static $table;
@@ -21,7 +23,7 @@ abstract class Model
         }
         try {
             return self::formatter(database()->Select($sql, []));
-        } catch (\Throwable $th) {
+        } catch (QueryException $th) {
             throw $th;
         }
     }
@@ -44,11 +46,27 @@ abstract class Model
 
 
 
-
+    /* 
+    
+    */
     public static function delete($primaryKey)
     {
         $sql = "DELETE FROM " . static::$table . " WHERE [" . static::$primaryKey . "] = ?";
         return database()->Run($sql, [$primaryKey]);
+    }
+
+    /* 
+    
+    */
+    public static function deleteByColName(string $colName, $colValue)
+    {
+        $sql = "DELETE FROM " . static::$table . " WHERE [" . $colName . "] = ?";
+        
+        try {
+            return database()->Run($sql, [$colValue]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /* 

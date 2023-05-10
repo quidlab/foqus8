@@ -8,6 +8,7 @@ session_start();
 require __DIR__ . '/../vendor/autoload.php';
 
 
+require_once __DIR__ . '/../lib/SMS/sms.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/Globals/database.php';
 require_once __DIR__ . '/../lib/local/local.php';
