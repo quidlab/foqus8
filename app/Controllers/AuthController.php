@@ -40,14 +40,29 @@ class AuthController extends Controller
 
 
 
-
+    protected function getIPAddresses()
+    {
+        $data = database()->Select("
+            Select ipaddress From safe_ipaddresses GROUP BY ipaddress
+        ");
+        $ipAddresses = [];
+        foreach ($data as $key => $value) {
+            $ipAddresses[] = $value['ipaddress'];
+        }
+        return  $ipAddresses;
+    }
 
 
     public function auth()
     {
+
         $user = User::findByColName('user-id', request()->data()->loginID);
         if ($user && password_verify(request()->data()->password, $user->password)) {
-/*             if (constant('MC_REQUIRE_EMAIL_OTP') || constant('MC_REQUIRE_PHONE_OTP')) {
+            if (
+                constant('MC_REQUIRE_EMAIL_OTP')
+                || constant('MC_REQUIRE_PHONE_OTP')
+                && !in_array(app()->getUserIP(), $this->getIPAddresses())
+            ) {
                 if (constant('MC_REQUIRE_PHONE_OTP')) {
                     try {
                         $this->mobileOTP($user);
@@ -67,9 +82,9 @@ class AuthController extends Controller
                         ]);
                     }
                 }
-
+                $_SESSION['verifying-email'] = $user->email;
                 return redirect('/auth/otp');
-            } */
+            }
 
             $_SESSION[User::$guardKey] = $user->{'user-id'};
             $_SESSION['ROLE_ID'] = $user->{'role-id'};
@@ -93,44 +108,18 @@ class AuthController extends Controller
     {
         return view('/auth/mobile-otp');
     }
-    /* 
-    
-    */
-/*     public function verifyMailOTP()
-    {
-        $validation = validator(request()->dataArray(), [
-            'otp' => ['required']
-        ]);
 
-        try {
-            $data = $validation->validate();
-        } catch (\Throwable $th) {
-            back()->withErrors($th->errorsBag);
-        }
-        if (!isset($_SESSION['mail-otp'])) {
-            return back()->withErrors([
-                'otp' => 'Please back to login page'
-            ]);
-        }
-        list($email, $otp) = explode(':', $_SESSION['mail-otp']);
-        if ($data['otp'] == $otp) {
-            $_SESSION['mail-otp-verified'] = $email;
-        } else {
-            return back()->withErrors([
-                'otp' => __('otp-wrong-message')
-            ]);
-        }
-    } */
-    /* 
+    /*  
     
     */
     public function verifyOTP()
     {
         $rules = [
-            ...(constant('MC_REQUIRE_PHONE_OTP')?['mobile-otp' => ['required']]:[]),
-            ...(constant('MC_REQUIRE_EMAIL_OTP')?['mail-otp' => ['required']]:[]),
+            ...(constant('MC_REQUIRE_PHONE_OTP') ? ['mobile-otp' => ['required']] : []),
+            ...(constant('MC_REQUIRE_EMAIL_OTP') ? ['mail-otp' => ['required']] : []),
+            'verifying-email' => ['required']
         ];
-        $validation = validator(request()->dataArray(),$rules);
+        $validation = validator(request()->dataArray(), $rules);
 
         try {
             $data = $validation->validate();
@@ -138,20 +127,22 @@ class AuthController extends Controller
             back()->withErrors($th->errorsBag);
         }
 
+        if (constant('MC_REQUIRE_EMAIL_OTP') && $data['mail-otp'] != $_SESSION['mail-otp']) {
+            return back()->withErrors([
+                'mail-otp' => ' wrong'
+            ]);
+        }
+        if (constant('MC_REQUIRE_PHONE_OTP') && $data['mobile-otp'] != $_SESSION['mobile-otp']) {
+            return back()->withErrors([
+                'mobile-otp' => ' wrong'
+            ]);
+        }
 
-        if (!isset($_SESSION['mobile-otp'])) {
-            return back()->withErrors([
-                'otp' => 'Please back to login page'
-            ]);
-        }
-        list($email, $otp) = explode(':', $_SESSION['mail-otp']);
-        if ($data['otp'] == $otp) {
-            $_SESSION['mobile-otp-verified'] = $email;
-        } else {
-            return back()->withErrors([
-                'otp' => __('otp-wrong-message')
-            ]);
-        }
+        $user = User::findByColName('email', $data['verifying-email']);
+        $_SESSION[User::$guardKey] = $user->{'user-id'};
+        $_SESSION['ROLE_ID'] = $user->{'role-id'};
+        logger()->info('User logged in successfully.' . ' | login-ID:' . request()->data()->loginID .  '|  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
+        redirect(Router::HOME);
     }
 
     /* 
@@ -175,7 +166,7 @@ class AuthController extends Controller
         ];
         $res = $sms->sendSMS($body);
 
-        if ($res->httpStatusCode == 201) {
+        if ($res->httpStatusCode == 201 || true /*MOSTAFA_TODO remove true*/) {
             $_SESSION['mobile-otp'] = $user->email . ':' . $otp_gen;
             $_SESSION['mobile-ref'] = $ref_gen;
             $OTP_Phone_Success = 'OTP Sent Successfully on Phone ending with ' . substr($user->mobile, -4);

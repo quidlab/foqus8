@@ -20,7 +20,7 @@ class NullableRule extends Rule
     */
     public function validate(array $data, $key): bool
     {
-        return true;
+        return in_array($key, array_keys($data));
     }
 
 
@@ -29,6 +29,6 @@ class NullableRule extends Rule
     */
     public function message(): string
     {
-        return __('nullable-message');
+        return __('nullable-message');// the key does not 
     }
 }

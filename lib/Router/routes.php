@@ -24,8 +24,7 @@ $router->get('/admin', function () {redirect(Router::HOME);});
 /* AUTH */
 $router->get('/admin/login', [AuthController::class, 'login'],new GuestMiddleware('uname'));
 $router->get('/auth/otp', [AuthController::class, 'otpMailForm'],new GuestMiddleware('uname'));
-$router->get('/auth/mobile-otp', [AuthController::class, 'otpMobileForm'],new GuestMiddleware('uname'));
-$router->post('/auth/otp', [AuthController::class, 'verifyMailOTP'],new GuestMiddleware('uname'));
+$router->post('/auth/otp', [AuthController::class, 'verifyOTP'],new GuestMiddleware('uname'));
 /*  */
 
 $router->get('/admin/dashboard', [DashboardController::class, 'index'], new AuthMiddleware('uname'));

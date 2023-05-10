@@ -33,10 +33,11 @@ include "layouts/meta.php";
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="<?= __('password') ?>" required="required" name="password">
+                        <input id="password" type="password" class="form-control" placeholder="<?= __('password') ?>" required="required" name="password">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                                <span id="eye" class="fas fa-eye"></span>
+                                <span id="eye-slash" class="fas fa-eye-slash"></span>
                             </div>
                         </div>
                     </div>
@@ -100,6 +101,20 @@ include "layouts/meta.php";
 
     <?php include "layouts/scripts.php"; ?>
 
+    <script>
+        $('#eye-slash').fadeOut(0);
+
+        $('#eye').on('click', function() {
+            $('#password').attr('type', 'text');
+            $('#eye-slash').fadeIn(0);
+            $('#eye').fadeOut(0);
+        })
+        $('#eye-slash').on('click', function() {
+            $('#password').attr('type', 'password');
+            $('#eye-slash').fadeOut(0);
+            $('#eye').fadeIn(0);
+        })
+    </script>
 
     <script>
         function changeLanguage(lang) {

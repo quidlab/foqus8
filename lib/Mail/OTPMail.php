@@ -22,7 +22,7 @@ class OTPMail extends Mail
     {
         $otp = Hash::otp();
         $ref = Hash::randString();
-        $_SESSION['mail-otp'] = $this->toEmail . ':' . $otp;
+        $_SESSION['mail-otp'] =  $otp;
         $_SESSION['mail-ref'] = $ref;
 
         return [

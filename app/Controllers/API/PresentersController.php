@@ -211,10 +211,8 @@ class PresentersController extends Controller
                 'mobile' => ['required'],
                 'role' => ['required'],
             ]);
-
             try {
                 $data[] = $validator->validate();
-                print_r($data);die;
             } catch (\Throwable $th) {
                 return back()->withErrors($th->errorsBag);
             }
