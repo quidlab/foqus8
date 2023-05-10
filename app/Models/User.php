@@ -6,7 +6,7 @@ use Lib\Services\Authenticatable\AuthenticatableModel;
 class User extends AuthenticatableModel {
 
     static $table = 'users';
-    protected static $guardKey = 'uname';
+    public static $guardKey = 'uname';
     protected static $primaryKey = 'user-id';
     public static $readable = [
         'user-id',

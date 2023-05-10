@@ -19,6 +19,7 @@ class Validator
         'contains-specialcharacter' => 'Lib\Services\Validation\Rules\ContainsSpecialcharacter',
         'contains-digit' => 'Lib\Services\Validation\Rules\ContainsDigit',
         'min' => 'Lib\Services\Validation\Rules\MinRule',
+        'nullable' => 'Lib\Services\Validation\Rules\NullableRule',
     ];
 
     public function __construct(array $data, array $rules)
@@ -49,6 +50,8 @@ class Validator
         foreach ($this->rules as $key => $rules) {
             foreach ($rules as $rule) {
                 $ruleParts = explode(':', $rule);
+
+
                 if (count($ruleParts) > 1) {
                     $ruleInstance = $this->onGoingRule($ruleParts[0], $ruleParts[1]);
                 } else {
