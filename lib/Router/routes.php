@@ -23,7 +23,7 @@ $router->get('/admin', function () {redirect(Router::HOME);});
 
 /* AUTH */
 $router->get('/admin/login', [AuthController::class, 'login'],new GuestMiddleware('uname'));
-$router->get('/auth/otp', [AuthController::class, 'otpMailForm'],new GuestMiddleware('uname'));
+$router->get('/auth/otp', [AuthController::class, 'otpForm'],new GuestMiddleware('uname'));
 $router->post('/auth/otp', [AuthController::class, 'verifyOTP'],new GuestMiddleware('uname'));
 /*  */
 
@@ -35,6 +35,10 @@ $router->get('/admin/agendas/view', [RoutesController::class, 'agendas'], new Au
 $router->get('/admin/translations', [RoutesController::class, 'translations'], new AuthMiddleware('uname'));
 $router->get('/admin/users', [RoutesController::class, 'users'], new AuthMiddleware('uname'));
 $router->get('/admin/presenters', [RoutesController::class, 'presenters'], new AuthMiddleware('uname'));
+$router->get('/admin/upload-files', [RoutesController::class, 'uploadFiles'], new AuthMiddleware('uname'));
+$router->get('/admin/stakeholders', [RoutesController::class, 'stakeholders'], new AuthMiddleware('uname'));
+$router->get('/admin/proxy-names', [RoutesController::class, 'proxyNames'], new AuthMiddleware('uname'));
+$router->get('/admin/coupons', [RoutesController::class, 'coupons'], new AuthMiddleware('uname'));
 
 /* Company */
 $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMiddleware('uname'));

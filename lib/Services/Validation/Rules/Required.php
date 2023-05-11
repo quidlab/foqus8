@@ -21,9 +21,7 @@ class Required extends Rule
     public function validate(array $data, $key): bool
     {
         return in_array($key, array_keys($data))
-            && isset($data[$key])
-            && !is_null($data[$key])
-            && !empty($data[$key]);
+            && isset($data[$key]);
     }
 
 

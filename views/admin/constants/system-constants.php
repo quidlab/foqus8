@@ -15,6 +15,10 @@
 
         <p class="mt-4 mb-2 text-bold"><?= __('select-constants') ?></p>
         <div id="SelectGrid"></div>
+
+
+        <p class="mt-4 mb-2 text-bold"><?= __('safe-addresses') ?></p>
+        <div id="AddressesGrid"></div>
     </div>
 </section>
 <!-- /.content -->
@@ -522,6 +526,85 @@
                 type: "control",
                 editButton: true, // show edit button
                 deleteButton: false, // show delete button
+
+            }
+        ]
+
+    });
+</script>
+<!-- IP Addresses -->
+<script>
+    $("#AddressesGrid").jsGrid({
+        width: "100%",
+        editing: false,
+        deleting: true,
+        sorting: true,
+        inserting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        deleteConfirm: "Do you really want to delete data?",
+        filtering: false,
+        controller: {
+            loadData: function(filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: "/api/admin/ipaddresses",
+                    data: filter
+                });
+            },
+            deleteItem: function(item) {
+
+                return $.ajax({
+                    type: "DELETE",
+                    url: "/api/admin/ipaddresses",
+                    data: item
+                }).then(res => {
+                    if (res.status) {
+                        toastr.success(res.message)
+                    } else {
+                        toastr.error(res.message)
+                    }
+                });
+            },
+            insertItem: function(item) {
+
+                return $.ajax({
+                    type: "POST",
+                    url: "/api/admin/ipaddresses",
+                    data: item
+                }).then(res => {
+                    if (res.status) {
+                        toastr.success(res.message)
+                    } else {
+                        toastr.error(res.message)
+                    }
+                });
+            },
+
+        },
+
+        fields: [
+
+            {
+                name: "ipaddress",
+                type: "text",
+                editing: false,
+                visible: true,
+            },
+            {
+                name: "name",
+                title: <?="'".__('name')."'" ?>,
+                type: "text",
+                editing: false,
+                width: 200,
+                validate: "required"
+            },
+            {
+                type: "control",
+                editButton: false, // show edit button
+                deleteButton: true, // show delete button
 
             }
         ]

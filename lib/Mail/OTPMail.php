@@ -2,10 +2,18 @@
 
 namespace Lib\Mail;
 
-use Lib\Hash\Hash;
 
 class OTPMail extends Mail
 {
+
+    protected $otp;
+    protected $ref;
+    public function __construct($toEmail, $toName = null, $otp, $ref)
+    {
+        $this->otp = $otp;
+        $this->ref = $ref;
+        parent::__construct($toEmail, $toName);
+    }
 
     protected function subject(): string
     {
@@ -20,14 +28,10 @@ class OTPMail extends Mail
 
     protected function templateData(): array
     {
-        $otp = Hash::otp();
-        $ref = Hash::randString();
-        $_SESSION['mail-otp'] =  $otp;
-        $_SESSION['mail-ref'] = $ref;
 
         return [
-            'otp' => $otp,
-            'ref' => $ref,
+            'otp' => $this->otp,
+            'ref' => $this->ref,
         ];
     }
 }

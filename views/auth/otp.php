@@ -15,26 +15,11 @@
     } ?>
     <form action="/auth/otp" method="post">
         <input style="display: none;" type="text" name="verifying-email" value="<?= $_SESSION['verifying-email'] ?>">
-        <? if (constant('MC_REQUIRE_EMAIL_OTP')) { ?>
-            <section>
-                <h2>Ref : <?= $_SESSION['mail-ref'] ?></h2>
-                <label for="">Email OTP</label>
-                <input type="text" name="mail-otp">
-                <?= '<p style="color:red">' . errors('email-otp') . '</p>' ?>
-            </section>
-        <? } ?>
-
-        <? if (constant('MC_REQUIRE_PHONE_OTP')) { ?>
-            <section>
-                <h2>Ref : <?= $_SESSION['mobile-ref'] ?></h2>
-
-                <label for="">Mobile OTP</label>
-                <input type="text" name="mobile-otp">
-                <?= '<p style="color:red">' . errors('mobile-otp') . '</p>' ?>
-
-            </section>
-        <? } ?>
-
+        <section>
+            <h2>Ref : <?= $_SESSION['ref'] ?></h2>
+            <label for="">OTP</label>
+            <input type="text" name="otp">
+        </section>
         <button class="btn btn-primary">Submit</button>
     </form>
 </body>

@@ -16,4 +16,8 @@ class ValidationException extends CustomException
     {
         return print_r($this->errorsBag);
     }
+
+    public function error(){
+        return count($this->errorsBag) > 0 ?array_values($this->errorsBag)[0]: NULL;
+    }
 }

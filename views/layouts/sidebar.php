@@ -114,6 +114,42 @@
                   </p>
                 </a>
               </li>
+              <!-- uploadFiles -->
+              <li class="nav-item">
+                <a href="/admin/upload-files" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('upload-files') ?>
+                  </p>
+                </a>
+              </li>
+              <!-- stakeholders -->
+              <li class="nav-item">
+                <a href="/admin/stakeholders" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('stakeholders') ?>
+                  </p>
+                </a>
+              </li>
+              <!-- proxyNames -->
+              <li class="nav-item">
+                <a href="/admin/proxy-names" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('proxy-names') ?>
+                  </p>
+                </a>
+              </li>
+              <!-- proxyNames -->
+              <li class="nav-item">
+                <a href="/admin/coupons" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('coupons') ?>
+                  </p>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- /.sidebar-menu -->

@@ -78,27 +78,32 @@
 
         </div>
     </div>
+    <!--  -->
     <div class="card card-primary">
-        <div class="card-header">
-
+        <div class="card-header cursor-pointer">
             <form action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
                 <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?> </button>
                 <input type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
             </form>
             <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
-            <div class="float-right mr-4">
+            <div class=" mr-4">
                 <form action="/api/admin/presenters/create-many" method="post">
-                    <button class="btn btn-primary">Create</button>
-                    <input required type="number" name="presenters-count" id="">
-                    <select name="role" class="form-control" required>
+                    <button class="btn btn-excel">Create</button>
+                    <select name="role" class="form-control w-max d-inline-block" required>
                         <option value="Company Secretary">Company Secretary</option>
                         <option value="Director">Director</option>
                         <option value="Guest">Guest</option>
                         <option value="Director1">Director1</option>
                     </select>
+                    <input style="width:70px ;" class="form-control w-max d-inline-block" required type="number" name="presenters-count" id="">
                 </form>
 
             </div>
+        </div>
+    </div>
+    <!--  -->
+    <div class="card card-primary">
+        <div class="card-header">
 
             <p class=" text-bold"><?= __('admin-users') ?></p>
         </div>
@@ -270,13 +275,37 @@
                 editing: true,
 
             },
+
             {
                 type: "control",
                 editButton: true, // show edit button
                 deleteButton: true, // show delete button
 
-            }
+            },
+            {
+                type: "custom",
+                itemTemplate: function(value, row) {
+                    return ` <i onclick='sendEmail("${row['user-name'] }")' class="fa fa-envelope" aria-hidden="true"></i>`;
+                },
+                width: 20,
+                editing: false,
+            },
         ]
 
     });
+</script>
+
+
+<script>
+    function sendEmail(userName) {
+        $.ajax({
+            type: "POST",
+            url: "/api/admin/presenters/mail",
+            data: {
+                'user-name': userName
+            }
+        }).then(res => {
+            res.status ? toastr.success(res.message) : toastr.error(res.message);
+        });
+    }
 </script>
