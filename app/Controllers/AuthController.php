@@ -63,9 +63,13 @@ class AuthController extends Controller
                 || constant('MC_REQUIRE_PHONE_OTP')
                 && !in_array(app()->getUserIP(), $this->getIPAddresses())
             ) {
+
+                $otp = Hash::otp();
+                $ref = Hash::randString();
+
                 if (constant('MC_REQUIRE_PHONE_OTP')) {
                     try {
-                        $this->mobileOTP($user);
+                        $this->mobileOTP($user, $otp, $ref);
                     } catch (\Throwable $th) {
                         return back()->withErrors([
                             'otp' => $th->getMessage()
@@ -73,7 +77,8 @@ class AuthController extends Controller
                     }
                 }
                 if (constant('MC_REQUIRE_EMAIL_OTP')) {
-                    $mail = new OTPMail($user->{'email'}, $user->{'user-name'});
+
+                    $mail = new OTPMail($user->{'email'}, $user->{'user-name'}, $otp, $ref);
                     try {
                         $mail->send();
                     } catch (\Throwable $th) {
@@ -82,6 +87,9 @@ class AuthController extends Controller
                         ]);
                     }
                 }
+
+                $_SESSION['otp'] =  $otp;
+                $_SESSION['ref'] = $ref;
                 $_SESSION['verifying-email'] = $user->email;
                 return redirect('/auth/otp');
             }
@@ -90,7 +98,6 @@ class AuthController extends Controller
             $_SESSION['ROLE_ID'] = $user->{'role-id'};
             logger()->info('User logged in successfully.' . ' | login-ID:' . request()->data()->loginID .  '|  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
             redirect(Router::HOME);
-            /*if (constant('MC_REQUIRE_PHONE_OTP') == false && constant('MC_REQUIRE_EMAIL_OTP') == false) { // TODO uncomment} */
         } else {
             logger()->info('User Faild to login.| login-ID:' . request()->data()->loginID . '|  IP: ' . app()->getUserIP() . '| time:' . date('Y-m-d H:i:s'));
             return back()->withErrors(['email' => 'auth-faild']);
@@ -99,14 +106,9 @@ class AuthController extends Controller
 
 
 
-    public function otpMailForm()
+    public function otpForm()
     {
         return view('/auth/otp');
-    }
-
-    public function otpMobileForm()
-    {
-        return view('/auth/mobile-otp');
     }
 
     /*  
@@ -115,8 +117,7 @@ class AuthController extends Controller
     public function verifyOTP()
     {
         $rules = [
-            ...(constant('MC_REQUIRE_PHONE_OTP') ? ['mobile-otp' => ['required']] : []),
-            ...(constant('MC_REQUIRE_EMAIL_OTP') ? ['mail-otp' => ['required']] : []),
+            'otp' => ['required'],
             'verifying-email' => ['required']
         ];
         $validation = validator(request()->dataArray(), $rules);
@@ -127,14 +128,11 @@ class AuthController extends Controller
             back()->withErrors($th->errorsBag);
         }
 
-        if (constant('MC_REQUIRE_EMAIL_OTP') && $data['mail-otp'] != $_SESSION['mail-otp']) {
+        if ($_SESSION['otp'] != $data['otp']) {
+
+            logger()->info('User Faild to login.| email:' . $data['verifying-email'] . '|  IP: ' . app()->getUserIP() . '| time:' . date('Y-m-d H:i:s'));
             return back()->withErrors([
-                'mail-otp' => ' wrong'
-            ]);
-        }
-        if (constant('MC_REQUIRE_PHONE_OTP') && $data['mobile-otp'] != $_SESSION['mobile-otp']) {
-            return back()->withErrors([
-                'mobile-otp' => ' wrong'
+                'otp' => __('wrong-otp-message')
             ]);
         }
 
@@ -148,29 +146,26 @@ class AuthController extends Controller
     /* 
     
     */
-    protected function mobileOTP(object $user)
+    protected function mobileOTP(object $user, $otp, $ref)
     {
         $apiKey = constant('MC_SMS_KEY');
         $apiSecretKey = constant('MC_SMS_SECRET');
-
         $sms = new SMS($apiKey, $apiSecretKey);
-        //$message='OTP for '.$FetchInfo['SYMBOL'] .' Expire 5 Minutes OTP: '.$otp_gen .'(REF :'.$ref_gen .')';
-        $otp_gen = Hash::otp();
-        $ref_gen = Hash::randString();
+
 
         $body = [
             'msisdn' => $user->mobile,
-            'message' => 'OTP for ' . constant('MC_SYMBOL') . ' Expire 5 Minutes OTP: ' . $otp_gen . ' (REF :' . $ref_gen . ')',
+            'message' => 'OTP for ' . constant('MC_SYMBOL') . ' Expire 5 Minutes OTP: ' . $otp . ' (REF :' . $ref . ')',
             'sender' => 'QUIDLAB',
             'force' => 'corporate'
         ];
         $res = $sms->sendSMS($body);
 
         if ($res->httpStatusCode == 201 || true /*MOSTAFA_TODO remove true*/) {
-            $_SESSION['mobile-otp'] = $user->email . ':' . $otp_gen;
-            $_SESSION['mobile-ref'] = $ref_gen;
+            $_SESSION['mobile-otp'] = $otp;
+            $_SESSION['mobile-ref'] = $ref;
             $OTP_Phone_Success = 'OTP Sent Successfully on Phone ending with ' . substr($user->mobile, -4);
-            return redirect('/auth/mobile-otp');
+            return true;
         } else {
             throw new Exception('Error Sending OTP on Phone');
         }

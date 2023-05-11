@@ -6,6 +6,7 @@ use App\Controllers\Controller;
 use App\Models\Presenter;
 use App\Models\User;
 use Lib\Hash\Hash;
+use Lib\Mail\PresentersMail;
 use Lib\Services\Excel\Excel;
 
 class PresentersController extends Controller
@@ -285,5 +286,65 @@ class PresentersController extends Controller
         }
 
         return str_shuffle($password);
+    }
+
+
+
+
+
+    /* 
+    
+    */
+    public function sendMail()
+    {
+        $validator = validator(request()->dataArray(), [
+            'user-name' => ['required']
+        ]);
+        try {
+            $data = $validator->validate();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'errors' => $th->errorsBag
+            ], 422);
+        }
+        $user = Presenter::findByColName('user-name', $data['user-name']);
+        $companies = database()->Select("SELECT * FROM company WHERE  Tlang in ( SELECT Language_ID FROM languages WHERE Active=1 ) ORDER BY ID ");
+        $cos = [];
+        foreach ($companies as $key => $co) {
+            $cos[$co['Tlang']] = $co;
+        }
+        if (!$user) {
+            return response()->json([
+                'message' => 'user not found'
+            ]);
+        }
+
+        $mail = new PresentersMail($user->email, $user->{'first-name'}, [
+            'Title' => $user->title,
+            'FirstName' => $user->{'first-name'},
+            'LastName' => $user->{'last-name'},
+            'UserName' => $user->{'user-name'},
+            'Password' => Hash::decrypt($user->password, $user->{'user-name'}),
+            'Company_Name_Thai' => $cos['th']['Company_Name'],
+            'Company_Symbol' => constant('MC_SYMBOL'),
+            'Support_Link_Thai' => constant('MC_AGM_LINK'),
+            'Company_Phone' => constant('MC_COMP_PHONE'),
+            'Company_Email' => constant('MC_COMP_EMAIL'),
+            'Company_Name_Eng' => $cos['en']['Company_Name'],
+            'AGM_ADD_ENG' => constant('MC_AGM_LINK'),
+        ]);
+        try {
+            $mail->send();
+            return response()->json([
+                'status' => true,
+                'message' => __('mail-sent-message')
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => __('mail-not-sent-message')
+            ]);
+        }
+
     }
 }

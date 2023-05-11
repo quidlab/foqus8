@@ -36,15 +36,15 @@ abstract class Mail
             if ($response->statusCode() >= 200 &&  $response->statusCode() < 300) {
                 return $response;
             } else {
-                return false;// MOSTAFA_TODO => throw exception
+                throw new Exception("Mail Not Sent"); // MOSTAFA_TODO => throw exception
             }
         } catch (Exception $e) {
-            echo 'Caught exception: ' . $e->getMessage() . "\n";
+            throw $e;
         }
     }
 
 
     abstract protected function subject();
-    abstract protected function templateID():string;
-    abstract protected function templateData():array;
+    abstract protected function templateID(): string;
+    abstract protected function templateData(): array;
 }

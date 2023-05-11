@@ -59,12 +59,48 @@ class RoutesController extends Controller
     {
         return view('/admin/users/index', [], '/admin/index');
     }
-    
+
     /*
     
     */
     public function presenters()
     {
         return view('/admin/presenters/index', [], '/admin/index');
+    }
+
+    /*
+    
+    */
+    public function uploadFiles()
+    {
+        return view('/admin/upload-files', [], '/admin/index');
+    }
+
+    /*
+    
+    */
+    public function stakeholders()
+    {
+        $agendas = database()->Select("SELECT ID,AGENDA_ID FROM AGENDAS");
+        return view('/admin/stakeholders', [
+            'agendas' => $agendas
+        ], '/admin/index');
+    }
+
+
+    /*
+    
+    */
+    public function proxyNames()
+    {
+        return view('/admin/proxy-names', [], '/admin/index');
+    }
+
+    /*
+    
+    */
+    public function coupons()
+    {
+        return view('/admin/coupons', [], '/admin/index');
     }
 }
