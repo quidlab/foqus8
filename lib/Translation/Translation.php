@@ -1,4 +1,5 @@
 <?php
+
 namespace LIB\Translation;
 
 class Translation
@@ -30,9 +31,14 @@ class Translation
         return self::$instance;
     }
 
-    public function translate(string $text)
+    public function translate(string $text, array $data = [])
     {
-        return key_exists($text,$this->lines)?$this->lines[$text]:$text;
+        $str = key_exists($text, $this->lines) ? $this->lines[$text] : $text;
+
+        foreach ($data as $key => $value) {
+            $str = str_replace(":" . $key, $value, $str);
+        }
+        return $str;
     }
 
 

@@ -47,7 +47,7 @@ class AuthController extends Controller
         ");
         $ipAddresses = [];
         foreach ($data as $key => $value) {
-            $ipAddresses[] = $value['ipaddress'];
+            $ipAddresses[] = trim($value['ipaddress'], " ");
         }
         return  $ipAddresses;
     }
@@ -55,13 +55,12 @@ class AuthController extends Controller
 
     public function auth()
     {
-
         $user = User::findByColName('user-id', request()->data()->loginID);
         if ($user && password_verify(request()->data()->password, $user->password)) {
             if (
-                constant('MC_REQUIRE_EMAIL_OTP')
-                || constant('MC_REQUIRE_PHONE_OTP')
-                && !in_array(app()->getUserIP(), $this->getIPAddresses())
+                (constant('MC_REQUIRE_EMAIL_OTP')
+                || constant('MC_REQUIRE_PHONE_OTP'))
+                && (!in_array(trim(app()->getUserIP(), " "), $this->getIPAddresses()))
             ) {
 
                 $otp = Hash::otp();

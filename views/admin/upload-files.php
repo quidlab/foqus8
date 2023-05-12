@@ -52,12 +52,40 @@
                     } else {
                         toastr.error(res.message)
                     }
+                }).catch(res => {
+                    toastr.error(res.responseJSON?.message)
                 });
             },
             updateItem: function(item) {
+                var formData = new FormData();
+                formData.append("description", item.description);
+                formData.append("language", item.language);
+                formData.append("id", item.id);
+                if (typeof item.file_name === 'object' ) {
+                    formData.append("file_name", item.file_name, item.file_name.name);
+                }else{
+                    formData.append("file_name", null);
+                }
 
                 return $.ajax({
-                    type: "PUT",
+                    type: "POST",
+                    url: "/api/admin/upload-files/update",
+                    data: formData,
+                    contentType: false,
+                    processData: false
+                }).then(res => {
+                    if (res.status) {
+                        toastr.success(res.message)
+                    } else {
+                        toastr.error(res.message)
+                    }
+                }).catch(res => {
+                    toastr.error(res.responseJSON?.message)
+                });
+            },
+            deleteItem: function(item) {
+                return $.ajax({
+                    type: "DELETE",
                     url: "/api/admin/upload-files",
                     data: item
                 }).then(res => {
@@ -66,16 +94,25 @@
                     } else {
                         toastr.error(res.message)
                     }
+                }).catch(res => {
+                    toastr.error(res.responseJSON?.message)
                 });
             },
 
         },
 
         fields: [{
+                name: "id",
+                title: <?= "'" . __('id') . "'" ?>,
+                type: "text",
+                editing: false,
+                visible: false,
+            },
+            {
                 name: "description",
                 title: <?= "'" . __('description') . "'" ?>,
                 type: "text",
-                editing: false,
+                editing: true,
             },
             {
                 name: "language",
@@ -99,20 +136,37 @@
                 type: "custom",
                 editing: true,
                 itemTemplate: function(value) {
-                    return 'file';
+                    var re = /(?:\.([^.]+))?$/;
+                    let ex = re.exec(value)
+                    let icon = "";
+                    if (['pdf'].includes(ex[1])) {
+                        icon = '<i class="fa fa-file-pdf" aria-hidden="true"></i>';
+                    } else if (['jpg', 'jpeg', 'png'].includes(ex[1])) {
+                        icon = '<i class="fa fa-file-image" aria-hidden="true"></i>';
+                    } else if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ex[1])) {
+                        icon = '<i class="fa fa-file" aria-hidden="true"></i>';
+                    }
+                    return `<a href="<?= assets() ?>${"/"+value}" download>${icon}</a>`;
                 },
                 insertTemplate: function() {
+                    var insertControl = this.insertControl = $("<input>").prop("type", "file");
+                    return insertControl;
+                },
+                editTemplate: function(value) {
                     var insertControl = this.insertControl = $("<input>").prop("type", "file");
                     return insertControl;
                 },
                 insertValue: function() {
                     return this.insertControl[0].files[0];
                 },
+                editValue: function() {
+                    return this.insertControl[0].files[0];
+                }
             },
             {
                 type: "control",
                 editButton: true, // show edit button
-                deleteButton: false, // show delete button
+                deleteButton: true, // show delete button
             }
         ]
 

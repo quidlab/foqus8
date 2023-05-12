@@ -53,7 +53,6 @@ class Router
 
         if ($matchedRoute == null) {
             return new NotFoundException("Page NOT Found", 404, null);
-
         } else {
             /* call middlewares */
             foreach ($matchedRoute['middlewares'] as $middleware) {
@@ -66,19 +65,23 @@ class Router
             /* call middlewares end */
 
             $callback = $matchedRoute['handler'];
-            if (is_callable($callback)) {
-                call_user_func_array($callback, [
-                    array_merge($_GET, $_POST, $_FILES)
-                ]);
-            } else {
-                $controller = new $callback[0]();
-                try {
+            try {
+                if (is_callable($callback)) {
+                    call_user_func_array($callback, [
+                        array_merge($_GET, $_POST, $_FILES)
+                    ]);
+                } else {
+                    $controller = new $callback[0]();
                     call_user_func_array([$controller, $callback[1]], [
                         array_merge($_GET, $_POST, $_FILES)
                     ]);
-                } catch (\Throwable $th) {
-                    echo $th->getMessage(); // MOSTAFA_TODO => return data inside response()
                 }
+            } catch (\Throwable $th) {
+                return response()->json([
+                    "message" => $th->getMessage(),
+                    "code" => $th->getCode(),
+                    'status' => false
+                ], $th->getCode());
             }
         }
     }
