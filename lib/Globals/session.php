@@ -2,6 +2,6 @@
 
 use LIB\Session\Session;
 
-function session(){
-    return new Session();
+function session($key){
+    return Session::get($key);
 }

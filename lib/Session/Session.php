@@ -3,10 +3,7 @@
 namespace LIB\Session;
 
 class Session {
-
-
-
-    public function get($key = '*'){
-        return $key == '*' ? $_SESSION : $_SESSION[$key];
+    static function get($key){
+        return isset($_SESSION[$key])?$_SESSION[$key]:'';
     }
 }

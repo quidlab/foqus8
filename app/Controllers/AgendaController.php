@@ -66,10 +66,10 @@ class AgendaController extends Controller
         });
         
         if ($result) {
-            logger()->info("Created new agenda.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Created new agenda.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return $request->back()->withMessage('Created');
         } else {
-            logger()->info("Faild to create agenda.  User_ID: ".session()->get('uname')." IP ADDRESS: " .app()->getUserIP(). " Time:" .date('Y-m-d H:i:s'));
+            logger()->info("Faild to create agenda.  User_ID: ".session('uname')." IP ADDRESS: " .app()->getUserIP(). " Time:" .date('Y-m-d H:i:s'));
             return $request->back()->withMessage('Something went wrong');
         }
     }
@@ -116,13 +116,13 @@ class AgendaController extends Controller
 
 
         if (/* $results1 && $results2 && $results3 */true) { // TODO same problem for Run method rerturn value (affected rows count)
-            logger()->info("Deleted agenda.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Deleted agenda.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 1,
                 'message' => 'Deleted'
             ]);
         } else {
-            logger()->info("Faild to delete agenda.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Faild to delete agenda.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 0,
                 'message' => 'Something went wrong'
