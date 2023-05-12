@@ -28,4 +28,29 @@ class File
         }
         return  false;
     }
+
+
+    /* 
+        if the file not exists nothing happens
+    */
+    static function delete($path)
+    {
+        if (!file_exists($path)) {
+            return false;
+        }
+        return unlink($path);
+    }
+
+
+    /* 
+        the file should be deleted
+        otherwise Exception will be thrown
+    */
+    static function forceDelete($path)
+    {
+        if (!file_exists($path)) {
+            throw new Exception("File Not Exists", 422);
+        }
+        return unlink($path);
+    }
 }

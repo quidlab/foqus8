@@ -99,8 +99,10 @@ class UploadFilesController extends Controller
         // MOSTAFA_TODO delete file first
         $validator = validator(request()->dataArray(), [
             'id' => ['required'],
+            'file_name' => ['required'],
         ]);
         $data = $validator->validate();
+        File::forceDelete($data['file_name']);
 
         database()->Run("DELETE FROM downloads Where id = ?", [$data['id']]);
         return response()->json([
