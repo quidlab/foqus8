@@ -28,9 +28,13 @@ class UploadFilesController extends Controller
         ]);
         $data = $validator->validate();
 
-
-
         $path = File::storePublic("file_name", "uploaded_files");
+        if (!$path) {
+            return response()->json([
+                'message' => __('faild'),
+                'status' => false
+            ]);
+        };
 
         $result = database()->Run(
             "INSERT INTO [downloads] (file_name,language,description) VALUES (?,?,?)",
@@ -102,7 +106,7 @@ class UploadFilesController extends Controller
             'file_name' => ['required'],
         ]);
         $data = $validator->validate();
-        File::forceDelete($data['file_name']);
+        File::delete($data['file_name']);
 
         database()->Run("DELETE FROM downloads Where id = ?", [$data['id']]);
         return response()->json([

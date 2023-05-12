@@ -136,6 +136,7 @@
                 type: "custom",
                 editing: true,
                 itemTemplate: function(value) {
+                    console.log(value);
                     var re = /(?:\.([^.]+))?$/;
                     let ex = re.exec(value)
                     let icon = "";
@@ -146,7 +147,7 @@
                     } else if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ex[1])) {
                         icon = '<i class="fa fa-file" aria-hidden="true"></i>';
                     }
-                    return `<a href="<?= assets() ?>${"/"+value}" download>${icon}</a>`;
+                    return `<a type="button" href="<?= assets() ?>${"/"+value}" download>${icon}</a>`;
                 },
                 insertTemplate: function() {
                     var insertControl = this.insertControl = $("<input>").prop("type", "file");

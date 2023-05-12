@@ -11,7 +11,7 @@ class File
     static function storePublic($fileName, $toPath = ""): string|bool
     {
         $doc_root = $_SERVER["DOCUMENT_ROOT"];
-        $storagePath = str_replace('"\"', '/', $doc_root) . '/storage/';
+        $directory = str_replace('"\"', '/', $doc_root) . '/storage/' . constant('MC_SYMBOL') . "/" . $toPath;
 
 
         if (!isset($_FILES[$fileName])) {
@@ -22,9 +22,13 @@ class File
         }
 
         $name = basename($_FILES[$fileName]["name"]);
-        $finalPath = $storagePath . "$toPath/$name";
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $finalPath = $directory . "/$name";
         if (move_uploaded_file($_FILES[$fileName]["tmp_name"], $finalPath)) {
-            return "storage/$toPath/$name";
+            return '/storage/' . constant('MC_SYMBOL') . "/" . $toPath ."/$name";
         }
         return  false;
     }
