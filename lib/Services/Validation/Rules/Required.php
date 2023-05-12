@@ -23,7 +23,9 @@ class Required extends Rule
     {
         $this->key = $key;
         return in_array($key, array_keys($data))
-            && isset($data[$key]);
+            && isset($data[$key])
+            && $data[$key] != NULL
+            && $data[$key] != '';
     }
 
 

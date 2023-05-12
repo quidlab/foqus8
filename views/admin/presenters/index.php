@@ -80,7 +80,7 @@
     </div>
     <!--  -->
     <div class="card card-primary">
-        <div class="card-header cursor-pointer">
+        <div class="card-header">
             <form action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
                 <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?> </button>
                 <input type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
@@ -199,7 +199,7 @@
                 name: "title",
                 title: <?= "'" . __('title') . "'" ?>,
                 type: "text",
-                editing: false,
+                editing: true,
             },
             {
                 name: "first-name",
@@ -207,8 +207,6 @@
                 type: "text",
                 editing: true,
                 width: 100,
-
-                validate: "required"
             },
             {
                 name: "last-name",
@@ -216,8 +214,6 @@
                 type: "text",
                 editing: true,
                 width: 100,
-
-                validate: "required"
             },
             {
                 name: "user-name",
@@ -285,9 +281,9 @@
             {
                 type: "custom",
                 itemTemplate: function(value, row) {
-                    return ` <i onclick='sendEmail("${row['user-name'] }")' class="fa fa-envelope" aria-hidden="true"></i>`;
+                    return ` <i onclick='sendEmail("${row['user-name'] }")' style="display:block" class="fa fa-envelope" aria-hidden="true"></i>`;
                 },
-                width: 20,
+                width: 40,
                 editing: false,
             },
         ]
