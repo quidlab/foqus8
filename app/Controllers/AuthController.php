@@ -163,7 +163,6 @@ class AuthController extends Controller
         if ($res->httpStatusCode == 201 || true /*MOSTAFA_TODO remove true*/) {
             $_SESSION['mobile-otp'] = $otp;
             $_SESSION['mobile-ref'] = $ref;
-            $OTP_Phone_Success = 'OTP Sent Successfully on Phone ending with ' . substr($user->mobile, -4);
             return true;
         } else {
             throw new Exception('Error Sending OTP on Phone');

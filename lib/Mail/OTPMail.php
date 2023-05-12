@@ -8,7 +8,7 @@ class OTPMail extends Mail
 
     protected $otp;
     protected $ref;
-    public function __construct($toEmail, $toName = null, $otp, $ref)
+    public function __construct($toEmail, $toName , $otp, $ref)
     {
         $this->otp = $otp;
         $this->ref = $ref;
