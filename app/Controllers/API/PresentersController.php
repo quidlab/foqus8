@@ -345,6 +345,27 @@ class PresentersController extends Controller
                 'message' => __('mail-not-sent-message')
             ]);
         }
+    }
 
+
+
+    public function export()
+    {
+        $data = validator(request()->dataArray(), [
+            'role' => ['required']
+        ])->validate();
+
+        Excel::export(
+            [
+                'user-name',
+                'first-name',
+                'last-name',
+                'title',
+                'role',
+                'email',
+                'email-sent'
+            ],
+            $data['role'] == 'all' ? Presenter::get() : Presenter::where('role', $data['role'])::get() // MOSTAFA_ADD WHERE
+        );
     }
 }

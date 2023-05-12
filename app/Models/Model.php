@@ -11,18 +11,25 @@ abstract class Model
     protected static $readable;
     protected static $primaryKey;
     protected static $guardKey;
+    protected static $query;
+    protected static $wheres = [];
     protected $columns;
 
 
-    public static function get(array $columns = [])
+    public static function get(array $columns = []):array
     {
+        $wheres = "";
+        foreach (static::$wheres as $key => $value) {
+            $wheres .= " Where [" . $value['column'] . "] " . $value['operator'] . " '" . $value['value'] . "'";
+        }
         if (count($columns) == 0) {
-            $sql = "SELECT  [" . implode("],[", static::$readable) . "] FROM " . static::$table;
+            $sql = "SELECT  [" . implode("],[", static::$readable) . "] FROM " . static::$table . $wheres;
         } else {
             $sql = "SELECT  [" . implode("],[", $columns) . "] FROM " . static::$table;
         }
         try {
-            return self::formatter(database()->Select($sql, []));
+            $result = database()->Select($sql, []);
+            return $result == null ? [] : $result;
         } catch (QueryException $th) {
             throw $th;
         }
@@ -61,7 +68,7 @@ abstract class Model
     public static function deleteByColName(string $colName, $colValue)
     {
         $sql = "DELETE FROM " . static::$table . " WHERE [" . $colName . "] = ?";
-        
+
         try {
             return database()->Run($sql, [$colValue]);
         } catch (\Throwable $th) {
@@ -126,5 +133,12 @@ abstract class Model
     protected static function formatter($results)
     {
         return  $results;
+    }
+
+
+    public static function where($column, $value = null, $operator = '=')
+    {
+        static::$wheres[] = compact('column', 'operator', 'value');
+        return static::class;
     }
 }

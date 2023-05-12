@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
+
 class Excel
 {
     protected static $mimes = [
@@ -67,16 +68,29 @@ class Excel
 
 
 
-    static function export(){
+    static function export(array $headers, array $data)
+    {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'First_Name');
-        $sheet->setCellValue('B1', 'Last_Name');
-        $sheet->setCellValue('C1', 'Email');
-        $sheet->setCellValue('D1', 'DOB');
-        $sheet->setCellValue('E1', 'Contact_No');
+        $col = 1;
+        foreach ($headers as $header) {
+            $row = 1;
+            $sheet->setCellValue([$col, $row], $header);
+            foreach ($data as $key => $value) {
+                $row++;
+                if (key_exists($header, $value)) {
+                    $sheet->setCellValue([$col, $row], $value[$header]);
+                } else {
+                    throw new Exception($header . " Not Exist In Array");
+                }
+            }
+            $col++;
+        }
         $writer = new XlsxWriter($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=output.xlsx');
+        $writer->save('php://output');
         return $writer;
     }
 

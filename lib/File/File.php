@@ -39,10 +39,12 @@ class File
     */
     static function delete($path)
     {
-        if (!file_exists($path)) {
+        $doc_root = $_SERVER["DOCUMENT_ROOT"];
+        $directory = str_replace('"\"', '/', $doc_root) . $path;
+        if (!file_exists($directory)) {
             return false;
         }
-        return unlink($path);
+        return unlink($directory);
     }
 
 
@@ -52,9 +54,11 @@ class File
     */
     static function forceDelete($path)
     {
-        if (!file_exists($path)) {
+        $doc_root = $_SERVER["DOCUMENT_ROOT"];
+        $directory = str_replace('"\"', '/', $doc_root) . $path;
+        if (!file_exists($directory )) {
             throw new Exception("File Not Exists", 422);
         }
-        return unlink($path);
+        return unlink($directory);
     }
 }

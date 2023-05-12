@@ -98,6 +98,16 @@
                     <input style="width:70px ;" class="form-control w-max d-inline-block" required type="number" name="presenters-count" id="">
                 </form>
 
+                <form class="float-right d-inline-block" action="/api/admin/presenters/export" method="post">
+                    <select name="role" class="form-control w-max d-inline-block" required>
+                        <option value="all"><?= __('all') ?></option>
+                        <option value="Company Secretary">Company Secretary</option>
+                        <option value="Director">Director</option>
+                        <option value="Guest">Guest</option>
+                        <option value="Director1">Director1</option>
+                    </select>
+                    <button class="btn btn-excel">Export</button>
+                </form>
             </div>
         </div>
     </div>

@@ -40,7 +40,7 @@
                 formData.append("language", insertingItem.language);
                 formData.append("file_name", insertingItem.file_name, insertingItem.file_name.name);
 
-                return $.ajax({
+                let t =$.ajax({
                     type: "POST",
                     url: "/api/admin/upload-files",
                     data: formData,
@@ -55,6 +55,7 @@
                 }).catch(res => {
                     toastr.error(res.responseJSON?.message)
                 });
+                return  t;
             },
             updateItem: function(item) {
                 var formData = new FormData();
@@ -136,7 +137,6 @@
                 type: "custom",
                 editing: true,
                 itemTemplate: function(value) {
-                    console.log(value);
                     var re = /(?:\.([^.]+))?$/;
                     let ex = re.exec(value)
                     let icon = "";

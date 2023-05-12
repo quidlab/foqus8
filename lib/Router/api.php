@@ -40,6 +40,7 @@ $router->post('/api/admin/presenters/create-many', [PresentersController::class,
 $router->delete('/api/admin/presenters', [PresentersController::class, 'destroy'], new AuthMiddleware('uname'));
 $router->put('/api/admin/presenters', [PresentersController::class, 'update'], new AuthMiddleware('uname'));
 $router->post('/api/admin/presenters/import', [PresentersController::class, 'import'], new AuthMiddleware('uname'));
+$router->post('/api/admin/presenters/export', [PresentersController::class, 'export'], new AuthMiddleware('uname'));
 $router->post('/api/admin/presenters/mail', [PresentersController::class, 'sendMail'], new AuthMiddleware('uname'));
 
 /* Addresses */
