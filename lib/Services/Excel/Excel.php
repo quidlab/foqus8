@@ -7,7 +7,7 @@ use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
-
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 class Excel
 {
     protected static $mimes = [
@@ -64,6 +64,22 @@ class Excel
 
         return $rows;
     }
+
+
+
+    static function export(){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'First_Name');
+        $sheet->setCellValue('B1', 'Last_Name');
+        $sheet->setCellValue('C1', 'Email');
+        $sheet->setCellValue('D1', 'DOB');
+        $sheet->setCellValue('E1', 'Contact_No');
+        $writer = new XlsxWriter($spreadsheet);
+        return $writer;
+    }
+
 
     /* 
     
