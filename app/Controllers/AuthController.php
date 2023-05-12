@@ -138,7 +138,7 @@ class AuthController extends Controller
         $user = User::findByColName('email', $data['verifying-email']);
         $_SESSION[User::$guardKey] = $user->{'user-id'};
         $_SESSION['ROLE_ID'] = $user->{'role-id'};
-        logger()->info('User logged in successfully.' . ' | login-ID:' . request()->data()->loginID .  '|  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
+        logger()->info('User logged in successfully.' . ' | login-ID:' .  $data['verifying-email']  .  '|  IP: ' . app()->getUserIP() . ' time:' . date('Y-m-d H:i:s'));
         redirect(Router::HOME);
     }
 
