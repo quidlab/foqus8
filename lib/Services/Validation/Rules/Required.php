@@ -5,6 +5,7 @@ namespace Lib\Services\Validation\Rules;
 class Required extends Rule
 {
     protected $data;
+    protected $key;
 
     /* 
     
@@ -20,6 +21,7 @@ class Required extends Rule
     */
     public function validate(array $data, $key): bool
     {
+        $this->key = $key;
         return in_array($key, array_keys($data))
             && isset($data[$key]);
     }
@@ -30,6 +32,8 @@ class Required extends Rule
     */
     public function message(): string
     {
-        return __('required-message');
+        return __('required-message',[
+            'name' => $this->key
+        ]);
     }
 }

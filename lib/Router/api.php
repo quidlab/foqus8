@@ -50,6 +50,8 @@ $router->delete('/api/admin/ipaddresses', [IPAddressesController::class, 'destro
 /* Upload Files */
 $router->get('/api/admin/upload-files', [UploadFilesController::class, 'index'], new AuthMiddleware('uname'));
 $router->post('/api/admin/upload-files', [UploadFilesController::class, 'store'], new AuthMiddleware('uname'));
+$router->post('/api/admin/upload-files/update', [UploadFilesController::class, 'update'], new AuthMiddleware('uname'));
+$router->delete('/api/admin/upload-files', [UploadFilesController::class, 'destroy'], new AuthMiddleware('uname'));
 
 
 /* StakeHolders */

@@ -46,7 +46,7 @@ trait URL
     */
     public function dataArray(): array
     {
-        parse_str(file_get_contents("php://input"), ${'_' . $this->method()});
+        parse_str(file_get_contents("php://input"), ${'_' . $this->method()});// MOSTAFA_TODO NOT BEST IMPLEMENTATION USE $_POST,$_GET ,... instead
         return ${'_' . $this->method()};
     }
 }

@@ -10,14 +10,16 @@ class ValidationException extends CustomException
     public function __construct(array $errorsBag = [], $code = 422, Throwable $previous = null)
     {
         $this->errorsBag = $errorsBag;
+        parent::__construct($this->error(), $code);
     }
 
     public function __toString()
     {
-        return print_r($this->errorsBag);
+        return $this->error();
     }
 
-    public function error(){
-        return count($this->errorsBag) > 0 ?array_values($this->errorsBag)[0]: NULL;
+    public function error()
+    {
+        return count($this->errorsBag) > 0 ? array_values($this->errorsBag)[0] : NULL;
     }
 }
