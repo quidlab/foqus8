@@ -93,13 +93,13 @@ class TranslationsController extends Controller
 
 
         if ($result) {
-            logger()->info("Added new translation.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Added new translation.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 1,
                 'message' => 'Created'
             ]);
         } else {
-            logger()->info("Faild to add new translation.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Faild to add new translation.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 0,
                 'message' => 'Some thing went wrong'
@@ -122,13 +122,13 @@ class TranslationsController extends Controller
         $params = [$_DELETE['Key']];
         $result = $this->DB->Run($stmt, $params);
         if ($result) {
-            logger()->info("Deleted translation.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Deleted translation.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 1,
                 'message' => 'Deleted'
             ]);
         } else {
-            logger()->info("Faild To Delete translation.  User_ID: " . session()->get('uname') . " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
+            logger()->info("Faild To Delete translation.  User_ID: " . session('uname'). " IP ADDRESS: " . app()->getUserIP() . " Time:" . date('Y-m-d H:i:s'));
             return response()->json([
                 'status' => 0,
                 'message' => 'Some thing went wrong'
