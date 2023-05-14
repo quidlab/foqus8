@@ -7,23 +7,21 @@ use App\Exceptions\QueryException;
 abstract class Model
 {
     protected static $table;
-    protected static $fillable;
+    protected $fillable;
     protected static $readable;
-    protected static $primaryKey;
-    protected static $guardKey;
-    protected static $query;
+    protected $primaryKey;
+    protected $guardKey;
+    protected $query;
     protected static $wheres = [];
+    protected static $whereStr = '';
     protected $columns;
 
 
-    public static function get(array $columns = []):array
+
+    public static function get(array $columns = []): array
     {
-        $wheres = "";
-        foreach (static::$wheres as $key => $value) {
-            $wheres .= " Where [" . $value['column'] . "] " . $value['operator'] . " '" . $value['value'] . "'";
-        }
         if (count($columns) == 0) {
-            $sql = "SELECT  [" . implode("],[", static::$readable) . "] FROM " . static::$table . $wheres;
+            $sql = "SELECT  [" . implode("],[", static::$readable) . "] FROM " . static::$table . static::$whereStr;
         } else {
             $sql = "SELECT  [" . implode("],[", $columns) . "] FROM " . static::$table;
         }
@@ -36,10 +34,11 @@ abstract class Model
     }
 
 
-    /* 
+
+    /*
     
     */
-    public static function create(array $data)
+    public function create(array $data)
     {
         $keys = array_keys($data);
         $values = array_values($data);
@@ -47,27 +46,27 @@ abstract class Model
         $cols = "[" . implode("],[", $keys) . "]";
         $vals = "'" . implode("','", $values) . "'";
 
-        $sql = "INSERT INTO " . static::$table . " (" . $cols . ") Values(" . $vals . ") ;";
+        $sql = "INSERT INTO " . $this->table . " (" . $cols . ") Values(" . $vals . ") ;";
         return database()->Run($sql, []);
     }
 
 
 
-    /* 
+    /*
     
     */
-    public static function delete($primaryKey)
+    public function delete($primaryKey)
     {
-        $sql = "DELETE FROM " . static::$table . " WHERE [" . static::$primaryKey . "] = ?";
+        $sql = "DELETE FROM " . $this->table . " WHERE [" . $this->primaryKey . "] = ?";
         return database()->Run($sql, [$primaryKey]);
     }
 
-    /* 
+    /*
     
     */
-    public static function deleteByColName(string $colName, $colValue)
+    public function deleteByColName(string $colName, $colValue)
     {
-        $sql = "DELETE FROM " . static::$table . " WHERE [" . $colName . "] = ?";
+        $sql = "DELETE FROM " . $this->table . " WHERE [" . $colName . "] = ?";
 
         try {
             return database()->Run($sql, [$colValue]);
@@ -76,31 +75,31 @@ abstract class Model
         }
     }
 
-    /* 
+    /*
     
     */
-    public static function find($primaryKey)
+    public function find($primaryKey)
     {
-        $sql = "SELECT * FROM " . static::$table . " WHERE [" . static::$primaryKey . "] = ?";
+        $sql = "SELECT * FROM " . $this->table . " WHERE [" . $this->primaryKey . "] = ?";
         return database()->Run($sql, [$primaryKey]);
     }
 
     /* 
     
     */
-    public static function update(array $data, $primaryKey = null)
+    public function update(array $data, $primaryKey = null)
     {
-        $primaryKey = $primaryKey == null ? static::$primaryKey : $primaryKey;
-        return $sql = "UPDATE " . static::$table . " SET " . http_build_query($data, '', ', ') . " Where " . static::$primaryKey . " = ?";
+        $primaryKey = $primaryKey == null ? $this->primaryKey : $primaryKey;
+        return $sql = "UPDATE " . $this->table . " SET " . http_build_query($data, '', ', ') . " Where " . $this->primaryKey . " = ?";
         return database()->Run($sql, [$data[$primaryKey]]);
     }
 
     /* 
     
     */
-    public static function getByColName(string $colName, $colValue): array
+    public function getByColName(string $colName, $colValue): array
     {
-        $sql = "SELECT * FROM " . static::$table . " WHERE [" . $colName . "] = ?";
+        $sql = "SELECT * FROM " . $this->table . " WHERE [" . $colName . "] = ?";
         $results =  database()->Select($sql, [$colValue]);
         $data = [];
         if ($results) {
@@ -111,12 +110,12 @@ abstract class Model
         return $data;
     }
 
-    /* 
+    /*
     
     */
-    public static function findByColName(string $colName, $colValue): object|null|bool
+    public function findByColName(string $colName, $colValue): object|null|bool
     {
-        $sql = "SELECT * FROM " . static::$table . " WHERE [" . $colName . "] = ?";
+        $sql = "SELECT * FROM " . $this->table . " WHERE [" . $colName . "] = ?";
         $results =  database()->Select($sql, [$colValue]);
         $data = null;
         if ($results && count($results)) {
@@ -130,7 +129,7 @@ abstract class Model
     /* 
     
     */
-    protected static function formatter($results)
+    protected function formatter($results)
     {
         return  $results;
     }
@@ -138,7 +137,20 @@ abstract class Model
 
     public static function where($column, $value = null, $operator = '=')
     {
-        static::$wheres[] = compact('column', 'operator', 'value');
+        static::$whereStr .= " Where [" . $column . "] " . $operator . " '" . $value . "'";
+        return static::class;
+    }
+
+
+    public static function andWhere($column, $value = null, $operator = '='): string
+    {
+        static::$whereStr .= " AND [" . $column . "] " . $operator . " '" . $value . "'";
+        return static::class;
+    }
+
+    public static function orWhere($column, $value = null, $operator = '='): string
+    {
+        static::$whereStr .= " OR [" . $column . "] " . $operator . " '" . $value . "'";
         return static::class;
     }
 }
