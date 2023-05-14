@@ -27,24 +27,29 @@ class App
 
 
 
-    public function getUserIP()
-    {
-        $ipaddress = '';
-        if (key_exists('HTTP_X_FORWARDED_FOR',$_SERVER))
-           //$ipaddress = reset(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])); 
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR']; // there is warning here on the server
-        else if (key_exists('HTTP_CLIENT_IP',$_SERVER))
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        else if (key_exists('HTTP_X_FORWARDED',$_SERVER))
+    public function getUserIP(){
+         $ipaddress = '';
+         if($_SERVER['HTTP_X_FORWARDED_FOR']){
+            $k= explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ipaddress = reset($k);
+         }
+         else if ($_SERVER['HTTP_CLIENT_IP'])
+             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+         else if($_SERVER['HTTP_X_FORWARDED'])
             $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        else if (key_exists('HTTP_FORWARDED_FOR',$_SERVER))
+         else if($_SERVER['HTTP_FORWARDED_FOR'])
             $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        else if (key_exists('HTTP_FORWARDED',$_SERVER))
-            $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        else if (key_exists('REMOTE_ADDR',$_SERVER))
+         else if($_SERVER['HTTP_FORWARDED'])
+             $ipaddress = $_SERVER['HTTP_FORWARDED'];
+         else if($_SERVER['REMOTE_ADDR'])
             $ipaddress = $_SERVER['REMOTE_ADDR'];
-        else
+         else
             $ipaddress = 'UNKNOWN';
-        return $ipaddress;
+
+         $ipaddress = explode(':', $ipaddress);
+         return $ipaddress[0];
+        //return filter_var($ipaddress, FILTER_VALIDATE_IP);
+        
     }
+    
 }

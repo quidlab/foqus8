@@ -80,14 +80,24 @@
     </div>
     <!--  -->
     <div class="card card-primary">
-        <div class="card-header">
-            <form action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
+        <div class="card-header" style="display:flex; justify-content:space-between;flex-direction:row-reverse;">
+            <form style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;" action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
                 <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?> </button>
-                <input type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
+                <input class="btn btn-excel" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
+                <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right ml-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
             </form>
-            <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
+            <form style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;display:inline-block" class="float-right d-inline-block" action="/api/admin/presenters/export" method="post">
+                <select name="role" class="form-control w-max d-inline-block" required>
+                    <option value="all"><?= __('all') ?></option>
+                    <option value="Company Secretary">Company Secretary</option>
+                    <option value="Director">Director</option>
+                    <option value="Guest">Guest</option>
+                    <option value="Director1">Director1</option>
+                </select>
+                <button class="btn btn-excel">Export</button>
+            </form>
             <div class=" mr-4">
-                <form action="/api/admin/presenters/create-many" method="post">
+                <form action="/api/admin/presenters/create-many" method="post" style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;">
                     <button class="btn btn-excel">Create</button>
                     <select name="role" class="form-control w-max d-inline-block" required>
                         <option value="Company Secretary">Company Secretary</option>
@@ -96,17 +106,6 @@
                         <option value="Director1">Director1</option>
                     </select>
                     <input style="width:70px ;" class="form-control w-max d-inline-block" required type="number" name="presenters-count" id="">
-                </form>
-
-                <form class="float-right d-inline-block" action="/api/admin/presenters/export" method="post">
-                    <select name="role" class="form-control w-max d-inline-block" required>
-                        <option value="all"><?= __('all') ?></option>
-                        <option value="Company Secretary">Company Secretary</option>
-                        <option value="Director">Director</option>
-                        <option value="Guest">Guest</option>
-                        <option value="Director1">Director1</option>
-                    </select>
-                    <button class="btn btn-excel">Export</button>
                 </form>
             </div>
         </div>
