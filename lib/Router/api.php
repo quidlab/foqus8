@@ -5,6 +5,7 @@ use App\Controllers\API\IPAddressesController;
 use App\Controllers\API\LanguagesController;
 use App\Controllers\API\PresentersController;
 use App\Controllers\API\ProxyNamesController;
+use App\Controllers\API\ShareholdersController;
 use App\Controllers\API\StakeHoldersController;
 use App\Middleware\AuthMiddleware;
 use LIB\Router\Router;
@@ -77,4 +78,6 @@ $router->put('/api/admin/coupons', [CouponsController::class, 'update'], new Aut
 $router->delete('/api/admin/coupons', [CouponsController::class, 'destroy'], new AuthMiddleware('uname'));
 
 
+/* Shareholders */
+$router->post('/api/admin/shareholders/import', [ShareholdersController::class, 'import'], new AuthMiddleware('uname'));
 

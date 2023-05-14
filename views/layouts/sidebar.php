@@ -37,7 +37,7 @@
                 <a href="/admin/admin-tools" class="nav-link">
                   <i class="nav-icon fa-solid fa-user-gear"></i>
                   <p>
-                  <?= __('admin-tools') ?>
+                    <?= __('admin-tools') ?>
                   </p>
                 </a>
               </li>
@@ -45,7 +45,7 @@
                 <a href="/admin/manage-company" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
-                  <?= __('manage-company') ?>
+                    <?= __('manage-company') ?>
                   </p>
                 </a>
               </li>
@@ -53,7 +53,7 @@
                 <a href="/admin/system-constants" class="nav-link">
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
-                  <?= __('system-constants') ?>
+                    <?= __('system-constants') ?>
                   </p>
                 </a>
               </li>
@@ -147,6 +147,15 @@
                   <i class="nav-icon fa-solid fa-pen-to-square"></i>
                   <p>
                     <?= __('coupons') ?>
+                  </p>
+                </a>
+              </li>
+              <!-- proxyNames -->
+              <li class="nav-item">
+                <a href="/admin/import-shareholders" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('import-shareholders') ?>
                   </p>
                 </a>
               </li>

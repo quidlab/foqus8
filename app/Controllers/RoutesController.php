@@ -103,4 +103,19 @@ class RoutesController extends Controller
     {
         return view('/admin/coupons', [], '/admin/index');
     }
+
+
+    /*
+    
+    */
+    public function importShareholders()
+    {
+        $requiredFields = json_decode(constant('MC_Shreholders_Required_Fields'));
+        $egmCount = database()->Select("SELECT count(*) AS total FROM EGM")[0];
+
+        return view('/admin/import-shareholders', [
+            'requiredFields' => $requiredFields,
+            'egmCount' => reset($egmCount),
+        ], '/admin/index');
+    }
 }

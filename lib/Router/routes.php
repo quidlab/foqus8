@@ -39,6 +39,7 @@ $router->get('/admin/upload-files', [RoutesController::class, 'uploadFiles'], ne
 $router->get('/admin/stakeholders', [RoutesController::class, 'stakeholders'], new AuthMiddleware('uname'));
 $router->get('/admin/proxy-names', [RoutesController::class, 'proxyNames'], new AuthMiddleware('uname'));
 $router->get('/admin/coupons', [RoutesController::class, 'coupons'], new AuthMiddleware('uname'));
+$router->get('/admin/import-shareholders', [RoutesController::class, 'importShareholders'], new AuthMiddleware('uname'));
 
 /* Company */
 $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMiddleware('uname'));

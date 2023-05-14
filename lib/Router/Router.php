@@ -57,7 +57,7 @@ class Router
             /* call middlewares */
             foreach ($matchedRoute['middlewares'] as $middleware) {
                 try {
-                    call_user_func([$middleware, 'handler']);
+                    call_user_func([$middleware, 'handler']); // MOSTAFA_TODO add exxception for non existing functions
                 } catch (\Throwable $th) {
                     throw $th;
                 }
@@ -80,7 +80,11 @@ class Router
                 return response()->json([
                     "message" => $th->getMessage(),
                     "code" => $th->getCode(),
-                    'status' => false
+                    'status' => false,
+                    'trace' => [
+                        'file' => $th->getFile(),
+                        'line' => $th->getLine(),
+                    ]
                 ], $th->getCode());
             }
         }
