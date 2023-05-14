@@ -62,6 +62,7 @@
     .btn-excel{
       background-color: #21a366;
       color: #fff;
+      cursor: pointer;
     }
 
   </style>

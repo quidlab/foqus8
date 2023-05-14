@@ -9,8 +9,8 @@ abstract class Model
     protected static $table;
     protected $fillable;
     protected static $readable;
-    protected $primaryKey;
-    protected $guardKey;
+    protected static $primaryKey;
+    protected static $guardKey;
     protected $query;
     protected static $wheres = [];
     protected static $whereStr = '';
@@ -38,7 +38,7 @@ abstract class Model
     /*
     
     */
-    public function create(array $data)
+    public static function create(array $data)
     {
         $keys = array_keys($data);
         $values = array_values($data);
@@ -46,27 +46,26 @@ abstract class Model
         $cols = "[" . implode("],[", $keys) . "]";
         $vals = "'" . implode("','", $values) . "'";
 
-        $sql = "INSERT INTO " . $this->table . " (" . $cols . ") Values(" . $vals . ") ;";
+        $sql = "INSERT INTO " . static::$table . " (" . $cols . ") Values(" . $vals . ") ;";
         return database()->Run($sql, []);
     }
-
 
 
     /*
     
     */
-    public function delete($primaryKey)
+    public static function delete($primaryKey)
     {
-        $sql = "DELETE FROM " . $this->table . " WHERE [" . $this->primaryKey . "] = ?";
+        $sql = "DELETE FROM " . static::$table . " WHERE [" . static::$primaryKey . "] = ?";
         return database()->Run($sql, [$primaryKey]);
     }
 
     /*
     
     */
-    public function deleteByColName(string $colName, $colValue)
+    public static function deleteByColName(string $colName, $colValue)
     {
-        $sql = "DELETE FROM " . $this->table . " WHERE [" . $colName . "] = ?";
+        $sql = "DELETE FROM " . static::$table . " WHERE [" . $colName . "] = ?";
 
         try {
             return database()->Run($sql, [$colValue]);
@@ -78,28 +77,28 @@ abstract class Model
     /*
     
     */
-    public function find($primaryKey)
+    public static function find($primaryKey)
     {
-        $sql = "SELECT * FROM " . $this->table . " WHERE [" . $this->primaryKey . "] = ?";
+        $sql = "SELECT * FROM " . static::$table . " WHERE [" . static::$primaryKey . "] = ?";
         return database()->Run($sql, [$primaryKey]);
     }
 
     /* 
     
     */
-    public function update(array $data, $primaryKey = null)
+    public static function update(array $data, $primaryKey = null)
     {
-        $primaryKey = $primaryKey == null ? $this->primaryKey : $primaryKey;
-        return $sql = "UPDATE " . $this->table . " SET " . http_build_query($data, '', ', ') . " Where " . $this->primaryKey . " = ?";
+        $primaryKey = $primaryKey == null ? static::$primaryKey : $primaryKey;
+        return $sql = "UPDATE " . static::$table . " SET " . http_build_query($data, '', ', ') . " Where " . static::$primaryKey . " = ?";
         return database()->Run($sql, [$data[$primaryKey]]);
     }
 
     /* 
     
     */
-    public function getByColName(string $colName, $colValue): array
+    public static function getByColName(string $colName, $colValue): array
     {
-        $sql = "SELECT * FROM " . $this->table . " WHERE [" . $colName . "] = ?";
+        $sql = "SELECT * FROM " . static::$table . " WHERE [" . $colName . "] = ?";
         $results =  database()->Select($sql, [$colValue]);
         $data = [];
         if ($results) {
@@ -110,12 +109,13 @@ abstract class Model
         return $data;
     }
 
+
     /*
     
     */
-    public function findByColName(string $colName, $colValue): object|null|bool
+    public static function findByColName(string $colName, $colValue): object|null|bool
     {
-        $sql = "SELECT * FROM " . $this->table . " WHERE [" . $colName . "] = ?";
+        $sql = "SELECT * FROM " . static::$table . " WHERE [" . $colName . "] = ?";
         $results =  database()->Select($sql, [$colValue]);
         $data = null;
         if ($results && count($results)) {
@@ -126,10 +126,11 @@ abstract class Model
 
 
 
+
     /* 
     
     */
-    protected function formatter($results)
+    protected static function formatter($results)
     {
         return  $results;
     }
@@ -152,5 +153,53 @@ abstract class Model
     {
         static::$whereStr .= " OR [" . $column . "] " . $operator . " '" . $value . "'";
         return static::class;
+    }
+
+
+
+
+    /* 
+    
+    */
+    public static function createMany(array $data, array $keys, int $per_chunk = 1000)
+    {
+        $availableKey = array_intersect(array_keys(reset($data)), $keys);
+
+        $rounds = count($data) / $per_chunk;
+        $affected = 0;
+        for ($i = 0; $i <= $rounds; $i++) {
+            $chunk = array_slice($data, $i * $per_chunk, $per_chunk);
+            $affected += static::createChunk($chunk, $availableKey);
+        }
+        return $affected;
+    }
+
+
+
+    protected static function createChunk($chunk, $availableKey)
+    {
+        $cols = "[" . implode("],[", $availableKey) . "]";
+        $sql = "INSERT INTO " . static::$table . " (" . $cols . ") Values ";
+        $counter = 0;
+        foreach ($chunk as $key => $value) {
+            $vals = [];
+            foreach ($value as $key => $v) {
+                if (in_array($key, $availableKey)) {
+                    $vals[] = $v;
+                }
+            }
+
+            $vals = "'" . implode("','", $vals) . "'";
+            $sql .= $counter++ == 0 ? '' : ',';
+            $sql .= " (" . $vals . ")";
+        }
+        $sql .= ";";
+
+        try {
+            $result = database()->Run($sql, []);
+            return $result == null ? [] : $result;
+        } catch (QueryException $th) {
+            throw $th;
+        }
     }
 }

@@ -59,7 +59,7 @@ class AuthController extends Controller
         if ($user && password_verify(request()->data()->password, $user->password)) {
             if (
                 (constant('MC_REQUIRE_EMAIL_OTP')
-                || constant('MC_REQUIRE_PHONE_OTP'))
+                    || constant('MC_REQUIRE_PHONE_OTP'))
                 && (!in_array(trim(app()->getUserIP(), " "), $this->getIPAddresses()))
             ) {
 
@@ -87,7 +87,7 @@ class AuthController extends Controller
                     }
                 }
 
-                $_SESSION['otp'] =  $otp;
+                $_SESSION['otp'] =  $otp . ":" . $_SERVER["REQUEST_TIME"];
                 $_SESSION['ref'] = $ref;
                 $_SESSION['verifying-email'] = $user->email;
                 return redirect('/auth/otp');
@@ -127,7 +127,17 @@ class AuthController extends Controller
             back()->withErrors($th->errorsBag);
         }
 
-        if ($_SESSION['otp'] != $data['otp']) {
+        
+        list($OTP, $EX_TIME) = explode(":", $_SESSION['otp']);
+
+        if ($_SERVER["REQUEST_TIME"] - $EX_TIME > 300) { // MOSTAFA_TODO TAKE TIME FROM CONSTANTS
+            return back()->withErrors([
+                'otp' => __('time-expired-message')
+            ]);
+        }
+
+
+        if ($OTP != $data['otp']) {
 
             logger()->info('User Faild to login.| email:' . $data['verifying-email'] . '|  IP: ' . app()->getUserIP() . '| time:' . date('Y-m-d H:i:s'));
             return back()->withErrors([
@@ -160,13 +170,13 @@ class AuthController extends Controller
         ];
         $res = $sms->sendSMS($body);
 
-        if ($res->httpStatusCode == 201 || true /*MOSTAFA_TODO remove true*/) {
+        /*         if ($res->httpStatusCode == 201 ) {
             $_SESSION['mobile-otp'] = $otp;
             $_SESSION['mobile-ref'] = $ref;
             return true;
         } else {
             throw new Exception('Error Sending OTP on Phone');
-        }
+        } */
     }
 
     /* 
