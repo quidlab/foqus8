@@ -16,7 +16,7 @@
 <script>
     $("#FilesGrid").jsGrid({
         width: "100%",
-        editing: true,
+        editing: false,
         inserting: true,
         deleting: false,
         sorting: true,
@@ -40,7 +40,7 @@
                 formData.append("language", insertingItem.language);
                 formData.append("file_name", insertingItem.file_name, insertingItem.file_name.name);
 
-                let t =$.ajax({
+                let t = $.ajax({
                     type: "POST",
                     url: "/api/admin/upload-files",
                     data: formData,
@@ -48,6 +48,7 @@
                     processData: false
                 }).then(res => {
                     if (res.status) {
+                        // $("#FilesGrid").trigger("reloadGrid") ;
                         toastr.success(res.message)
                     } else {
                         toastr.error(res.message)
@@ -55,16 +56,16 @@
                 }).catch(res => {
                     toastr.error(res.responseJSON?.message)
                 });
-                return  t;
+                return t;
             },
             updateItem: function(item) {
                 var formData = new FormData();
                 formData.append("description", item.description);
                 formData.append("language", item.language);
                 formData.append("id", item.id);
-                if (typeof item.file_name === 'object' ) {
+                if (typeof item.file_name === 'object') {
                     formData.append("file_name", item.file_name, item.file_name.name);
-                }else{
+                } else {
                     formData.append("file_name", null);
                 }
 
@@ -166,7 +167,7 @@
             },
             {
                 type: "control",
-                editButton: true, // show edit button
+                editButton: false, // show edit button
                 deleteButton: true, // show delete button
             }
         ]

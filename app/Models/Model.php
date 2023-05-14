@@ -163,17 +163,28 @@ abstract class Model
     */
     public static function createMany(array $data, array $keys, int $per_chunk = 1000)
     {
-        $offset = 0;
-        $chunk = array_slice($data,$offset,$per_chunk);
-        $availableKey = array_intersect(array_keys(reset($data)),$keys);
+        $availableKey = array_intersect(array_keys(reset($data)), $keys);
 
+        $rounds = count($data) / $per_chunk;
+        $affected = 0;
+        for ($i = 0; $i <= $rounds; $i++) {
+            $chunk = array_slice($data, $i * $per_chunk, $per_chunk);
+            $affected += static::createChunk($chunk, $availableKey);
+        }
+        return $affected;
+    }
+
+
+
+    protected static function createChunk($chunk, $availableKey)
+    {
         $cols = "[" . implode("],[", $availableKey) . "]";
         $sql = "INSERT INTO " . static::$table . " (" . $cols . ") Values ";
         $counter = 0;
         foreach ($chunk as $key => $value) {
             $vals = [];
             foreach ($value as $key => $v) {
-                if (in_array($key,$availableKey)) {
+                if (in_array($key, $availableKey)) {
                     $vals[] = $v;
                 }
             }
@@ -191,5 +202,4 @@ abstract class Model
             throw $th;
         }
     }
-    
 }
