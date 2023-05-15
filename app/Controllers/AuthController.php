@@ -127,15 +127,25 @@ class AuthController extends Controller
             back()->withErrors($th->errorsBag);
         }
 
-        
+
         list($OTP, $EX_TIME) = explode(":", $_SESSION['otp']);
 
-        if ($_SERVER["REQUEST_TIME"] - $EX_TIME > 300) { // MOSTAFA_TODO TAKE TIME FROM CONSTANTS
+        if ($_SERVER["REQUEST_TIME"] - $EX_TIME > constant('MC_OTP_EXPIRATION_MINS') * 60) { // MOSTAFA_TODO TAKE TIME FROM CONSTANTS
             return back()->withErrors([
                 'otp' => __('time-expired-message')
             ]);
         }
 
+        $_SESSION['otp-attempts'] = isset($_SESSION['otp-attempts']) ? (int)++$_SESSION['otp-attempts'] : 1;
+        
+        if ($_SESSION['otp-attempts'] > constant('MC_OTP_ATTEMPTS')) {
+            unset($_SESSION['otp-attempts']);
+            $request = new Request();
+            $request->withErrors([
+                'email' => 'you have exceeded maximum number of attempts'
+            ]);
+            return redirect('/admin/login');
+        }
 
         if ($OTP != $data['otp']) {
 

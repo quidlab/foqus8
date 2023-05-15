@@ -35,7 +35,7 @@ include "layouts/meta.php";
                     <div class="input-group mb-3">
                         <input id="password" type="password" class="form-control" placeholder="<?= __('password') ?>" required="required" name="password">
                         <div class="input-group-append">
-                            <div class="input-group-text">
+                            <div class="cursor-pointer input-group-text">
                                 <span id="eye" class="fas fa-eye"></span>
                                 <span id="eye-slash" class="fas fa-eye-slash"></span>
                             </div>

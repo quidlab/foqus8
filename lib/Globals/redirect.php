@@ -1,5 +1,6 @@
 <?php
-function redirect($url){
+function redirect($url,array $data = []){
+    $_SESSION['dataBag'] = $data;
     header('Location: '.$url);
 }
 ?>
