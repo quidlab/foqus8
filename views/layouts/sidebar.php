@@ -159,6 +159,15 @@
                   </p>
                 </a>
               </li>
+              <!-- egmActivation -->
+              <li class="nav-item">
+                <a href="/admin/egm-activation" class="nav-link">
+                  <i class="nav-icon fa-solid fa-pen-to-square"></i>
+                  <p>
+                    <?= __('egm-activation') ?>
+                  </p>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- /.sidebar-menu -->

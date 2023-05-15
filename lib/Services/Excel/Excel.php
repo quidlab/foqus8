@@ -46,6 +46,42 @@ class Excel
         return $this->prepareRows();
     }
 
+    /*
+    
+    */
+    public function only(array $keys, $restriction = false) // MOSTAFA_TODO MODIFY
+    {
+        $sheet =  $this->spreadsheet->getActiveSheet()->toArray();
+        $headers = $this->getHeaders();
+
+
+        /*  */
+        $indexes = [];
+        foreach ($keys as $key => $value) {
+            if ($inx = array_search($value, $headers)) {
+                $indexes[] = $inx;
+            }else if($restriction){
+                throw new Exception($value . " Is Required");
+            }
+        }
+
+        /*  */
+        $rows = [];
+        foreach ($sheet as $key => $row) {
+            if ($key == 0) {
+                continue;
+            }
+
+            $rows[$key] = [];
+            foreach ($indexes as $key2 => $inx) {
+                $rows[$key][$headers[$inx]] = $row[$inx];
+            }
+        }
+
+        return $rows;
+    }
+    // array_intersect_key
+
     /* 
     
     */
@@ -110,4 +146,11 @@ class Excel
         }
         return $data;
     } */
+
+
+    public function getHeaders()
+    {
+        $sheet =  $this->spreadsheet->getActiveSheet()->toArray();
+        return $sheet[0];
+    }
 }

@@ -189,15 +189,14 @@ abstract class Model
                 }
             }
 
-            $vals = "'" . implode("','", $vals) . "'";
+            $vals = "'" . implode("',N'", $vals) . "'";
             $sql .= $counter++ == 0 ? '' : ',';
             $sql .= " (" . $vals . ")";
         }
         $sql .= ";";
 
         try {
-            $result = database()->Run($sql, []);
-            return $result == null ? [] : $result;
+            return database()->Run($sql, []);
         } catch (QueryException $th) {
             throw $th;
         }
