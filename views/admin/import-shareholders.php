@@ -42,7 +42,7 @@
                             <!--      <li id="result" class="ui-state-default"></li> -->
                         </ul>
                         <button onclick="sortFields()" id="sort_btn" class="btn btn-primary btn-sm">Sort</button>
-                        <button id="import_btn" type="button" class="btn-primary btn-sm" style="display: noe;">Import</button>
+                        <button id="import_btn" type="button" class="btn-primary btn-sm" style="display: none;">Import</button>
                     </div>
 
                 </div>
@@ -60,6 +60,22 @@
 
 <script src="<?= assets('/assets/xlsx.full.min.js') ?>"></script>
 <script>
+        $(function() {
+          $("#sortable").sortable({
+            revert: true
+          });
+          $("#draggable").draggable({
+            connectToSortable: "#sortable",
+            helper: "clone",
+            revert: "invalid"
+          });
+          $("ul, li").disableSelection();
+        });
+      </script>
+<script>
+
+
+    
     /* 
   
   */
@@ -79,7 +95,6 @@
     function handleFile() {
         const input = document.getElementById("file")
         const file = input.files[0]
-        console.log(file.type);
         if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
             input.value = null;
             toastr.error("File Should be Excel File");
@@ -106,7 +121,6 @@
                 header: 1
             });
             var ExcelData = XLSX.utils.sheet_to_json(ws);
-            console.log(ExcelData);
 
             AddListItem(header)
             var ExcelDataMapped = ExcelData.map(ExcelData => ({
@@ -120,7 +134,6 @@
                 q_share: ExcelData.q_share,
                 i_ref: ExcelData.i_ref
             }));
-            console.log(ExcelDataMapped);
         }
 
         if (rABS) reader.readAsBinaryString(file)
