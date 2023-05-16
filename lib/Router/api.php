@@ -80,6 +80,7 @@ $router->delete('/api/admin/coupons', [CouponsController::class, 'destroy'], new
 
 /* Shareholders */
 $router->get('/api/admin/shareholders', [ShareholdersController::class, 'index'], new AuthMiddleware('uname'));
+$router->post('/api/admin/shareholders/update-data', [ShareholdersController::class, 'updateData'], new AuthMiddleware('uname'));
 $router->put('/api/admin/shareholders', [ShareholdersController::class, 'update'], new AuthMiddleware('uname'));
 $router->post('/api/admin/shareholders/import', [ShareholdersController::class, 'import'], new AuthMiddleware('uname'));
 $router->post('/api/admin/shareholders/import', [ShareholdersController::class, 'import'], new AuthMiddleware('uname'));

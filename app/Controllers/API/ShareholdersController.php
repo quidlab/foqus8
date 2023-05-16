@@ -75,7 +75,7 @@ class ShareholdersController extends Controller
         try {
             $data = $validator->validate();
             if ($data['password']) {
-                $data['password'] = Hash::encrypt($data['password'], $data['username']);
+                $data['password'] = Hash::encrypt($data['password'], request()->only('ID'));
             }
             $u = Shareholder::update($data, request()->only('ID'));
             return response()->json([
@@ -127,7 +127,7 @@ class ShareholdersController extends Controller
             'FirstName' => $user->n_first,
             'LastName' => $user->n_last,
             'UserName' => $user->username,
-            'Password' => Hash::decrypt($user->password, $user->username),
+            'Password' => Hash::decrypt($user->password, $user->ID),
             'Company_Name_Thai' => $cos['th']['Company_Name'],
             'Company_Symbol' => constant('MC_SYMBOL'),
             'Support_Link_Thai' => constant('MC_AGM_LINK'),
@@ -153,6 +153,9 @@ class ShareholdersController extends Controller
 
 
 
+    /* 
+    
+    */
     public function sendMany()
     {
         $shareholders = database()->Select("SELECT * FROM EGM WHERE email <> '' AND [email-sent] = 0");
@@ -167,7 +170,7 @@ class ShareholdersController extends Controller
                 'FirstName' => $value['n_first'],
                 'LastName' => $value['n_last'],
                 'UserName' => $value['username'],
-                'Password' => Hash::decrypt($value['password'], $value['username']),
+                'Password' => Hash::decrypt($value['password'], $value['ID']),
                 'Company_Name_Thai' => $cos['th']['Company_Name'],
                 'Company_Symbol' => constant('MC_SYMBOL'),
                 'Support_Link_Thai' => constant('MC_AGM_LINK'),
@@ -182,10 +185,24 @@ class ShareholdersController extends Controller
             } catch (\Throwable $th) {
                 //throw $th;
             }
-
         }
         return response()->json([
             'message' => 'sent',
+            'status' => true
+        ]);
+    }
+
+
+    public function updateData()
+    {
+        $shareholders = database()->Select("SELECT TOP 100 username,ID FROM EGM WHERE password IS NULL");
+        foreach ($shareholders as $key => $value) {
+            $password = Hash::encrypt(Hash::randomPassword(),$value['ID']);
+            $continue = database()->Run("UPDATE EGM SET password = ?, username = i_holder WHERE password IS NULL AND ID = ?", [$password, $value['ID']]);
+        }
+
+        return response()->json([
+            'message' => __('updated'),
             'status' => true
         ]);
     }

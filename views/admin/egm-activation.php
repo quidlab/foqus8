@@ -33,7 +33,7 @@
                             </script>
                         </span>
                         <hr />
-                        <button type="submit" id="updateButton" data-egmid="updateEGMData" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Update Data</button>
+                        <button type="submit" onclick="updateData()" id="updateButton" data-egmid="updateEGMData" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Update Data</button>
 
                         <a href="" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-spinner fa-sm text-white-50"></i> Refresh Data</a>
                         <!--</form>-->
@@ -144,18 +144,18 @@
             },
             {
                 title: 'email',
-                name:'email',
+                name: 'email',
                 type: "text",
                 editing: true,
             },
             {
                 title: 'send email',
-                name:'ID',
+                name: 'ID',
                 type: "custom",
                 editing: false,
                 itemTemplate(item) {
 
-                    return `<button onclick="sendEmail(${item})" class='btn btn-sm  btn-primary'>Send</button>`;
+                    return `<button onclick="sendEmail(${item})" class='btn btn-sm  ${item?'btn-success':'btn-primary'}'>Send</button>`;
                 },
             },
             {
@@ -178,14 +178,39 @@
             }
         }).then(res => {
             console.log(res);
+            if (res.status) {
+                toastr.success(res.message)
+            } else {
+                toastr.error(res.message)
+            }
         })
     }
+
     function sendMany() {
         $.ajax({
             method: 'POST',
             url: '/api/admin/shareholders/email/many',
         }).then(res => {
             console.log(res);
+            if (res.status) {
+                toastr.success(res.message)
+            } else {
+                toastr.error(res.message)
+            }
+        })
+    }
+
+    function updateData() {
+        $.ajax({
+            method: 'POST',
+            url: '/api/admin/shareholders/update-data',
+        }).then(res => {
+            console.log(res);
+            if (res.status) {
+                toastr.success(res.message)
+            } else {
+                toastr.error(res.message)
+            }
         })
     }
 </script>
