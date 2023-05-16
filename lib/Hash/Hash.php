@@ -45,4 +45,33 @@ class Hash
     {
         return substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWZY'), 1, $length);
     }
+
+
+
+    /* 
+    
+    */
+    static function randomPassword($len = 8)
+    {
+
+        $sets = array();
+        $sets[] = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $sets[] = 'abcdefghjkmnpqrstuvwxyz';
+        $sets[] = '23456789';
+        $sets[]  = '~!@#$%^&*(){}[],./?';
+
+        $password = '';
+
+        foreach ($sets as $set) {
+            $password .= $set[array_rand(str_split($set))];
+        }
+
+        while (strlen($password) < $len) {
+            $randomSet = $sets[array_rand($sets)];
+
+            $password .= $randomSet[array_rand(str_split($randomSet))];
+        }
+
+        return str_shuffle($password);
+    }
 }
