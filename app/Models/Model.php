@@ -89,8 +89,17 @@ abstract class Model
     public static function update(array $data, $primaryKey = null)
     {
         $primaryKey = $primaryKey == null ? static::$primaryKey : $primaryKey;
-        return $sql = "UPDATE " . static::$table . " SET " . http_build_query($data, '', ', ') . " Where " . static::$primaryKey . " = ?";
-        return database()->Run($sql, [$data[$primaryKey]]);
+        $rows = "";
+        foreach ($data as $key => $value) {
+            $rows .= " [" . $key . "] = N'" . $value . "',";
+        }
+        $rows = rtrim($rows, ',');
+        $sql = "UPDATE " . static::$table . " SET " . $rows . " Where [" . static::$primaryKey . "] = ?";
+        try {
+            return database()->Run($sql, [$primaryKey]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /* 

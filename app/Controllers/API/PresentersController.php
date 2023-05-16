@@ -120,12 +120,12 @@ class PresentersController extends Controller
     {
         $validator = validator(request()->dataArray(), [
             'user-name' => ['required'],
-            'first-name' => ['required'],
-            'last-name' => ['required'],
-            'title' => ['required'],
-            'email' => ['required'],
-            'mobile' => ['required'],
             'role' => ['required'],
+            'first-name' => ['nullable'],
+            'last-name' => ['nullable'],
+            'title' => ['nullable'],
+            'email' => ['nullable'],
+            'mobile' => ['nullable'],
         ]);
         try {
             $data = $validator->validate();
@@ -335,6 +335,7 @@ class PresentersController extends Controller
         ]);
         try {
             $mail->send();
+            Presenter::update(['email-sent' =>  (int)$user->{'email-sent'} + 1], $user->{'user-name'});
             return response()->json([
                 'status' => true,
                 'message' => __('mail-sent-message')
@@ -365,7 +366,7 @@ class PresentersController extends Controller
                 'email',
                 'email-sent'
             ],
-            $data['role'] == 'all' ? Presenter::get() : Presenter::where('role', $data['role'])::get() // MOSTAFA_ADD WHERE
+            $data['role'] == 'all' ? Presenter::get() : Presenter::where('role', $data['role'])::get()
         );
     }
 }

@@ -104,13 +104,33 @@ class RoutesController extends Controller
         return view('/admin/coupons', [], '/admin/index');
     }
 
-    
+
     /*
     
     */
     public function egmActivation()
     {
-        return view('/admin/egm-activation', [], '/admin/index');
+        $egmData2 = "select count(*) as notApproved from EGM where ApprovedForOnline='N'";
+
+        $CountData2 = database()->Select($egmData2);
+        
+        $egmData3 = "select count(*) as Approved from EGM where ApprovedForOnline='Y'";
+        $CountData3 = database()->Select($egmData3);
+
+        
+        $egmData4 = "select count(*) as totalcount, sum(q_share) as totalvotes from EGM ";
+        $CountData4 = database()->Select($egmData4);
+
+
+        $TotCoowners = $CountData4[0]['totalcount'];
+        $TotCoownerVotes = $CountData4[0]['totalvotes'];
+        return view('/admin/egm-activation', [
+            'CountData2' => $CountData2,
+            'CountData3' => $CountData3,
+            'CountData4' => $CountData4,
+            'TotCoowners' => $TotCoowners,
+            'TotCoownerVotes' => $TotCoownerVotes,
+        ], '/admin/index');
     }
 
 

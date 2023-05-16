@@ -290,7 +290,8 @@
             {
                 type: "custom",
                 itemTemplate: function(value, row) {
-                    return ` <i onclick='sendEmail("${row['user-name'] }")' style="display:block" class="fa fa-envelope" aria-hidden="true"></i>`;
+                    let style = row['email-sent'] ? 'color:green; display:block':'display:block';
+                    return ` <i onclick='sendEmail("${row['user-name'] }")' style="${style}" class="fa fa-envelope" aria-hidden="true"></i>`;
                 },
                 width: 40,
                 editing: false,
