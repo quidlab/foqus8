@@ -104,6 +104,15 @@ class RoutesController extends Controller
         return view('/admin/coupons', [], '/admin/index');
     }
 
+    
+    /*
+    
+    */
+    public function egmActivation()
+    {
+        return view('/admin/egm-activation', [], '/admin/index');
+    }
+
 
     /*
     

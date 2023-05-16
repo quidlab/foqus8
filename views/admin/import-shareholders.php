@@ -173,7 +173,6 @@
             presentFields.push(arrValue);
         }
 
-        console.log(presentFields);
         shorting_list = presentFields;
         $("#after_shorting").val(shorting_list);
         //alert();
@@ -254,7 +253,6 @@
         $('#import_btn').fadeOut(0);
         $('#loading').fadeIn(0);
 
-        console.log(file.files[0]);
         var formData = new FormData();
         formData.append("file_name", file.files[0], file.files[0].name);
         $.ajax({
@@ -277,8 +275,6 @@
         }).then(res => {
             $('#import_btn').fadeIn(0);
             $('#loading').fadeOut(0);
-
-
         });
     }
 </script>
