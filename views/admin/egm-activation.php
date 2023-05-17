@@ -200,15 +200,12 @@
         })
     }
     function toggleStatus(ID,status) {
-        console.log(!status);
-        console.log(status);
-        console.log(ID);
         $.ajax({
             method: 'PUT',
             url: '/api/admin/shareholders/status',
             data: {
                 'ID': ID,
-                'status':!status
+                'status':status?0:1
             }
         }).then(res => {
             console.log(res);
