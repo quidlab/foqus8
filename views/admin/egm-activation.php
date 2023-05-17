@@ -199,13 +199,14 @@
             }
         })
     }
-    function toggleStatus(ID,status) {
+
+    function toggleStatus(ID, status) {
         $.ajax({
             method: 'PUT',
             url: '/api/admin/shareholders/status',
             data: {
                 'ID': ID,
-                'status':status?0:1
+                'status': status ? 0 : 1
             }
         }).then(res => {
             console.log(res);
@@ -246,4 +247,27 @@
     }
 </script>
 
-<script src="<?= assets('/assets/custom.js') ?>"></script>
+<script>
+    const ctx = document.getElementById('myPieChart');
+    let Piedata = {
+        labels: [
+            'Red',
+            'Blue',
+            'Yellow'
+        ],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [300, 50, 100],
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+        }]
+    };;
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: Piedata,
+    });
+</script>
