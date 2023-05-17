@@ -4,31 +4,37 @@ $adminLinks = [
   [
     'name' => 'dashboard',
     'path' => '/admin/dashboard',
-    'icon' => '<i class="nav-icon fas fa-table-columns"></i>'
+    'icon' => '<i class="nav-icon fas fa-table-columns"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'admin-tools',
     'path' => '/admin/admin-tools',
-    'icon' => '<i class="nav-icon fa-solid fa-user-gear"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-user-gear"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'manage-company',
     'path' => '/admin/manage-company',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'system-constants',
     'path' => '/admin/system-constants',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [7]
   ],
   [
     'name' => 'users',
     'path' => '/admin/presenters',
-    'icon' => '<i class="nav-icon fa-solid fa-users"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-users"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'maintain-agendas',
     'icon' => '<i class="nav-icon fa-solid fa-users"></i>',
+    'roles' => [1, 7],
     'sublinks' => [
       [
         'name' => 'list-agendas',
@@ -50,44 +56,64 @@ $adminLinks = [
   [
     'name' => 'presenters',
     'path' => '/admin/users',
-    'icon' => '<i class="nav-icon fa-solid fa-users"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-users"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'translations',
     'path' => '/admin/translations',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'upload-files',
     'path' => '/admin/upload-files',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'stakeholders',
     'path' => '/admin/stakeholders',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'proxy-names',
     'path' => '/admin/proxy-names',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
   ],
   [
     'name' => 'coupons',
     'path' => '/admin/coupons',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [6, 7]
   ],
   [
     'name' => 'import-shareholders',
     'path' => '/admin/import-shareholders',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [6, 7]
   ],
   [
     'name' => 'egm-activation',
     'path' => '/admin/egm-activation',
-    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>'
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [6, 7]
   ],
-]; ?>
+];
+
+function can($link): bool
+{
+  $role = auth()->user?->{'role-id'};
+  if (isset($link['roles']) && in_array($role, $link['roles'])) {
+    return true;
+  }
+  return false;
+}
+
+
+?>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
@@ -119,7 +145,9 @@ $adminLinks = [
         <?php
         foreach ($adminLinks as $key => $link) {
 
-
+          if (!can($link)) {
+            continue;
+          }
 
           if (isset($link['sublinks'])) {
             $subs = '<ul class="nav nav-treeview">';

@@ -214,3 +214,5 @@
         })
     }
 </script>
+
+<script src="<?= assets('/assets/custom.js') ?>"></script>
