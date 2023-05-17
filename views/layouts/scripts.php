@@ -31,6 +31,19 @@
 <script src="<?= assets('/assets/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= assets('/assets/plugins/daterangepicker/daterangepicker.js') ?>"></script>
 
+
+<script>
+  $(document).ajaxSend(function() {
+    $('#globalLoading').fadeIn(0);
+
+  });
+  $(document).ajaxComplete(function() {
+    $('#globalLoading').fadeOut(0);
+  })
+</script>
+
+
+
 <script>
   function changeLanguage(lang) {
     // Replace "lang" cookie with new language

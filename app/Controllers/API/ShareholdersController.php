@@ -159,6 +159,12 @@ class ShareholdersController extends Controller
     public function sendMany()
     {
         $shareholders = database()->Select("SELECT * FROM EGM WHERE email <> '' AND [email-sent] = 0");
+        if ($shareholders == null) {
+            return response()->json([
+                'message' => 'All Sent',
+                'status' => true
+            ]);
+        }
         $companies = database()->Select("SELECT * FROM company WHERE  Tlang in ( SELECT Language_ID FROM languages WHERE Active=1 ) ORDER BY ID ");
         $cos = [];
         foreach ($companies as $key => $co) {

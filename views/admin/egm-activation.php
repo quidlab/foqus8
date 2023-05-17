@@ -117,7 +117,6 @@
             },
 
         },
-
         fields: [{
                 name: "username",
                 title: <?= "'" . __('username') . "'" ?>,
@@ -147,15 +146,16 @@
                 name: 'email',
                 type: "text",
                 editing: true,
+
             },
             {
                 title: 'send email',
                 name: 'ID',
                 type: "custom",
                 editing: false,
-                itemTemplate(item) {
+                itemTemplate(value,item) {
 
-                    return `<button onclick="sendEmail(${item})" class='btn btn-sm  ${item?'btn-success':'btn-primary'}'>Send</button>`;
+                    return `<button onclick="sendEmail(${value})" class='btn btn-sm  ${value?'btn-success':'btn-primary'}'>Send ${item['email-sent']}</button>`;
                 },
             },
             {

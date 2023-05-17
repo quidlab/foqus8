@@ -1,6 +1,7 @@
 <?php include __DIR__ . "/../layouts/meta.php"; ?>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+  <div id="globalLoading" class="global-loading"><i id="loading"  class="fas fa-2x fa-circle-notch fa-spin"></i></div>
   <!-- Logout Modal-->
 
   <div class="wrapper">
