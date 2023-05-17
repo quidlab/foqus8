@@ -199,13 +199,14 @@
             }
         })
     }
-    function toggleStatus(ID,status) {
+
+    function toggleStatus(ID, status) {
         $.ajax({
             method: 'PUT',
             url: '/api/admin/shareholders/status',
             data: {
                 'ID': ID,
-                'status':status?0:1
+                'status': status ? 0 : 1
             }
         }).then(res => {
             console.log(res);
@@ -246,4 +247,23 @@
     }
 </script>
 
-<script src="<?= assets('/assets/custom.js') ?>"></script>
+<script>
+    const ctx = document.getElementById('myPieChart');
+    let Piedata = {
+        datasets: [{
+            data: [10, 20, 30]
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'Red',
+            'Yellow',
+            'Blue'
+        ]
+    };
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: Piedata,
+    });
+
+</script>
