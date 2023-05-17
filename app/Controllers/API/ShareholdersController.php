@@ -69,6 +69,7 @@ class ShareholdersController extends Controller
             'email' => ['nullable'],
             'password' => ['nullable'],
             'username' => ['nullable'],
+            'f_status' => ['nullable'],
         ]);
 
 
@@ -211,5 +212,32 @@ class ShareholdersController extends Controller
             'message' => __('updated'),
             'status' => true
         ]);
+    }
+
+
+    /* 
+    
+    */
+    public function updateStatus()
+    {
+        $validator = validator(request()->dataArray(), [
+            'status' => ['nullable'],
+        ]);
+
+
+        try {
+            $data = $validator->validate();
+            $r = Shareholder::update(['status' => (bool)$data['status']], request()->only('ID'));
+            return response()->json([
+                'message' => __('updated'),
+                'status' => true,
+                'ss' => $data,
+                '$r' => $r
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'errors' => $th->errorsBag
+            ], 422);
+        }
     }
 }
