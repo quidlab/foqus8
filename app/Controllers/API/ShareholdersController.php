@@ -200,7 +200,7 @@ class ShareholdersController extends Controller
             $password = Hash::encrypt(Hash::randomPassword(),$value['ID']);
             $continue = database()->Run("UPDATE EGM SET password = ?, username = i_holder WHERE password IS NULL AND ID = ?", [$password, $value['ID']]);
         }
-
+        // MOSTAFA_TODO create update many
         return response()->json([
             'message' => __('updated'),
             'status' => true
