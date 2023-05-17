@@ -117,7 +117,6 @@
             },
 
         },
-
         fields: [{
                 name: "username",
                 title: <?= "'" . __('username') . "'" ?>,
@@ -137,25 +136,40 @@
                 editing: true,
             },
             {
-                name: "",
-                title: 'login',
-                type: "text",
-                editing: true,
-            },
-            {
                 title: 'email',
                 name: 'email',
                 type: "text",
                 editing: true,
+
+            },
+            {
+                name: "",
+                title: 'login',
+                type: "custom",
+                editing: false,
+                itemTemplate(value, item) {
+                    console.log(item.status);
+                    console.log(item.ID);
+
+                    return `
+                    <div class="jsgrid-align-center" >
+                        <button onclick="toggleStatus(${item.ID},${item.status})" class='btn btn-sm  ${item.status?'btn-success':'btn-info'}'>${item.status?'active':'pending'}</button>
+                    </div>
+                    `;
+                },
             },
             {
                 title: 'send email',
                 name: 'ID',
                 type: "custom",
                 editing: false,
-                itemTemplate(item) {
+                itemTemplate(value, item) {
 
-                    return `<button onclick="sendEmail(${item})" class='btn btn-sm  ${item?'btn-success':'btn-primary'}'>Send</button>`;
+                    return `
+                    <div class="jsgrid-align-center" >
+                        <button onclick="sendEmail(${value})" class='btn btn-sm  ${value?'btn-success':'btn-primary'}'>Send ${item['email-sent']}</button>
+                    </div>
+                    `;
                 },
             },
             {
@@ -175,6 +189,23 @@
             url: '/api/admin/shareholders/email',
             data: {
                 'ID': ID
+            }
+        }).then(res => {
+            console.log(res);
+            if (res.status) {
+                toastr.success(res.message)
+            } else {
+                toastr.error(res.message)
+            }
+        })
+    }
+    function toggleStatus(ID,status) {
+        $.ajax({
+            method: 'PUT',
+            url: '/api/admin/shareholders/status',
+            data: {
+                'ID': ID,
+                'status':status?0:1
             }
         }).then(res => {
             console.log(res);
@@ -214,3 +245,5 @@
         })
     }
 </script>
+
+<script src="<?= assets('/assets/custom.js') ?>"></script>

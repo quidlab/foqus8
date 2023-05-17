@@ -52,18 +52,28 @@
       color: red;
     }
 
-    .cursor-pointer{
+    .cursor-pointer {
       cursor: pointer;
     }
-    .w-max{
+
+    .w-max {
       width: max-content;
     }
 
-    .btn-excel{
+    .btn-excel {
       background-color: #21a366;
       color: #fff;
       cursor: pointer;
     }
 
+    .global-loading {
+      position: fixed;
+      z-index: 10000;
+      inset: 0;
+      top: 0px;
+      width: max-content;
+      top: 1rem;
+      margin: auto;
+    }
   </style>
 </head>

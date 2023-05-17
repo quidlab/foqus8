@@ -48,7 +48,7 @@ class ShareholdersController extends Controller
 
             $r2 = Shareholder::createMany($rows, Shareholder::readable(), 1000);
 
-            $r3 = database()->Run("UPDATE EGM SET Attended = 'N', Shares_Attended = 0, Proxy = 'N', Proxy_name = '', BallotPaperPrinted = 0, Custodian = 'N', USER_ID = '', Registered_Time = NULL, Out_Time = NULL,org_q_share=q_share,Group_id=NULL,serial=0,coupon1_claimed='N',coupon2_claimed='N',coupon3_claimed='N',feedback_submitted='N',factory_visit_interested='N',org_n_first=n_first,org_n_last=n_last,org_i_ref=I_ref,ProxyType=NULL,e_mail=NULL,m_phone=NULL,username=NULL,password=NULL,ApprovedForOnline='N',IPAddress=NULL,lastlogin=NULL,status=0,active=0,Email_sent='N',doc_received='N',jitsiid='0';");
+            $r3 = database()->Run("UPDATE EGM SET Attended = 'N', Shares_Attended = 0, Proxy = 'N', Proxy_name = '', BallotPaperPrinted = 0, Custodian = 'N', USER_ID = '', Registered_Time = NULL, Out_Time = NULL,org_q_share=q_share,Group_id=NULL,serial=0,coupon1_claimed='N',coupon2_claimed='N',coupon3_claimed='N',feedback_submitted='N',factory_visit_interested='N',org_n_first=n_first,org_n_last=n_last,org_i_ref=I_ref,ProxyType=NULL,email=NULL,m_phone=NULL,username=NULL,password=NULL,ApprovedForOnline='N',IPAddress=NULL,lastlogin=NULL,status=0,active=0,[email-sent]=0,doc_received='N',jitsiid='0';");
             return ($r1 && $r2 && $r3);
         });
 
@@ -69,6 +69,7 @@ class ShareholdersController extends Controller
             'email' => ['nullable'],
             'password' => ['nullable'],
             'username' => ['nullable'],
+            'f_status' => ['nullable'],
         ]);
 
 
@@ -159,6 +160,12 @@ class ShareholdersController extends Controller
     public function sendMany()
     {
         $shareholders = database()->Select("SELECT * FROM EGM WHERE email <> '' AND [email-sent] = 0");
+        if ($shareholders == null) {
+            return response()->json([
+                'message' => 'All Sent',
+                'status' => true
+            ]);
+        }
         $companies = database()->Select("SELECT * FROM company WHERE  Tlang in ( SELECT Language_ID FROM languages WHERE Active=1 ) ORDER BY ID ");
         $cos = [];
         foreach ($companies as $key => $co) {
@@ -200,10 +207,37 @@ class ShareholdersController extends Controller
             $password = Hash::encrypt(Hash::randomPassword(),$value['ID']);
             $continue = database()->Run("UPDATE EGM SET password = ?, username = i_holder WHERE password IS NULL AND ID = ?", [$password, $value['ID']]);
         }
-
+        // MOSTAFA_TODO create update many
         return response()->json([
             'message' => __('updated'),
             'status' => true
         ]);
+    }
+
+
+    /* 
+    
+    */
+    public function updateStatus()
+    {
+        $validator = validator(request()->dataArray(), [
+            'status' => ['nullable'],
+        ]);
+
+
+        try {
+            $data = $validator->validate();
+            $r = Shareholder::update(['status' => (bool)$data['status']], request()->only('ID'));
+            return response()->json([
+                'message' => __('updated'),
+                'status' => true,
+                'ss' => $data,
+                '$r' => $r
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'errors' => $th->errorsBag
+            ], 422);
+        }
     }
 }
