@@ -13,12 +13,14 @@ class ShareholdersController extends Controller
 
     public function index()
     {
-        $data = database()->Select("SELECT TOP (10) * from EGM");
-        foreach ($data as $key => &$value) {
-            if ($value['password'] && $value['username']) {
-                $value['password'] = Hash::decrypt($value['password'], $value['username']);
-            }
-        }
+        $search = $this->search();
+        $data = database()->Select("SELECT * FROM EGM $search ORDER BY ID OFFSET " .
+            request()->pagination()->per_page * (request()->pagination()->page - 1)
+            . " ROWS FETCH NEXT " .
+            request()->pagination()->per_page
+            . " ROWS ONLY; ");
+
+        $data = $data == null ? [] : $data;
         return response()->json($data);
     }
 
@@ -67,28 +69,41 @@ class ShareholdersController extends Controller
     {
         $validator = validator(request()->dataArray(), [
             'email' => ['nullable'],
-            'password' => ['nullable'],
-            'username' => ['nullable'],
-            'f_status' => ['nullable'],
+            /*             'n_first' => ['nullable'],
+            'n_last' => ['nullable'],
+            'n_title' => ['nullable'], */
+            'm_phone' => ['nullable'],
+            'Proxy' => ['nullable'],
+            'Proxy_name' => ['nullable'],
+            'ProxyType' => ['nullable'],
         ]);
+
 
 
         try {
             $data = $validator->validate();
-            if ($data['password']) {
-                $data['password'] = Hash::encrypt($data['password'], request()->only('ID'));
-            }
-            $u = Shareholder::update($data, request()->only('ID'));
-            return response()->json([
-                'message' => __('updated'),
-                'status' => true,
-                'l' => $u
-            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'errors' => $th->errorsBag
             ], 422);
         }
+
+
+        if ($data['Proxy'] == 'Y' && (strlen($data['Proxy_name']) < 2 || strlen($data['ProxyType']) == 0)) {
+            return response()->json([
+                'message' => 'Proxy name And Proxy Type are required',
+                'status' => false,
+            ]);
+        }
+
+        if (request()->only('password')) {
+            $data['password'] = Hash::encrypt(request()->only('password'), request()->only('ID'));
+        }
+        $u = Shareholder::update($data, request()->only('ID'));
+        return response()->json([
+            'message' => $u ? __('updated') : _('faild'),
+            'status' => $u,
+        ]);
     }
 
     /* 
@@ -202,9 +217,9 @@ class ShareholdersController extends Controller
 
     public function updateData()
     {
-        $shareholders = database()->Select("SELECT TOP 100 username,ID FROM EGM WHERE password IS NULL");
+        $shareholders = database()->Select("SELECT username,ID FROM EGM WHERE password IS NULL");
         foreach ($shareholders as $key => $value) {
-            $password = Hash::encrypt(Hash::randomPassword(),$value['ID']);
+            $password = Hash::encrypt(Hash::randomPassword(), $value['ID']);
             $continue = database()->Run("UPDATE EGM SET password = ?, username = i_holder WHERE password IS NULL AND ID = ?", [$password, $value['ID']]);
         }
         // MOSTAFA_TODO create update many
@@ -221,13 +236,13 @@ class ShareholdersController extends Controller
     public function updateStatus()
     {
         $validator = validator(request()->dataArray(), [
-            'status' => ['nullable'],
+            'ApprovedForOnline' => ['required'],
         ]);
 
 
         try {
             $data = $validator->validate();
-            $r = Shareholder::update(['status' => (bool)$data['status']], request()->only('ID'));
+            $r = Shareholder::update(['ApprovedForOnline' => $data['ApprovedForOnline']], request()->only('ID'));
             return response()->json([
                 'message' => __('updated'),
                 'status' => true,
@@ -239,5 +254,22 @@ class ShareholdersController extends Controller
                 'errors' => $th->errorsBag
             ], 422);
         }
+    }
+
+
+    protected function search(): string
+    {
+        $search = "";
+        if (isset($_GET['search'])) {
+            $val = $_GET['search'];
+            $search = " WHERE i_holder LIKE '%$val%' 
+            OR email LIKE '%$val%' 
+            OR m_phone LIKE '%$val%' 
+            OR n_title LIKE N'%$val%'
+            OR n_first LIKE N'%$val%'
+            OR n_last LIKE N'%$val%'
+            ";
+        }
+        return $search;
     }
 }

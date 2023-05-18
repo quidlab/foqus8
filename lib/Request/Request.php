@@ -57,4 +57,14 @@ class Request
     /* 
     
     */
+
+    public function pagination()
+    {
+        $page = isset($_GET['pageIndex']) ? $_GET['pageIndex'] : 1;
+        $per_page = isset($_GET['pageSize']) ? $_GET['pageSize'] : 10;
+        return (object)[
+            'per_page' => $per_page,
+            'page' => $page,
+        ];
+    }
 }

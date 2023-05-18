@@ -27,7 +27,7 @@ $adminLinks = [
   ],
   [
     'name' => 'users',
-    'path' => '/admin/presenters',
+    'path' => '/admin/users',
     'icon' => '<i class="nav-icon fa-solid fa-users"></i>',
     'roles' => [1, 7]
   ],
@@ -55,7 +55,7 @@ $adminLinks = [
   ],
   [
     'name' => 'presenters',
-    'path' => '/admin/users',
+    'path' => '/admin/presenters',
     'icon' => '<i class="nav-icon fa-solid fa-users"></i>',
     'roles' => [1, 7]
   ],
