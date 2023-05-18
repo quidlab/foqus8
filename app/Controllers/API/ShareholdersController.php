@@ -76,6 +76,7 @@ class ShareholdersController extends Controller
             'Proxy' => ['nullable'],
             'Proxy_name' => ['nullable'],
             'ProxyType' => ['nullable'],
+            'proxy_I_ref' => ['nullable'],
         ]);
 
 
@@ -89,9 +90,9 @@ class ShareholdersController extends Controller
         }
 
 
-        if ($data['Proxy'] == 'Y' && (strlen($data['Proxy_name']) < 2 || strlen($data['ProxyType']) == 0)) {
+        if ($data['Proxy'] == 'Y' && (strlen($data['Proxy_name']) < 2 || strlen($data['ProxyType']) == 0 || strlen($data['proxy_I_ref']) < 2)) {
             return response()->json([
-                'message' => 'Proxy name And Proxy Type are required',
+                'message' => 'Proxy name, Proxy ID And Proxy Type  are required',
                 'status' => false,
             ]);
         }
@@ -174,7 +175,7 @@ class ShareholdersController extends Controller
     */
     public function sendMany()
     {
-        $shareholders = database()->Select("SELECT * FROM EGM WHERE email <> '' AND [email-sent] = 0");
+        $shareholders = database()->Select("SELECT * FROM EGM WHERE email <> '' AND [email-sent] = 0 AND ApprovedForOnline = 'Y'");
         if ($shareholders == null) {
             return response()->json([
                 'message' => 'All Sent',

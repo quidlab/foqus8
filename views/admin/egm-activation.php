@@ -74,7 +74,9 @@
         filtering: false,
         controller: {
             loadData: function(filter) {
-                console.log(filter);
+                let search = $('#searchInput').val();
+
+                filter.search = search
                 return $.ajax({
                     type: "GET",
                     url: "/api/admin/shareholders",
@@ -211,6 +213,7 @@
             console.log(res);
             if (res.status) {
                 toastr.success(res.message)
+                $("#Grid").jsGrid("search")
             } else {
                 toastr.error(res.message)
             }
@@ -229,6 +232,7 @@
             console.log(res);
             if (res.status) {
                 toastr.success(res.message)
+                $("#Grid").jsGrid("search")
             } else {
                 toastr.error(res.message)
             }
@@ -300,23 +304,28 @@
 							<input type="text" class="form-control form-control-user" id="phone" placeholder="Mobile No" name="m_phone" value="${item.m_phone??''}">
 						  </div>
 						  <div class="col-sm-6 mb-3 mb-sm-0">
-							<select name="Proxy" class="form-control" id="proxy" required="required">
+							<select name="Proxy" class="form-control" value="${item.ApprovedForOnline}" id="proxy" required="required">
 							  <option value="">Set Proxy</option>
-							  <option value="N">No</option>
-							  <option value="Y">Yes</option>
+							  <option ${item.ApprovedForOnline == 'N' ?'selected':''} value="N">No</option>
+							  <option ${item.ApprovedForOnline == 'Y' ?'selected':''} value="Y">Yes</option>
 							</select>
 						  </div>
 						</div>
 						<div class="form-group row">
 						  <div class="col-sm-6 mb-3 mb-sm-0">
-							<input type="text" class="form-control form-control-user" placeholder="Proxy Name" name="Proxy_name" value="">
+							<input type="text" class="form-control form-control-user" placeholder="Proxy Name" name="Proxy_name" value="${item.Proxy_name??''}">
 						  </div>
 						  <div class="col-sm-6">
 							<select name="ProxyType" class="form-control">
 							  <option value="">Type of Proxy</option>
-							  <option value="A">A</option>
-							  <option value="B">B</option>
+							  <option ${item.ProxyType == 'A' ?'selected':''} value="A">A</option>
+							  <option ${item.ProxyType == 'B' ?'selected':''} value="B">B</option>
 							</select>
+						  </div>
+						</div>
+						<div class="form-group row">
+						  <div class="col-sm-6 mb-3 mb-sm-0">
+							<input type="text" class="form-control form-control-user" placeholder="Proxy ID" name="proxy_I_ref" value="${item.proxy_I_ref??''}">
 						  </div>
 						</div>
 						<!--
@@ -351,31 +360,30 @@
     function CancelEdit() {
         $('#editPopup').remove();
     }
-    function Update(){
+
+    function Update() {
         console.log('update');
         let form = $('#editForm').serializeArray();
 
         return $.ajax({
-                    type: "PUT",
-                    url: "/api/admin/shareholders",
-                    data: form
-                }).then(res => {
-                    if (res.status) {
-                        toastr.success(res.message)
-                        CancelEdit();
-                    } else {
-                        toastr.error(res.message)
-                    }
-                });
+            type: "PUT",
+            url: "/api/admin/shareholders",
+            data: form
+        }).then(res => {
+            if (res.status) {
+                toastr.success(res.message)
+                $("#Grid").jsGrid("loadData");
+                CancelEdit();
+            } else {
+                toastr.error(res.message)
+            }
+        });
     }
 </script>
 
 
 <script>
     function search(e) {
-        let search = $('#searchInput').val();
-        $("#Grid").jsGrid("search", {
-            search: search
-        })
+        $("#Grid").jsGrid("search")
     }
 </script>

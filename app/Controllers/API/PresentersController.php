@@ -355,7 +355,10 @@ class PresentersController extends Controller
         $data = validator(request()->dataArray(), [
             'role' => ['required']
         ])->validate();
-
+        $prersenters = $data['role'] == 'all' ? Presenter::get([...(Presenter::$readable), ...(['password'])]) : Presenter::where('role', $data['role'])::get([...(Presenter::$readable), ...(['password'])]);
+        foreach ($prersenters as $key => &$value) {
+            $value['password'] = Hash::decrypt($value['password'], $value['user-name']);
+        }
         Excel::export(
             [
                 'user-name',
@@ -364,9 +367,10 @@ class PresentersController extends Controller
                 'title',
                 'role',
                 'email',
+                'password',
                 'email-sent'
             ],
-            $data['role'] == 'all' ? Presenter::get() : Presenter::where('role', $data['role'])::get()
+            $prersenters
         );
     }
 }
