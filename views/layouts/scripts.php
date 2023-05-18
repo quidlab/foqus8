@@ -30,6 +30,7 @@
 
 <script src="<?= assets('/assets/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= assets('/assets/plugins/daterangepicker/daterangepicker.js') ?>"></script>
+<script src=" https://cdn.jsdelivr.net/npm/gridjs@6.0.6/dist/gridjs.production.min.js "></script>
 
 
 <script>

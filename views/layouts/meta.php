@@ -34,7 +34,6 @@
   <link rel="stylesheet" href=<?= assets("/assets/plugins/jsgrid/jsgrid.min.css") ?> />
   <link rel="stylesheet" href=<?= assets("/assets/plugins/jsgrid/jsgrid-theme.min.css") ?> />
   <link rel="stylesheet" href=<?= assets("/assets/plugins/bs-stepper/css/bs-stepper.min.css") ?> />
-  <!-- <link rel="stylesheet" href="../agm/css/file.css"> TODO  -->
 
 
 
@@ -74,6 +73,32 @@
       width: max-content;
       top: 1rem;
       margin: auto;
+      display: none;
+    }
+    .jsgrid-pager{
+      padding: 1rem;
+    }
+  </style>
+  <style>
+    .row {
+      display: flex;
+    }
+
+    .row>* {
+      flex: 1;
+    }
+
+    .popup{
+      position: fixed;
+      inset: 0;
+      background-color: #ffffff56;
+      z-index: 10000;
+
+    }
+    .popup-body{
+      display: flex;
+      justify-content: center;
+      margin-top: 10vh;
     }
   </style>
 </head>
