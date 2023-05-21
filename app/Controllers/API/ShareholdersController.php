@@ -20,8 +20,13 @@ class ShareholdersController extends Controller
             request()->pagination()->per_page
             . " ROWS ONLY; ");
 
+        $total = database()->Select("SELECT count(*) as total FROM EGM $search");
+
         $data = $data == null ? [] : $data;
-        return response()->json($data);
+        return response()->json([
+            'data' => $data,
+            'total' => $total[0]['total']
+        ]);
     }
 
 

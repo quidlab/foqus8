@@ -16,29 +16,32 @@
                     <div class="card-header py-3 row">
                         <div class="text-left">
                             <h6 class="m-0 font-weight-bold text-primary">EGM Table</h6>
-                            <section>
-                                <input id="searchInput" type="text">
-                                <button onclick="search(this)"><?= __('search') ?></button>
-                            </section>
+
                         </div>
 
                         <div class=" text-center">
                             <span>
                                 <script>
-                                    document.write("Approved: " + yes + " | Not Approved: " + no);
+                                    document.write("<?= __('approved')?>: " + yes + " | <?= __('not-approved')?>: " + no);
                                 </script>
                             </span><br>
                             <span>
                                 <script>
-                                    document.write("Total Units: " + totalcoowners.toLocaleString() + " | Total Votes: " + totalcoownerVotes.toLocaleString());
+                                    document.write("<?= __('total-units') ?> : " + totalcoowners.toLocaleString() + " | <?= __('total-votes') ?>: " + totalcoownerVotes.toLocaleString());
                                 </script>
                             </span>
                         </div>
                         <div class="text-right">
                             <div class="sendEmailContainer ">
-                                <button type="submit" onclick="updateData()" id="updateButton" data-egmid="updateEGMData" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Update Data</button>
-                                <a href="" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-spinner fa-sm text-white-50"></i> Refresh Data</a>
-                                <button onclick="sendMany()" class="m-0 font-weight-bold text-primary sendingEmail">Send 1000 Emails <i class='fa fa-paper-plane'></i></button>
+                                <button type="submit" onclick="updateData()" id="updateButton" data-egmid="updateEGMData" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><?= __('update-data') ?></button>
+                                <a href="" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-spinner fa-sm text-white-50"></i><?= __('refresh-data') ?></a>
+                                <button onclick="sendMany()" style="background-color: #fff;" class="m-0 btn btn-sm font-weight-bold text-primary sendingEmail"><?= __('send-1000-mail') ?><i class='fa fa-paper-plane'></i></button>
+                            </div>
+                            <div class="mt-1">
+                                <section class="row d-inline-flex">
+                                    <input class="form-control form-control-user d-inline-block" id="searchInput" type="text">
+                                    <button style="flex:unset" class="btn btn-primary" onclick="search(this)"><?= __('search') ?></button>
+                                </section>
                             </div>
                         </div>
                     </div>
@@ -62,30 +65,32 @@
         inserting: false,
         deleting: true,
         pageLoading: true,
-        sorting: true,
+        sorting: false,
         paging: true,
         pageNextText: "<?= __("next") ?>",
         pagePrevText: "<?= __("prev") ?>",
+        pageFirstText: "<?= __("first") ?>",
+        pageLastText: "<?= __("last") ?>",
+        loadMessage: "<?= __("loading-message") ?>",
         pageSize: 10,
-        pageIndex: 1,
         autoload: true,
         pageButtonCount: 5,
-        deleteConfirm: "Do you really want to delete data?",
+        deleteConfirm: "<?= __("delete-alert") ?>",
         filtering: false,
         controller: {
             loadData: function(filter) {
                 let search = $('#searchInput').val();
 
                 filter.search = search
+                console.log(filter);
                 return $.ajax({
                     type: "GET",
                     url: "/api/admin/shareholders",
                     data: filter
                 }).then(res => {
-                    console.log(res);
                     return {
-                        data: res,
-                        itemsCount: 1000 // MOSTAFA_TODO
+                        data: res.data,
+                        itemsCount: res.total // MOSTAFA_TODO
                     };
                 });
             },
@@ -120,7 +125,7 @@
         },
         fields: [{
                 name: "username",
-                title: <?= "'" . __('username') . "'" ?>,
+                title: <?= "'" . __('user-name') . "'" ?>,
                 type: "text",
                 editing: false,
             },
@@ -132,25 +137,25 @@
             },
             {
                 name: "n_first",
-                title: <?= "'" . __('first name') . "'" ?>,
+                title: <?= "'" . __('first-name') . "'" ?>,
                 type: "text",
                 editing: true,
             },
             {
                 name: "n_last",
-                title: <?= "'" . __('last name') . "'" ?>,
+                title: <?= "'" . __('last-name') . "'" ?>,
                 type: "text",
                 editing: true,
             },
             {
-                title: 'email',
+                title: <?= "'" . __('email') . "'" ?>,
                 name: 'email',
                 type: "text",
                 editing: true,
 
             },
             {
-                title: 'phone',
+                title: <?= "'" . __('phone') . "'" ?>,
                 name: 'm_phone',
                 type: "text",
                 editing: true,
@@ -158,19 +163,19 @@
             },
             {
                 name: "",
-                title: 'login',
+                title: <?= "'" . __('login') . "'" ?>,
                 type: "custom",
                 editing: false,
                 itemTemplate(value, item) {
                     return `
                     <div class="jsgrid-align-center" >
-                        <button onclick="toggleStatus(${item.ID},'${item.ApprovedForOnline}')" class='btn btn-sm  ${item.ApprovedForOnline == 'Y'?'btn-success':'btn-info'}'>${item.ApprovedForOnline == 'Y'?'active':'pending'}</button>
+                        <button onclick="toggleStatus(${item.ID},'${item.ApprovedForOnline}')" class='btn btn-sm  ${item.ApprovedForOnline == 'Y'?'btn-success':'btn-info'}'>${item.ApprovedForOnline == 'Y'?'<?= __('active')?>':'<?= __('pending')?>'}</button>
                     </div>
                     `;
                 },
             },
             {
-                title: 'send email',
+                title: <?= "'" . __('send-email') . "'" ?>,
                 name: 'ID',
                 type: "custom",
                 editing: false,
@@ -178,7 +183,7 @@
                     if (item.ApprovedForOnline == 'Y') {
                         return `
                         <div class="jsgrid-align-center" >
-                            <button onclick="sendEmail(${value})" class='btn btn-sm  ${value?'btn-success':'btn-primary'}'>Send ${item['email-sent']}</button>
+                            <button onclick="sendEmail(${value})" class='btn btn-sm  ${value?'btn-success':'btn-primary'}'><?= __('send')?> ${item['email-sent']}</button>
                         </div>
                         `;
                     } else {
@@ -191,7 +196,7 @@
                 itemTemplate(value, item) {
                     return `
                         <div class="jsgrid-align-center">
-                            <button onclick='Edit(${JSON.stringify(item)})' class='btn btn-sm btn-primary'>Edit</button>
+                            <button onclick='Edit(${JSON.stringify(item)})' class='btn btn-sm btn-primary'><?= __('edit')?></button>
                         </div>
                         `;
                 },
@@ -210,10 +215,9 @@
                 'ID': ID
             }
         }).then(res => {
-            console.log(res);
             if (res.status) {
                 toastr.success(res.message)
-                $("#Grid").jsGrid("search")
+                $("#Grid").jsGrid("render")
             } else {
                 toastr.error(res.message)
             }
@@ -229,10 +233,9 @@
                 'ApprovedForOnline': ApprovedForOnline == 'Y' ? 'N' : 'Y'
             }
         }).then(res => {
-            console.log(res);
             if (res.status) {
                 toastr.success(res.message)
-                $("#Grid").jsGrid("search")
+                $("#Grid").jsGrid("render")
             } else {
                 toastr.error(res.message)
             }
@@ -244,7 +247,6 @@
             method: 'POST',
             url: '/api/admin/shareholders/email/many',
         }).then(res => {
-            console.log(res);
             if (res.status) {
                 toastr.success(res.message)
             } else {
@@ -258,7 +260,6 @@
             method: 'POST',
             url: '/api/admin/shareholders/update-data',
         }).then(res => {
-            console.log(res);
             if (res.status) {
                 toastr.success(res.message)
             } else {
@@ -362,7 +363,6 @@
     }
 
     function Update() {
-        console.log('update');
         let form = $('#editForm').serializeArray();
 
         return $.ajax({
@@ -372,7 +372,7 @@
         }).then(res => {
             if (res.status) {
                 toastr.success(res.message)
-                $("#Grid").jsGrid("loadData");
+                $("#Grid").jsGrid("render")
                 CancelEdit();
             } else {
                 toastr.error(res.message)
