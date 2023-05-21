@@ -80,31 +80,35 @@
     </div>
     <!--  -->
     <div class="card card-primary">
-        <div class="card-header" style="display:flex; justify-content:space-between;flex-direction:row-reverse;">
+        <div class="card-header row mx-2">
 
             <!-- EXCEL -->
-            <form style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;" action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
-                <section class="btn btn-excel" style="position: relative;">
-                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?>
-                    <input class="btn btn-excel" style="position: absolute;inset:0;opacity:0;max-width:100%;max-height:100%" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="ImportInput" required>
-                </section>
-                <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right ml-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
-            </form>
+            <div>
+                <div class="d-inline-block p-2" style="background-color: #343a40;border-radius:5px;">
+                    <section class="btn btn-excel" style="position: relative;">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?>
+                        <input class="btn btn-excel" style="position: absolute;inset:0;opacity:0;max-width:100%;max-height:100%" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="ImportInput" required>
+                    </section>
+                    <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right ml-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
+                </div>
+            </div>
             <!-- / -->
 
 
-            <form style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;display:inline-block" class="float-right d-inline-block" action="/api/admin/presenters/export" method="post">
-                <select name="role" class="form-control w-max d-inline-block" required>
-                    <option value="all"><?= __('all') ?></option>
-                    <option value="Company Secretary">Company Secretary</option>
-                    <option value="Director">Director</option>
-                    <option value="Guest">Guest</option>
-                    <option value="Director1">Director1</option>
-                </select>
-                <button class="btn btn-excel">Export</button>
+            <form action="/api/admin/presenters/export" method="post" class="text-center">
+                <div class="d-inline-block p-2" style="background-color: #343a40;border-radius:5px;">
+                    <select name="role" class="form-control w-max d-inline-block" required>
+                        <option value="all"><?= __('all') ?></option>
+                        <option value="Company Secretary">Company Secretary</option>
+                        <option value="Director">Director</option>
+                        <option value="Guest">Guest</option>
+                        <option value="Director1">Director1</option>
+                    </select>
+                    <button class="btn btn-excel">Export</button>
+                </div>
             </form>
-            <div class=" mr-4">
-                <form action="/api/admin/presenters/create-many" method="post" style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;">
+            <div class="text-right">
+                <form class="d-inline-block p-2" action="/api/admin/presenters/create-many" method="post" style="background-color: #343a40;border-radius:5px;">
                     <button class="btn btn-excel">Create</button>
                     <select name="role" class="form-control w-max d-inline-block" required>
                         <option value="Company Secretary">Company Secretary</option>
