@@ -81,11 +81,18 @@
     <!--  -->
     <div class="card card-primary">
         <div class="card-header" style="display:flex; justify-content:space-between;flex-direction:row-reverse;">
+
+            <!-- EXCEL -->
             <form style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;" action="/api/admin/presenters/import" method="post" class="float-right" enctype="multipart/form-data">
-                <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?> </button>
-                <input class="btn btn-excel" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
+                <section class="btn btn-excel" style="position: relative;">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?>
+                    <input class="btn btn-excel" style="position: absolute;inset:0;opacity:0;max-width:100%;max-height:100%" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="ImportInput" required>
+                </section>
                 <a download="" href="<?= assets('/assets/templates/presenters.xlsx') ?>" class="btn btn-excel float-right ml-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
             </form>
+            <!-- / -->
+
+
             <form style="background-color: #343a40;width:max-content;padding:5px;border-radius:5px;display:inline-block" class="float-right d-inline-block" action="/api/admin/presenters/export" method="post">
                 <select name="role" class="form-control w-max d-inline-block" required>
                     <option value="all"><?= __('all') ?></option>
@@ -161,9 +168,12 @@
         editing: true,
         deleting: true,
         sorting: false,
-        paging: true,
         autoload: true,
-        pageSize: 50,
+        paging: true,
+        pageNextText: "<?= __("next") ?>",
+        pagePrevText: "<?= __("prev") ?>",
+        pageSize: 10,
+        pageIndex: 1,
         pageButtonCount: 5,
         deleteConfirm: "Do you really want to delete data?",
         filtering: false,
@@ -290,7 +300,7 @@
             {
                 type: "custom",
                 itemTemplate: function(value, row) {
-                    let style = row['email-sent'] ? 'color:green; display:block':'display:block';
+                    let style = row['email-sent'] ? 'color:green; display:block' : 'display:block';
                     return ` <i onclick='sendEmail("${row['user-name'] }")' style="${style}" class="fa fa-envelope" aria-hidden="true"></i>`;
                 },
                 width: 40,
@@ -314,4 +324,27 @@
             res.status ? toastr.success(res.message) : toastr.error(res.message);
         });
     }
+</script>
+
+<!-- EXCEL -->
+<script>
+    $('#ImportInput').on('input', function(e) {
+        var formData = new FormData();
+        formData.append("excel-file", e.currentTarget.files[0], e.currentTarget.files[0].name);
+
+        $.ajax({
+            method: "POST",
+            url: "/api/admin/presenters/import",
+            data: formData,
+            contentType: false,
+            processData: false
+        }).then(res => {
+            toastr.success(res.message)
+        }).catch(err => {
+            let message = err.responseJSON[Object.keys(err.responseJSON)[0]];
+            toastr.error(message);
+        }).then(res => {
+            $("#AdminsGrid").jsGrid("loadData");
+        })
+    })
 </script>

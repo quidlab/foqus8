@@ -140,7 +140,7 @@ class SQLSRV_DataBase
 
                 // If we couldn't reconnect we break out early
                 if (!$this->is_connected) {
-                    return false;
+                    throw new Exception("DATABASE Connection Faild");
                 }
             }
             $result = sqlsrv_query($this->db, $query, $params);
@@ -155,7 +155,7 @@ class SQLSRV_DataBase
         } catch (Exception $e) {
             error_log("Select DB Exception in " . __FILE__);
             error_log(print_r($e, true));
-            return false;
+            throw $e;
         } finally {
             if ($result !== FALSE)
                 sqlsrv_free_stmt($result);

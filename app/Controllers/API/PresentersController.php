@@ -42,7 +42,7 @@ class PresentersController extends Controller
 
         try {
             $data = $validator->validate();
-            $data['password'] = Hash::encrypt($data['password'], $data['user-name']);
+            $data['password'] = constant('MC_ENC_PRESENTERS_PASS') ? Hash::encrypt($data['password'], $data['user-name']) : $data['password'];
             Presenter::create($data);
 
             return back()->withSuccess([
@@ -114,7 +114,7 @@ class PresentersController extends Controller
 
 
     /* 
-    
+        UPDATE
     */
     public function update()
     {
@@ -156,7 +156,7 @@ class PresentersController extends Controller
 
             try {
                 $password = $passValidator->validate();
-                $password = Hash::encrypt($password['password'], $data['user-name']);
+                $password = constant('MC_ENC_PRESENTERS_PASS') ?  Hash::encrypt($password['password'], $data['user-name']) : $password;
             } catch (\Throwable $th) {
                 return response()->json([
                     'errors' => $th->errorsBag
@@ -215,13 +215,13 @@ class PresentersController extends Controller
             try {
                 $data[] = $validator->validate();
             } catch (\Throwable $th) {
-                return back()->withErrors($th->errorsBag);
+                return response()->json($th->errorsBag, $th->getCode());
             }
         }
 
         $result = database()->transaction(function () use ($excel, $data) {
             foreach ($data as $row) {
-                $row['password'] = Hash::encrypt($this->randomPassword(8), $row['user-name']);
+                $row['password'] = constant('MC_ENC_PRESENTERS_PASS') ? Hash::encrypt($this->randomPassword(8), $row['user-name']) : $this->randomPassword(8);
 
                 if (!Presenter::create($row)) {
                     return false;
@@ -232,13 +232,13 @@ class PresentersController extends Controller
         });
 
         if ($result) {
-            return back()->withSuccess([
-                'excel' => 'data uploaded successfully'
+            return response()->json([
+                'message' => 'data uploaded successfully'
             ]);
         } else {
-            return back()->withErrors([
-                'excel' => 'something-went-wrong'
-            ]);
+            return response()->json([
+                'message' => 'something-went-wrong'
+            ], 400);
         }
     }
 

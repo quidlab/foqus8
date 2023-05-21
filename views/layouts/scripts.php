@@ -38,7 +38,7 @@
     $('#globalLoading').fadeIn(0);
 
   });
-  $(document).ajaxComplete(function() {
+  $(document).ajaxComplete(function(e) {
     $('#globalLoading').fadeOut(0);
   })
 </script>

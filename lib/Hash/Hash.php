@@ -26,7 +26,11 @@ class Hash
     */
     static function decrypt(string $needle, string $key): string
     {
-        return openssl_decrypt($needle, "AES-128-ECB", $key);
+        if ($dec = openssl_decrypt($needle, "AES-128-ECB", $key)) {
+            return $dec;
+        } else {
+            return $needle;
+        }
     }
 
 
