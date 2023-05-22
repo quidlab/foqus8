@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'Foqus3'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BDF73F1FEF9D489DAD0C133E2E3CE3C6 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C9CEF1D121704A808E8B6767F41211FD }}
           package: .
