@@ -23,7 +23,7 @@ abstract class Model
         if (count($columns) == 0) {
             $sql = "SELECT  [" . implode("],[", static::$readable) . "] FROM " . static::$table . static::$whereStr;
         } else {
-            $sql = "SELECT  [" . implode("],[", $columns) . "] FROM " . static::$table;
+            $sql = "SELECT  [" . implode("],[", $columns) . "] FROM " . static::$table . static::$whereStr;;
         }
         try {
             $result = database()->Select($sql, []);

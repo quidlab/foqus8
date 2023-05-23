@@ -174,7 +174,6 @@
             sorting: false,
             paging: true,
             autoload: true,
-            pageSize: 10,
             pageButtonCount: 5,
             deleteConfirm: "Do you really want to delete data?",
             filtering: false,

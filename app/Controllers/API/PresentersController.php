@@ -355,7 +355,8 @@ class PresentersController extends Controller
         $data = validator(request()->dataArray(), [
             'role' => ['required']
         ])->validate();
-        $prersenters = $data['role'] == 'all' ? Presenter::get([...(Presenter::$readable), ...(['password'])]) : Presenter::where('role', $data['role'])::get([...(Presenter::$readable), ...(['password'])]);
+        $prersenters = $data['role'] == 'all' ? Presenter::get([...(Presenter::$readable), ...(['password'])])
+            : Presenter::where('role', $data['role'])::get([...(Presenter::$readable), ...(['password'])]);
         foreach ($prersenters as $key => &$value) {
             $value['password'] = Hash::decrypt($value['password'], $value['user-name']);
         }
@@ -370,7 +371,8 @@ class PresentersController extends Controller
                 'password',
                 'email-sent'
             ],
-            $prersenters
+            $prersenters,
+            constant('MC_SYMBOL') . "-" . $data['role']
         );
     }
 }
