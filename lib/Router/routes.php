@@ -18,7 +18,13 @@ use LIB\Router\Router;
 $router = new Router();
 
 
-$router->get('/', function () {redirect(Router::HOME);});
+$router->get('/', function () {
+    return view('shareholders/login');
+});
+$router->get('/directors/login', function () {
+    return view('directors/login');
+});
+$router->get('/directors', function () {redirect('/directors/login');});
 $router->get('/admin', function () {redirect(Router::HOME);});
 
 /* AUTH */
