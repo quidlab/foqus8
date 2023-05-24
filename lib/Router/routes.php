@@ -9,6 +9,7 @@ use App\Controllers\RoutesController;
 use App\Controllers\AgendaController;
 use App\Controllers\AgendaDetailsController;
 use App\Controllers\DirectorController;
+use App\Controllers\ProfileController;
 use App\Controllers\SystemConstantController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -21,22 +22,34 @@ $router = new Router();
 $router->get('/', function () {
     return view('shareholders/login');
 });
+
+$router->get('/admin/profile', function () {
+    $user = database()->Select("Select TOP(1) * FROM users Where [user-name] = '" . $_SESSION['uname'] . "'")[0];
+    return view('/admin/profile', ['user' => $user], 'admin/index');
+}, new AuthMiddleware('uname'));
+
+$router->post('/admin/profile',[ProfileController::class,'update']);
+
 $router->get('/directors/login', function () {
     return view('directors/login');
 });
-$router->get('/directors', function () {redirect('/directors/login');});
-$router->get('/admin', function () {redirect(Router::HOME);});
+$router->get('/directors', function () {
+    redirect('/directors/login');
+});
+$router->get('/admin', function () {
+    redirect(Router::HOME);
+});
 
 /* AUTH */
-$router->get('/admin/login', [AuthController::class, 'login'],new GuestMiddleware('uname'));
-$router->get('/auth/otp', [AuthController::class, 'otpForm'],new GuestMiddleware('uname'));
-$router->post('/auth/otp', [AuthController::class, 'verifyOTP'],new GuestMiddleware('uname'));
+$router->get('/admin/login', [AuthController::class, 'login'], new GuestMiddleware('uname'));
+$router->get('/auth/otp', [AuthController::class, 'otpForm'], new GuestMiddleware('uname'));
+$router->post('/auth/otp', [AuthController::class, 'verifyOTP'], new GuestMiddleware('uname'));
 /*  */
 
 $router->get('/admin/dashboard', [DashboardController::class, 'index'], new AuthMiddleware('uname'));
 $router->get('/admin/admin-tools', [RoutesController::class, 'adminTools'], new AuthMiddleware('uname'));
 $router->get('/admin/manage-company', [RoutesController::class, 'manageCompany'], new AuthMiddleware('uname'));
-$router->get('/admin/system-constants', [RoutesController::class, 'systemConstants'], new AuthMiddleware('uname'),new RoleMiddleware('sper-admin'));
+$router->get('/admin/system-constants', [RoutesController::class, 'systemConstants'], new AuthMiddleware('uname'), new RoleMiddleware('sper-admin'));
 $router->get('/admin/agendas/view', [RoutesController::class, 'agendas'], new AuthMiddleware('uname'));
 $router->get('/admin/translations', [RoutesController::class, 'translations'], new AuthMiddleware('uname'));
 $router->get('/admin/users', [RoutesController::class, 'users'], new AuthMiddleware('uname'));

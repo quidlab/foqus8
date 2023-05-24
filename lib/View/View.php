@@ -26,7 +26,7 @@ class View
     private function adminArgs(): array
     {
         $url = parse_url($_SERVER['REQUEST_URI']);
-        if (str_contains($url['path'], '/admin') || str_contains($url['path'], '/auth') || str_contains($url['path'], '/directors') || $url['path'] == '/') { // MOSTAFA_TODO Need enhancements
+        if ($url['path'] == '/profile' || str_contains($url['path'], '/admin') || str_contains($url['path'], '/auth') || str_contains($url['path'], '/directors') || $url['path'] == '/') { // MOSTAFA_TODO Need enhancements
             $sql = 'select Company_Name,Meeting_Place from Company where Tlang =' . "'" . app()->local . "'";
             $company_name = database()->Select($sql);
 

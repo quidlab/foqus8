@@ -6,7 +6,8 @@
         <!-- Shareholer Selection -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 " style="display: inline;">Import Shareholders Data</h6><span style="float: right" class="m-0 " id="log"><i id="loading"  class="fas fa-2x fa-circle-notch fa-spin"></i></span>
+                <h6 class="m-0 " style="display: inline;"><?= __('import-shareholders-data') ?></h6><span style="float: right" class="m-0 " id="log">
+                </span>
 
             </div>
 
@@ -15,7 +16,7 @@
                 <div class="columns">
 
                     <div class="col1">
-                        <h6>Required Files </h6>
+                        <h6><?= __('required-files') ?></h6>
                         <ul id="" class="back">
 
                             <?
@@ -30,19 +31,19 @@
                             <form action="agm/import.php" enctype="multipart/form-data" id="import_form" method="post" target="hidden-iframe">
                                 <input type="hidden" name="action" value="save_data">
                                 <input type="hidden" name="shorting_field" value="" id="after_shorting">
-                                <button class="btn btn-excel btn-sm">Select Excel File</button>
+                                <button class="btn btn-excel btn-sm"><?= __('select-excel-file') ?></button>
                                 <input required class="btn-excel" type="file" name="uploadFile" onchange="handleFile()" id='file' accept=".xlsx, .xls, .csv" />
                             </form>
                         </div>
                     </div>
 
                     <div class="col2">
-                        <h6>Fields in Excel Files</h6>
+                        <h6><?= __('fields-in-excel-files') ?></h6>
                         <ul id="sortable" class="back b1">
                             <!--      <li id="result" class="ui-state-default"></li> -->
                         </ul>
-                        <button onclick="sortFields()" id="sort_btn" class="btn btn-primary btn-sm">Sort</button>
-                        <button id="import_btn" type="button" class="btn-primary btn-sm" style="display: none;">Import</button>
+                        <button onclick="sortFields()" id="sort_btn" class="btn btn-primary btn-sm"><?= __('sort') ?></button>
+                        <button id="import_btn" type="button" class="btn-primary btn-sm" style="display: none;"><?= __('import') ?></button>
                     </div>
 
                 </div>
@@ -60,22 +61,19 @@
 
 <script src="<?= assets('/assets/xlsx.full.min.js') ?>"></script>
 <script>
-        $(function() {
-          $("#sortable").sortable({
+    $(function() {
+        $("#sortable").sortable({
             revert: true
-          });
-          $("#draggable").draggable({
+        });
+        $("#draggable").draggable({
             connectToSortable: "#sortable",
             helper: "clone",
             revert: "invalid"
-          });
-          $("ul, li").disableSelection();
         });
-      </script>
+        $("ul, li").disableSelection();
+    });
+</script>
 <script>
-
-
-    
     /* 
   
   */
@@ -231,9 +229,9 @@
 
 <!-- IMPORT -->
 <script>
+    $('#loading').fadeOut(0);
     let egmCount = <?= $egmCount ?>;
 
-    $('#loading').fadeOut(0);
 
     $("#import_btn").on("click", function() {
         if (egmCount) {

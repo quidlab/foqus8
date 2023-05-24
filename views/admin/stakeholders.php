@@ -85,7 +85,7 @@
             },
             {
                 name: "Agenda_ID",
-                title: <?= "'" . __('Agenda_ID') . "'" ?>,
+                title: <?= "'" . __('agenda-id') . "'" ?>,
                 type: "select",
                 items: [
                     <?

@@ -66,7 +66,7 @@
 
         fields: [{
                 name: "Proxy_Name",
-                title: <?= "'" . __('proxy_name') . "'" ?>,
+                title: <?= "'" . __('proxy-name') . "'" ?>,
                 type: "text",
                 editing: false,
             },

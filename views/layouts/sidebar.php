@@ -132,7 +132,7 @@ function can($link): bool
         <img src="<?= assets('/assets/img/user2-160x160.jpg') ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block"><? echo $_SESSION['uname']; ?></a>
+        <a href="/admin/profile" class="d-block"><? echo $_SESSION['uname']; ?></a>
       </div>
     </div>
 
