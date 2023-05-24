@@ -62,3 +62,10 @@
     }
     ?>
 </script>
+<script>
+    <?
+    foreach (errors() as $key => $value) {
+        echo 'toastr.error("' . $value . '");';
+    }
+    ?>
+</script>

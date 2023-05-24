@@ -77,6 +77,12 @@ class Router
                     ]);
                 }
             } catch (\Throwable $th) {
+                $accept = explode(',', getallheaders()['Accept'])[0];
+                if ($accept  == 'text/html') {
+                    return back()->withErrors(
+                        ['error' =>  $th->getMessage()]
+                    );
+                }
                 return response()->json([
                     "message" => $th->getMessage(),
                     "code" => $th->getCode(),

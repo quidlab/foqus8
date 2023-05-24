@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function update()
     {
         $data = validator(request()->dataArray(),[
-            'email' => ['required'],
+            'email' => ['required','email'],
             'mobile' => ['required'],
             'preferred-language' => ['required'],
         ])->validate();

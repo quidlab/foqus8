@@ -20,6 +20,7 @@ class Validator
         'contains-digit' => 'Lib\Services\Validation\Rules\ContainsDigit',
         'min' => 'Lib\Services\Validation\Rules\MinRule',
         'nullable' => 'Lib\Services\Validation\Rules\NullableRule',
+        'email' => 'Lib\Services\Validation\Rules\EmailRule',
     ];
 
     public function __construct(array $data, array $rules)
