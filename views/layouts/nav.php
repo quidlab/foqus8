@@ -14,7 +14,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <!--  <i class="flag-icon flag-icon-us"></i> -->
-          <i class="fas fa-language"></i>
+          <i title="<?= __('language')?>" class="fas fa-language"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right p-0">
           <?
@@ -41,7 +41,7 @@
       </li> -->
       <li class="nav-item">
         <a class="nav-link" data-toggle="modal" data-target="#logoutModal" href="#" role="button">
-          <i class="fas fa-sign-out-alt"></i>
+          <i class="fas fa-sign-out-alt" title="<?= __('logout')?>"></i>
         </a>
       </li>
     </ul>

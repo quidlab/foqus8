@@ -38,12 +38,12 @@
   ?>
 
   let message = <?= "'" . __('session-timeout-warning', [
-                  'time' =>  $time 
+                  'time' =>  $alertTime 
                 ]) . "'" ?>;
 
   setTimeout(() => {
     alert(message);
-  }, alertTime * 1000);
+  }, time * 1000);
 </script>
 
 </html>

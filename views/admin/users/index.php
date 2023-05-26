@@ -81,9 +81,11 @@
     </div>
     <div class="card card-primary">
         <div class="card-header">
-            <form action="/api/admin/users/import" method="post" class="float-right" enctype="multipart/form-data">
-                <button class="btn btn-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-users') ?> </button>
-                <input type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="" required>
+            <form action="/api/admin/users/import" method="post" class="float-right" id="importForm" enctype="multipart/form-data">
+                <section class="btn btn-excel" style="position: relative;">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-users') ?>
+                    <input oninput="document.querySelector('#importForm').submit()" class="btn btn-excel" style="position: absolute;inset:0;opacity:0;max-width:100%;max-height:100%" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="ImportInput" required>
+                </section>
             </form>
             <a download="" href="<?= assets('/assets/templates/users.xlsx') ?>" class="btn btn-excel float-right mr-2"><i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('download-sample') ?> </a>
             <p class=" text-bold"><?= __('admin-users') ?></p>
@@ -112,7 +114,7 @@
 <script>
     <?
     foreach (errors() as $key => $value) {
-        echo 'toastr.error("' . $key." => ".$value . '");';
+        echo 'toastr.error("' . $key . " => " . $value . '");';
     }
     ?>
 </script>

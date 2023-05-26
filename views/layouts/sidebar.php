@@ -87,19 +87,19 @@ $adminLinks = [
     'name' => 'coupons',
     'path' => '/admin/coupons',
     'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
-    'roles' => [6, 7]
+    'roles' => [1, 7]
   ],
   [
     'name' => 'import-shareholders',
     'path' => '/admin/import-shareholders',
     'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
-    'roles' => [6, 7]
+    'roles' => [1, 7]
   ],
   [
     'name' => 'egm-activation',
     'path' => '/admin/egm-activation',
     'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
-    'roles' => [6, 7]
+    'roles' => [1, 7]
   ],
 ];
 
