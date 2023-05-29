@@ -74,9 +74,9 @@
     });
 </script>
 <script>
-    /* 
-  
-  */
+    let requiredFieldsObj = <?= json_encode($requiredFields); ?>;
+    let requiredFieldsArr = requiredFieldsObj.map(f => f.id);
+
     function extractHeader(ws) {
         const header = []
         const columnCount = XLSX.utils.decode_range(ws['!ref']).e.c + 1
@@ -121,17 +121,16 @@
             var ExcelData = XLSX.utils.sheet_to_json(ws);
 
             AddListItem(header)
-            var ExcelDataMapped = ExcelData.map(ExcelData => ({
-                Account_ID: ExcelData.Account_ID,
-                n_title: ExcelData.n_title,
-                n_first: ExcelData.n_first,
-                n_last: ExcelData.n_last,
-                a_holder: ExcelData.a_holder,
-                i_zip: ExcelData.i_zip,
-                h_phone: ExcelData.h_phone,
-                q_share: ExcelData.q_share,
-                i_ref: ExcelData.i_ref
-            }));
+
+            console.log(requiredFieldsObj);
+            var ExcelDataMapped = ExcelData.map(ExcelData => {
+                let obj = {};
+                requiredFieldsObj.forEach(element => {
+                    obj[element.id] = ExcelData[element.id]
+                });
+                return obj;
+            });
+            console.log(ExcelDataMapped);
         }
 
         if (rABS) reader.readAsBinaryString(file)
@@ -163,7 +162,8 @@
         if ($("#sort_btn").text() == "Finished Sorting") {
             $("#import_btn").show();
         }
-        var requiredFields = ['Account_ID', 'n_title', 'n_first', 'n_last', 'a_holder', 'i_zip', 'h_phone', 'q_share', 'i_ref'];
+        var requiredFields = requiredFieldsArr;
+        console.log(requiredFields);
         var presentFields = [];
         let lis = document.getElementById('sortable').childNodes;
         for (var i = 0; i < lis.length; i++) {
@@ -202,7 +202,7 @@
     
     */
     function sortFieldsSecond() {
-        var requiredFields = ['Account_ID', 'n_title', 'n_first', 'n_last', 'a_holder', 'i_zip', 'h_phone', 'q_share', 'i_ref'];
+        var requiredFields = requiredFieldsArr;
         var presentFields = [];
         let lis = document.getElementById('sortable').childNodes;
         for (var i = 0; i < lis.length; i++) {
@@ -253,6 +253,8 @@
 
         var formData = new FormData();
         formData.append("file_name", file.files[0], file.files[0].name);
+        formData.append('shorting_field',$("#after_shorting").val())
+        formData.append('required_fields',requiredFieldsArr)
         $.ajax({
             type: "POST",
             url: "/api/admin/shareholders/import",

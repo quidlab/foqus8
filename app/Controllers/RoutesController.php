@@ -113,11 +113,11 @@ class RoutesController extends Controller
         $egmData2 = "select count(*) as notApproved from EGM where ApprovedForOnline='N'";
 
         $CountData2 = database()->Select($egmData2);
-        
+
         $egmData3 = "select count(*) as Approved from EGM where ApprovedForOnline='Y'";
         $CountData3 = database()->Select($egmData3);
 
-        
+
         $egmData4 = "select count(*) as totalcount, sum(q_share) as totalvotes from EGM ";
         $CountData4 = database()->Select($egmData4);
 
@@ -146,5 +146,25 @@ class RoutesController extends Controller
             'requiredFields' => $requiredFields,
             'egmCount' => reset($egmCount),
         ], '/admin/index');
+    }
+
+
+
+    /* 
+    
+    */
+    public function ApproveOnlineJoiners()
+    {
+        return view('/admin/join-online-joiners', [], '/admin/index');
+    }
+
+
+
+    /* 
+        reports
+    */
+    public function reports()
+    {
+        return view('/admin/reports', [], '/admin/index');
     }
 }

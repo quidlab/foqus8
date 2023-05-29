@@ -34,11 +34,12 @@
 <script>
   let alertTime = <?= constant('MC_SESSION_TIMEOUT_WARNING_SECONDS') ?>;
   <?
-  $time = substr((((int)constant("MC_SESSION_TIMEOUT_SECONDS") - (int)constant("MC_SESSION_TIMEOUT_WARNING_SECONDS")) / 60), 0, 4) . " min"
+  $time = substr((((int)constant("MC_SESSION_TIMEOUT_SECONDS") - (int)constant("MC_SESSION_TIMEOUT_WARNING_SECONDS"))), 0, 4);
   ?>
-
+  let time = <?= $time ?>;
+  console.log(time);
   let message = <?= "'" . __('session-timeout-warning', [
-                  'time' =>  $alertTime 
+                  'time' =>  constant('MC_SESSION_TIMEOUT_WARNING_SECONDS') . ' sec'
                 ]) . "'" ?>;
 
   setTimeout(() => {

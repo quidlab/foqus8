@@ -60,6 +60,8 @@ $router->get('/admin/proxy-names', [RoutesController::class, 'proxyNames'], new 
 $router->get('/admin/coupons', [RoutesController::class, 'coupons'], new AuthMiddleware('uname'));
 $router->get('/admin/import-shareholders', [RoutesController::class, 'importShareholders'], new AuthMiddleware('uname'));
 $router->get('/admin/egm-activation', [RoutesController::class, 'egmActivation'], new AuthMiddleware('uname'));
+$router->get('/admin/join-online-joiners', [RoutesController::class, 'ApproveOnlineJoiners'], new AuthMiddleware('uname'));
+$router->get('/admin/reports', [RoutesController::class, 'reports'], new AuthMiddleware('uname'));
 
 /* Company */
 $router->get('/admin/company', [CompanyController::class, 'getAll'], new AuthMiddleware('uname'));

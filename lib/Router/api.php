@@ -87,4 +87,5 @@ $router->post('/api/admin/shareholders/import', [ShareholdersController::class, 
 $router->post('/api/admin/shareholders/import', [ShareholdersController::class, 'import'], new AuthMiddleware('uname'));
 $router->post('/api/admin/shareholders/email', [ShareholdersController::class, 'sendEmail'], new AuthMiddleware('uname'));
 $router->post('/api/admin/shareholders/email/many', [ShareholdersController::class, 'sendMany'], new AuthMiddleware('uname'));
-
+$router->post('/api/admin/shareholders/update/without-share', [ShareholdersController::class, 'updateWithoutShare'], new AuthMiddleware('uname'));
+$router->post('/api/admin/shareholders/update/with-share', [ShareholdersController::class, 'updateWithShare'], new AuthMiddleware('uname'));

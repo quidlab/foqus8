@@ -105,6 +105,24 @@ abstract class Model
     /* 
     
     */
+    public static function updateByColName(array $data, $colName = null)
+    {
+        $rows = "";
+        foreach ($data as $key => $value) {
+            $rows .= " [" . $key . "] = N'" . $value . "',";
+        }
+        $rows = rtrim($rows, ',');
+        $sql = "UPDATE " . static::$table . " SET " . $rows . " Where [" . $colName . "] = ?";
+        try {
+            return database()->Run($sql, [$data[$colName]]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    /* 
+    
+    */
     public static function getByColName(string $colName, $colValue): array
     {
         $sql = "SELECT * FROM " . static::$table . " WHERE [" . $colName . "] = ?";

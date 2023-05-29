@@ -3,10 +3,13 @@
 namespace App\Controllers\API;
 
 use App\Controllers\Controller;
+use App\Exceptions\ValidationException;
 use App\Models\Shareholder;
+use Exception;
 use Lib\Hash\Hash;
 use Lib\Mail\ShareholderMail;
 use Lib\Services\Excel\Excel;
+use Lib\Services\Validation\Validator;
 
 class ShareholdersController extends Controller
 {
@@ -37,23 +40,22 @@ class ShareholdersController extends Controller
     public function import()
     {
         $excel = Excel::import('file_name');
+        $requiredFields = explode(",", $_POST['required_fields']);
+        $sortingFields = explode(",", $_POST['shorting_field']);
 
 
-        $r = database()->transaction(function () use ($excel) {
+
+        $r = database()->transaction(function () use ($excel, $sortingFields, $requiredFields) {
             $sql = "DELETE FROM AgendaResults;Delete from EGM;DBCC CHECKIDENT ('EGM', RESEED, 11111110);";
             $r1 = database()->Run($sql);
             $rows = [];
 
-            foreach ($excel->only(['Account_ID', 'q_share', 'n_title', 'n_first', 'i_ref', 'h_phone', 'i_zip', 'a_holder', 'n_last'], true) as $key => $row) {
-                $rows[$key] = $row;
-                $rows[$key]['i_holder'] = $row['Account_ID'];
-                $rows[$key]['a_holder_1'] = $row['a_holder'];
-                $rows[$key]['I_ref'] = $row['i_ref'];
-                unset($rows[$key]['Account_ID']);
-                unset($rows[$key]['a_holder']);
-                unset($rows[$key]['i_ref']);
+            foreach ($excel->only($sortingFields, true) as $key => $row) {
+                $rows[$key] = [];
+                foreach ($requiredFields as  $key2 => $requiredField) {
+                    $rows[$key][$requiredField] = $row[$sortingFields[$key2]];
+                }
             }
-            return $rows;
             $r2 = Shareholder::createMany($rows, Shareholder::readable(), 1000);
 
             $r3 = database()->Run("UPDATE EGM SET Attended = 'N', Shares_Attended = 0, Proxy = 'N', Proxy_name = '', BallotPaperPrinted = 0, Custodian = 'N', USER_ID = '', Registered_Time = NULL, Out_Time = NULL,org_q_share=q_share,Group_id=NULL,serial=0,coupon1_claimed='N',coupon2_claimed='N',coupon3_claimed='N',feedback_submitted='N',factory_visit_interested='N',org_n_first=n_first,org_n_last=n_last,org_i_ref=I_ref,ProxyType=NULL,email=NULL,m_phone=NULL,username=NULL,password=NULL,ApprovedForOnline='N',IPAddress=NULL,lastlogin=NULL,status=0,active=0,[email-sent]=0,doc_received='N',jitsiid='0';");
@@ -278,5 +280,101 @@ class ShareholdersController extends Controller
             ";
         }
         return $search;
+    }
+
+
+
+
+    /* 
+    
+    */
+    public function updateWithShare()
+    {
+        $excel = Excel::import('uploadFile');
+
+        $r = database()->transaction(function () use ($excel) {
+            foreach ($excel->rows() as $key => $row) {
+
+                $validator = validator($row, [
+                    'e_mail' => ['required', 'email'],
+                    'Account_ID' => ['required'],
+                    'shares' => ['required'],
+                    'Phone' => ['nullable'],
+                    'proxy_type' => ['nullable'],
+                    'proxy_name' => ['nullable'],
+                ]);
+                try {
+                    $data = $validator->validate();
+                } catch (ValidationException $th) {
+                    throw new Exception($th->error() . " in line " . $key);
+                }
+
+
+
+                $check_row = "SELECT q_share FROM EGM WHERE i_holder = '" .  $data['Account_ID'] . "'";
+                $params = array();
+                $stmt1 = database()->Select($check_row, $params);
+
+
+                foreach ($stmt1 as $stmt) {
+                    $q_share = $stmt['q_share'];
+                }
+                if ($data['shares'] != $q_share) {
+                    throw new ValidationException(['i_holder' => 'invalid shares in line ' . $key]);
+                }
+
+
+                $data['i_holder'] = $data['Account_ID'];
+                $data['proxyType'] = $data['proxy_type'];
+                $data['phone'] = $data['Phone'];
+                unset($data['Account_ID']);
+                unset($data['proxy_type']);
+                unset($data['Phone']);
+                if (Shareholder::updateByColName($data, 'i_holder') == false) {
+                    return false;
+                }
+            }
+        });
+
+        return back()->withMessage([
+            'file' => __($r ? 'updated' : 'faild'),
+            'status' =>  $r
+        ], $r);
+    }
+
+
+
+    /* 
+    
+    */
+    public function updateWithoutShare()
+    {
+
+        $excel = Excel::import('uploadFile');
+        $data = [];
+        database()->transaction(function () use ($excel) {
+            foreach ($excel->rows() as $key => $row) {
+                $data = validator($row, [
+                    'e_mail' => ['required', 'email'],
+                    'Account_ID' => ['required'],
+                    'Phone' => ['nullable'],
+                    'proxy_type' => ['nullable'],
+                    'proxy_name' => ['nullable'],
+                ])->validate();
+                $data['i_holder'] = $data['Account_ID'];
+                $data['proxyType'] = $data['proxy_type'];
+                $data['phone'] = $data['Phone'];
+                unset($data['Account_ID']);
+                unset($data['proxy_type']);
+                unset($data['Phone']);
+                if (Shareholder::updateByColName($data, 'i_holder') == false) {
+                    return false;
+                }
+            }
+        });
+
+        return back()->withSuccess([
+            'file' => __('updated')
+        ]);
     }
 }

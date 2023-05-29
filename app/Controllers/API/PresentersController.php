@@ -208,8 +208,8 @@ class PresentersController extends Controller
                 'first-name' => ['nullable'],
                 'last-name' => ['nullable'],
                 'title' => ['nullable'],
-                'email' => ['required'],
-                'mobile' => ['required'],
+                'email' => ['nullable'],
+                'mobile' => ['nullable'],
                 'role' => ['required'],
             ]);
             try {
@@ -221,6 +221,7 @@ class PresentersController extends Controller
 
         $result = database()->transaction(function () use ($excel, $data) {
             foreach ($data as $row) {
+
                 $row['password'] = constant('MC_ENC_PRESENTERS_PASS') ? Hash::encrypt($this->randomPassword(8), $row['user-name']) : $this->randomPassword(8);
 
                 if (!Presenter::create($row)) {
@@ -237,7 +238,7 @@ class PresentersController extends Controller
             ]);
         } else {
             return response()->json([
-                'message' => 'something-went-wrong'
+                'message' => 'something-went-wrong',
             ], 400);
         }
     }

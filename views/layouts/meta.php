@@ -75,7 +75,8 @@
       margin: auto;
       display: none;
     }
-    .jsgrid-pager{
+
+    .jsgrid-pager {
       padding: 1rem;
     }
   </style>
@@ -88,17 +89,38 @@
       flex: 1;
     }
 
-    .popup{
+    .popup {
       position: fixed;
       inset: 0;
       background-color: #ffffff56;
       z-index: 10000;
 
     }
-    .popup-body{
+
+    .popup-body {
       display: flex;
       justify-content: center;
       margin-top: 10vh;
+    }
+  </style>
+  <style>
+    .upload-btn-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+
+    .bar {
+      grid-column: 1/3;
+      margin: 10px 0 10px 0;
     }
   </style>
 </head>

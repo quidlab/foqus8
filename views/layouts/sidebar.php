@@ -101,6 +101,18 @@ $adminLinks = [
     'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
     'roles' => [1, 7]
   ],
+  [
+    'name' => 'join-online-joiners',
+    'path' => '/admin/join-online-joiners',
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
+  ],
+  [
+    'name' => 'reports',
+    'path' => '/admin/reports',
+    'icon' => '<i class="nav-icon fa-solid fa-pen-to-square"></i>',
+    'roles' => [1, 7]
+  ],
 ];
 
 function can($link): bool

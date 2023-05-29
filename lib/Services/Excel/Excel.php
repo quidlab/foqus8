@@ -58,10 +58,11 @@ class Excel
         /*  */
         $indexes = [];
         foreach ($keys as $key => $value) {
-            if ($inx = array_search($value, $headers)) {
+            $inx = array_search($value, $headers);
+            if ($inx || $inx == 0) {
                 $indexes[] = $inx;
-            }else if($restriction){
-                throw new Exception($value . " Is Required");
+            } else if ($restriction) {
+                throw new Exception($value . " Is Required " . $key);
             }
         }
 
@@ -104,7 +105,7 @@ class Excel
 
 
 
-    static function export(array $headers, array $data,$name = "output")
+    static function export(array $headers, array $data, $name = "output")
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -125,7 +126,7 @@ class Excel
         }
         $writer = new XlsxWriter($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename='.$name.'.xlsx');
+        header('Content-Disposition: attachment;filename=' . $name . '.xlsx');
         $writer->save('php://output');
         return $writer;
     }
