@@ -38,7 +38,9 @@
                 var formData = new FormData();
                 formData.append("description", insertingItem.description);
                 formData.append("language", insertingItem.language);
-                formData.append("file_name", insertingItem.file_name, insertingItem.file_name.name);
+                if (insertingItem.file_name) {
+                    formData.append("file_name", insertingItem.file_name, insertingItem.file_name.name);
+                }
 
                 let t = $.ajax({
                     type: "POST",
@@ -48,13 +50,15 @@
                     processData: false
                 }).then(res => {
                     if (res.status) {
-                        // $("#FilesGrid").trigger("reloadGrid") ;
+                        // 
                         toastr.success(res.message)
                     } else {
                         toastr.error(res.message)
                     }
                 }).catch(res => {
                     toastr.error(res.responseJSON?.message)
+                }).then(res => {
+                    $("#FilesGrid").jsGrid("render")
                 });
                 return t;
             },

@@ -37,14 +37,13 @@
   $time = substr((((int)constant("MC_SESSION_TIMEOUT_SECONDS") - (int)constant("MC_SESSION_TIMEOUT_WARNING_SECONDS"))), 0, 4);
   ?>
   let time = <?= $time ?>;
-  console.log(time);
   let message = <?= "'" . __('session-timeout-warning', [
-                  'time' =>  constant('MC_SESSION_TIMEOUT_WARNING_SECONDS') . ' sec'
+                  'time' =>  $time . ' sec'
                 ]) . "'" ?>;
 
   setTimeout(() => {
     alert(message);
-  }, time * 1000);
+  }, alertTime * 1000);
 </script>
 
 </html>

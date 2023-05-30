@@ -113,7 +113,8 @@
             const wsname = wb.SheetNames[0]
             const ws = wb.Sheets[wsname]
 
-            const header = extractHeader(ws)
+            let header = extractHeader(ws)
+
 
             var ExcelData1 = XLSX.utils.sheet_to_json(ws, {
                 header: 1
@@ -122,7 +123,6 @@
 
             AddListItem(header)
 
-            console.log(requiredFieldsObj);
             var ExcelDataMapped = ExcelData.map(ExcelData => {
                 let obj = {};
                 requiredFieldsObj.forEach(element => {
@@ -130,7 +130,6 @@
                 });
                 return obj;
             });
-            console.log(ExcelDataMapped);
         }
 
         if (rABS) reader.readAsBinaryString(file)
@@ -142,6 +141,9 @@
 
         document.getElementById("sortable").innerHTML = "";
         for (let i in header) {
+            if (header[i] == 'Account_ID') {
+                header[i] = 'i_holder';
+            }
             var ul = document.getElementById("sortable");
             var li = document.createElement("li");
             li.setAttribute("id", "l" + i);
@@ -163,7 +165,6 @@
             $("#import_btn").show();
         }
         var requiredFields = requiredFieldsArr;
-        console.log(requiredFields);
         var presentFields = [];
         let lis = document.getElementById('sortable').childNodes;
         for (var i = 0; i < lis.length; i++) {
@@ -177,7 +178,7 @@
 
 
 
-        let checker = (arr, target) => target.every(v => arr.includes(v));
+        let checker = (arr, target) => target.every(v => arr.map(a => a.toLowerCase()).includes(v.toLowerCase()));
 
         if (checker(presentFields, requiredFields)) {
             $(sortable).empty();
@@ -253,8 +254,8 @@
 
         var formData = new FormData();
         formData.append("file_name", file.files[0], file.files[0].name);
-        formData.append('shorting_field',$("#after_shorting").val())
-        formData.append('required_fields',requiredFieldsArr)
+        formData.append('shorting_field', $("#after_shorting").val())
+        formData.append('required_fields', requiredFieldsArr)
         $.ajax({
             type: "POST",
             url: "/api/admin/shareholders/import",

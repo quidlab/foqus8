@@ -87,6 +87,8 @@ class PresentersController extends Controller
             for ($i = 1; $i <= $data['presenters-count']; $i++) {
                 $value = [];
                 $value['user-name'] = $data['role'] . $i;
+                $value['first-name'] = $data['role'] . $i;
+                $value['last-name'] = $data['role'] . $i;
                 $value['role'] = $data['role'];
                 $value['password'] = Hash::encrypt($this->randomPassword(), $value['user-name']);
                 if (!Presenter::create($value)) {
@@ -223,6 +225,10 @@ class PresentersController extends Controller
             foreach ($data as $row) {
 
                 $row['password'] = constant('MC_ENC_PRESENTERS_PASS') ? Hash::encrypt($this->randomPassword(8), $row['user-name']) : $this->randomPassword(8);
+                if (empty($row['first-name'])  && empty($row['last-name'])) {
+                    $row['first-name'] = $row['user-name'];
+                    $row['last-name'] = $row['user-name'];
+                }
 
                 if (!Presenter::create($row)) {
                     return false;

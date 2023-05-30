@@ -123,4 +123,10 @@
       margin: 10px 0 10px 0;
     }
   </style>
+  
+  <style>
+    input[type="file"] {
+      background-color: #21a366;
+    }
+  </style>
 </head>

@@ -4,6 +4,7 @@ namespace App\Controllers\API;
 
 use App\Controllers\Controller;
 use App\Exceptions\ValidationException;
+use App\Models\Presenter;
 use App\Models\Shareholder;
 use Exception;
 use Lib\Hash\Hash;
@@ -40,17 +41,34 @@ class ShareholdersController extends Controller
     public function import()
     {
         $excel = Excel::import('file_name');
+
         $requiredFields = explode(",", $_POST['required_fields']);
-        $sortingFields = explode(",", $_POST['shorting_field']);
 
-
+        $sortingFields = explode(",", str_replace('Account_ID', 'i_holder', $_POST['shorting_field']));
+        /*         if ($dif = array_udiff($requiredFields, Shareholder::$readable, function ($a, $b) {
+            return strcasecmp($a, $b);
+        })) {
+            return response()->json([
+                'message' => reset($dif) . ' Not Valid'
+            ]);
+        } */
 
         $r = database()->transaction(function () use ($excel, $sortingFields, $requiredFields) {
             $sql = "DELETE FROM AgendaResults;Delete from EGM;DBCC CHECKIDENT ('EGM', RESEED, 11111110);";
             $r1 = database()->Run($sql);
             $rows = [];
 
-            foreach ($excel->only($sortingFields, true) as $key => $row) {
+
+            foreach ($excel->rows() as $key => $row) {
+                if (array_key_exists('Account_ID', $row)) {
+                    $row['i_holder'] = $row['Account_ID'];
+                    unset($row['Account_ID']);
+                }
+                if (array_key_exists('I_ref', $row)) {
+                    $row['i_ref'] = $row['I_ref'];
+                    unset($row['I_ref']);
+                }
+
                 $rows[$key] = [];
                 foreach ($requiredFields as  $key2 => $requiredField) {
                     $rows[$key][$requiredField] = $row[$sortingFields[$key2]];

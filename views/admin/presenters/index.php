@@ -84,7 +84,7 @@
 
             <!-- EXCEL -->
             <div>
-                <div class="d-inline-block p-2" style="background-color: #343a40;border-radius:5px;">
+                <div class="d-inline-flex p-2" style="background-color: #343a40;border-radius:5px;">
                     <section class="btn btn-excel" style="position: relative;">
                         <i class="fa fa-file-excel-o" aria-hidden="true"></i> <?= __('import-presenters') ?>
                         <input class="btn btn-excel" style="position: absolute;inset:0;opacity:0;max-width:100%;max-height:100%" type="file" accept=".csv,.xls,.xlsx" name="excel-file" id="ImportInput" required>
@@ -116,7 +116,7 @@
                         <option value="Guest">Guest</option>
                         <option value="Director1">Director1</option>
                     </select>
-                    <input style="width:70px ;" class="form-control w-max d-inline-block" required type="number" name="presenters-count" id="">
+                    <input style="width:70px ;" class="form-control w-max d-inline-block" min="1" required type="number" name="presenters-count" id="">
                 </form>
             </div>
         </div>

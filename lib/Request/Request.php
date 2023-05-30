@@ -30,9 +30,9 @@ class Request
         $_SESSION['messagesBag'] = [];
         $_SESSION['messagesBag'][] = __($message);
         if ($status) {
-            $this->withSuccess($message);
+            $this->withSuccess([$message]);
         } else {
-            $this->withErrors($message);
+            $this->withErrors([$message]);
         }
     }
 

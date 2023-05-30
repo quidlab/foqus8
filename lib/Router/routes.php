@@ -30,10 +30,10 @@ $router->get('/admin/profile', function () {
 
 $router->post('/admin/profile',[ProfileController::class,'update']);
 
-$router->get('/directors/login', function () {
+$router->get('/director/login', function () {
     return view('directors/login');
 });
-$router->get('/directors', function () {
+$router->get('/director', function () {
     redirect('/directors/login');
 });
 $router->get('/admin', function () {

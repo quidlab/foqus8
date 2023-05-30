@@ -41,13 +41,13 @@ $adminLinks = [
         'path' => '/admin/agendas/view',
         'icon' => '<i class="far fa-circle nav-icon"></i>'
       ],
-      [
+/*       [
         'name' => 'create-agenda',
         'path' => '/admin/agendas/create',
         'icon' => '<i class="far fa-circle nav-icon"></i>'
-      ],
+      ], */
       [
-        'name' => 'create-agenda 2',
+        'name' => 'create-agenda',
         'path' => '/admin/agendas/create2',
         'icon' => '<i class="far fa-circle nav-icon"></i>'
       ],
