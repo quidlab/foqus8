@@ -44,8 +44,8 @@ class View
     {
         $root = $_SERVER["DOCUMENT_ROOT"];
 
-        foreach ($args as $key => $value) {
-            ${$key} = $value;
+        if (is_array($args) && !empty($args)) {
+            extract($args);
         }
 
         if ($this->layout) {

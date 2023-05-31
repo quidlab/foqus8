@@ -130,7 +130,7 @@ class AuthController extends Controller
 
         list($OTP, $EX_TIME) = explode(":", $_SESSION['otp']);
 
-        if ($_SERVER["REQUEST_TIME"] - $EX_TIME > constant('MC_OTP_EXPIRATION_MINS') * 60) { // MOSTAFA_TODO TAKE TIME FROM CONSTANTS
+        if ($_SERVER["REQUEST_TIME"] - $EX_TIME > constant('MC_OTP_EXPIRATION_MINS') * 60) {
             return back()->withErrors([
                 'otp' => __('time-expired-message')
             ]);

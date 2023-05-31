@@ -11,6 +11,7 @@ use App\Controllers\AgendaDetailsController;
 use App\Controllers\DirectorController;
 use App\Controllers\ProfileController;
 use App\Controllers\SystemConstantController;
+use App\Exceptions\ValidationException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use App\Middleware\RoleMiddleware;
@@ -28,7 +29,7 @@ $router->get('/admin/profile', function () {
     return view('/admin/profile', ['user' => $user], 'admin/index');
 }, new AuthMiddleware('uname'));
 
-$router->post('/admin/profile',[ProfileController::class,'update']);
+$router->post('/admin/profile', [ProfileController::class, 'update']);
 
 $router->get('/director/login', function () {
     return view('directors/login');
@@ -37,7 +38,7 @@ $router->get('/director', function () {
     redirect('/directors/login');
 });
 $router->get('/admin', function () {
-    redirect(Router::HOME);
+    return redirect(Router::HOME);
 });
 
 /* AUTH */

@@ -327,6 +327,9 @@ class ShareholdersController extends Controller
                     throw new Exception($th->error() . " in line " . $key);
                 }
 
+                if (!($data['proxy_type'] == '' && $data['proxy_name'] == '')) {
+                    return -1;
+                }
 
 
                 $check_row = "SELECT q_share FROM EGM WHERE i_holder = '" .  $data['Account_ID'] . "'";
@@ -354,10 +357,10 @@ class ShareholdersController extends Controller
             }
         });
 
-        return back()->withMessage([
-            'file' => __($r ? 'updated' : 'faild'),
-            'status' =>  $r
-        ], $r);
+        if ($r == -1) {
+            return back()->withMessage('proxy_name, proxy_type both should be included or null', false);
+        }
+        return back()->withMessage($r ? 'updated' : 'faild', $r ? true : false);
     }
 
 
@@ -370,7 +373,7 @@ class ShareholdersController extends Controller
 
         $excel = Excel::import('uploadFile');
         $data = [];
-        database()->transaction(function () use ($excel) {
+        $r  = database()->transaction(function () use ($excel) {
             foreach ($excel->rows() as $key => $row) {
                 $data = validator($row, [
                     'e_mail' => ['required', 'email'],
@@ -385,14 +388,17 @@ class ShareholdersController extends Controller
                 unset($data['Account_ID']);
                 unset($data['proxy_type']);
                 unset($data['Phone']);
+                return $data;
                 if (Shareholder::updateByColName($data, 'i_holder') == false) {
                     return false;
                 }
             }
         });
 
+        return response()->json($r);
         return back()->withSuccess([
-            'file' => __('updated')
+            'file' => __('updated'),
+            'sa' => $r
         ]);
     }
 }

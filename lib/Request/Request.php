@@ -21,7 +21,9 @@ class Request
     */
     public function back($data = null)
     {
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
         return $this;
     }
 
@@ -40,7 +42,7 @@ class Request
     {
         $_SESSION['successBag'] = [];
         foreach ($messages as $key => $err) {
-            $_SESSION['successBag'][] = __($err);
+            $_SESSION['successBag'][] = $err;
         }
     }
 
@@ -66,5 +68,14 @@ class Request
             'per_page' => $per_page,
             'page' => $page,
         ];
+    }
+
+
+
+    /* 
+    
+    */
+    public function accept(){
+       return explode(',', getallheaders()['Accept'])[0];
     }
 }

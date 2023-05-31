@@ -21,6 +21,8 @@ class Validator
         'min' => 'Lib\Services\Validation\Rules\MinRule',
         'nullable' => 'Lib\Services\Validation\Rules\NullableRule',
         'email' => 'Lib\Services\Validation\Rules\EmailRule',
+        'number' => 'Lib\Services\Validation\Rules\NumberRule',
+        'in' => 'Lib\Services\Validation\Rules\InRule',
     ];
 
     public function __construct(array $data, array $rules)
@@ -36,6 +38,7 @@ class Validator
     public function validate()
     {
         if ($this->fails()) {
+            print_r($this->errorsBag);die;
             throw new ValidationException($this->errorsBag);
         }
 
@@ -63,6 +66,7 @@ class Validator
                     $this->validatedData[$key] = $this->data[$key];
                 } else {
                     $this->errorsBag[$key] = $ruleInstance->message();
+                    break;
                 }
             }
         }
