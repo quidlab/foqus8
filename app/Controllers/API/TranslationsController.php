@@ -23,6 +23,7 @@ class TranslationsController extends Controller
             $words[$row['ID']]['Value_' . $row['Local']] = $row['Value'];
             $words[$row['ID']]['Module'] = $row['Module'];
         }
+
         $words2 = [];
         foreach ($words as $key => $row) {
             $words2[] = $row;
@@ -48,16 +49,22 @@ class TranslationsController extends Controller
                 $rows[$key]['module'] = $_PUT['Module'];
             }
         }
-       /*  print_r(json_encode($rows));return; */
+
         foreach ($rows as $key => $row) {
             $select = database()->Select("SELECT * FROM Translations where Tlang= ? AND Tname = ? AND Module = ?", [
                 $row['lang'], $row['key'], $row['module']
             ]);
-
-            $stmt = "UPDATE Translations set Tvalue = ? where Tlang= ? AND Tname = ? AND Module = ?";
-            $params = [$row['value'], $row['lang'], $row['key'], $row['module']];
-            $result = database()->Run($stmt, $params);
+            if (!$select) {
+                $result = database()->Run("INSERT INTO Translations (Tvalue,Tlang,Tname,Module) VALUES (?,?,?,?)", [
+                    $row['value'], $row['lang'], $row['key'], $row['module']
+                ]);
+            } else {
+                $stmt = "UPDATE Translations set Tvalue = ? where Tlang= ? AND Tname = ? AND Module = ?";
+                $params = [$row['value'], $row['lang'], $row['key'], $row['module']];
+                $result = database()->Run($stmt, $params);
+            }
         }
+
 
         if ($result) {
             return response()->json([
