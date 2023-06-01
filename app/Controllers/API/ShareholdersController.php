@@ -41,18 +41,8 @@ class ShareholdersController extends Controller
     public function import()
     {
         $excel = Excel::import('file_name');
-
         $requiredFields = explode(",", $_POST['required_fields']);
-
-        $sortingFields = explode(",", str_replace('Account_ID', 'i_holder', $_POST['shorting_field']));
-        /*         if ($dif = array_udiff($requiredFields, Shareholder::$readable, function ($a, $b) {
-            return strcasecmp($a, $b);
-        })) {
-            return response()->json([
-                'message' => reset($dif) . ' Not Valid'
-            ]);
-        } */
-
+        $sortingFields = explode(",", str_replace('I_ref', 'i_ref', str_replace('Account_ID', 'i_holder', $_POST['shorting_field'])));
         $r = database()->transaction(function () use ($excel, $sortingFields, $requiredFields) {
             $sql = "DELETE FROM AgendaResults;Delete from EGM;DBCC CHECKIDENT ('EGM', RESEED, 11111110);";
             $r1 = database()->Run($sql);

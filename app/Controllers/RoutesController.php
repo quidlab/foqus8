@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Shareholder;
 use LIB\Request\Request;
 
 class RoutesController extends Controller
@@ -141,14 +142,23 @@ class RoutesController extends Controller
     {
         $requiredFields = json_decode(constant('MC_Shreholders_Required_Fields'));
         $egmCount = database()->Select("SELECT count(*) AS total FROM EGM")[0];
+        $columns = database()->Select("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS");
+        $search_array = array_map('strtolower', array_column($columns, 'COLUMN_NAME'));
+        $dif = [];
+
+        foreach (array_column($requiredFields, 'id') as $key => $value) {
+            if (!in_array(strtolower($value), $search_array)) {
+                $dif[] = $value;
+            }
+        }
+
 
         return view('/admin/import-shareholders', [
             'requiredFields' => $requiredFields,
             'egmCount' => reset($egmCount),
+            'notValidColumns' => $dif
         ], '/admin/index');
     }
-
-
 
     /* 
     

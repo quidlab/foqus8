@@ -1,3 +1,11 @@
+<?
+if (count($notValidColumns)) {
+    echo '<div class="font-weight-bold text-danger text-center text-lg py-4 mb-2" >Columns (' . implode(",", $notValidColumns) . ') Are Not Valid, Please Update Required Fields From <a href="/admin/manage-company">Manage Company</a></div>';
+}
+else{
+?>
+
+
 <link rel="stylesheet" href="<?= assets('/assets/plugins/jqvmap/jqvmap.min.css') ?>" />
 <link rel="stylesheet" href="<?= assets('/assets/file.css') ?>" />
 <!-- Main content -->
@@ -54,6 +62,7 @@
     </div><!--/. container-fluid -->
 </section>
 <!-- /.content -->
+<?}?>
 
 <?php include __DIR__ . "/../layouts/footer.php"; ?>
 <?php include __DIR__ . "/../layouts/scripts.php"; ?>
