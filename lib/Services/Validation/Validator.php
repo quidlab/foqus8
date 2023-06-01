@@ -38,7 +38,6 @@ class Validator
     public function validate()
     {
         if ($this->fails()) {
-            print_r($this->errorsBag);die;
             throw new ValidationException($this->errorsBag);
         }
 

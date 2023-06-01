@@ -299,7 +299,6 @@ class ShareholdersController extends Controller
     public function updateWithShare()
     {
         $excel = Excel::import('uploadFile');
-
         $r = database()->transaction(function () use ($excel) {
             foreach ($excel->rows() as $key => $row) {
 
@@ -314,11 +313,11 @@ class ShareholdersController extends Controller
                 try {
                     $data = $validator->validate();
                 } catch (ValidationException $th) {
-                    throw new Exception($th->error() . " in line " . $key);
+                    throw new Exception($th->getMessage());
                 }
 
-                if (!($data['proxy_type'] == '' && $data['proxy_name'] == '')) {
-                    return -1;
+                if (($data['proxy_type'] == '' && $data['proxy_name'] != '') || ($data['proxy_type'] != '' && $data['proxy_name'] == '')) {
+                    throw new Exception("proxy_name, proxy_type both should be included or null in line " . $key);
                 }
 
 
@@ -330,8 +329,12 @@ class ShareholdersController extends Controller
                 foreach ($stmt1 as $stmt) {
                     $q_share = $stmt['q_share'];
                 }
+                if (!$q_share) {
+                    throw new ValidationException(['i_holder' => 'Row ' . $key . 'Not Found']);
+                }
+
                 if ($data['shares'] != $q_share) {
-                    throw new ValidationException(['i_holder' => 'invalid shares in line ' . $key]);
+                    throw new ValidationException(['i_holder' => 'shares does not equal to q_shares in line ' . $key]);
                 }
 
 
@@ -341,16 +344,15 @@ class ShareholdersController extends Controller
                 unset($data['Account_ID']);
                 unset($data['proxy_type']);
                 unset($data['Phone']);
+                unset($data['shares']);
+                return $data;
+
                 if (Shareholder::updateByColName($data, 'i_holder') == false) {
-                    return false;
+                    throw new Exception("faild");
                 }
             }
         });
-
-        if ($r == -1) {
-            return back()->withMessage('proxy_name, proxy_type both should be included or null', false);
-        }
-        return back()->withMessage($r ? 'updated' : 'faild', $r ? true : false);
+        return back()->withMessage('updated');
     }
 
 
@@ -378,17 +380,14 @@ class ShareholdersController extends Controller
                 unset($data['Account_ID']);
                 unset($data['proxy_type']);
                 unset($data['Phone']);
-                return $data;
                 if (Shareholder::updateByColName($data, 'i_holder') == false) {
                     return false;
                 }
             }
         });
 
-        return response()->json($r);
         return back()->withSuccess([
             'file' => __('updated'),
-            'sa' => $r
         ]);
     }
 }
