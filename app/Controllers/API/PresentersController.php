@@ -38,6 +38,7 @@ class PresentersController extends Controller
             'password' =>  $passComp,
             'mobile' => ['required'],
             'role' => ['required'],
+            'preferred-language' => ['required'],
         ]);
 
         try {
@@ -128,6 +129,7 @@ class PresentersController extends Controller
             'title' => ['nullable'],
             'email' => ['nullable'],
             'mobile' => ['nullable'],
+            'preferred-language' => ['nullable'],
         ]);
         try {
             $data = $validator->validate();
@@ -175,11 +177,12 @@ class PresentersController extends Controller
             $data['first-name'],
             $data['last-name'],
             $data['title'],
+            $data['preferred-language'],
             $data['user-name']
         ];
 
         $result = database()->Run(
-            "UPDATE presenters set " . $passStr . " email = ? ,[role] = ?, mobile = ?, [first-name] = ?,[last-name] = ?,title = ? where [user-name] = ?",
+            "UPDATE presenters set " . $passStr . " email = ? ,[role] = ?, mobile = ?, [first-name] = ?,[last-name] = ?,title = ? ,[preferred-language] = ? where [user-name] = ?",
             $newData
         );
 

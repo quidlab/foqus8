@@ -16,7 +16,8 @@ class Presenter extends AuthenticatableModel {
         'role',
         'email',
         'mobile',
-        'email-sent'
+        'email-sent',
+        'preferred-language'
     ];
 
 

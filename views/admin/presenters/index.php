@@ -5,6 +5,7 @@
             <div class="card card-primary">
                 <div class="card-header cursor-pointer" onclick="toggleForm()">
                     <h3 class="card-title"><?= __('create-presenter') ?></h3>
+                    <i class="fa fa-plus  float-right"></i>
                 </div>
 
 
@@ -57,6 +58,19 @@
                                     <option value="Director">Director</option>
                                     <option value="Guest">Guest</option>
                                     <option value="Director1">Director1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- row -->
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label><?= __('preferred-language') ?></label>
+                                <select name="preferred-language" class="form-control">
+                                    <?
+                                    foreach ($languages as  $language) {
+                                        echo " <option value=" . $language['Language_ID'] . ">" . $language['Language_Name'] . "</option>";
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -286,6 +300,21 @@
                 type: "text",
                 editing: true,
 
+            },
+            {
+                name: "preferred-language",
+                title: <?= "'" . __('preferred-language') . "'" ?>,
+                type: "select",
+                items: [
+                    <?
+                    foreach ($languages as  $language) {
+                        echo "{Id: '" . $language['Language_ID'] . "',Name:'" . $language['Language_Name'] . "'},";
+                    }
+                    ?>
+                ],
+                editing: true,
+                valueField: "Id",
+                textField: "Name",
             },
             {
                 name: "password",
