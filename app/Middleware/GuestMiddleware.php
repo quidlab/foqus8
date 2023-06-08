@@ -15,7 +15,7 @@ class GuestMiddleware extends Middleware{
 
         foreach ($this->auth as $value) {
             if (isset($_SESSION[$value])) {
-                return redirect(Router::HOME);
+                return redirect(Router::HOME());
             }
         }
         // if the user not auth

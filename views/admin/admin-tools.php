@@ -20,11 +20,15 @@
             <!-- Example split primary button -->
             <div class="btn-group ml-4">
                 <select id="WithUsers" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <option class="without-users">Option 1</option>
-                    <option value="with-users">Option 2</option>
+                    <option class="shareholders-meeting"><?= __('Shareholders Meeting') ?></option>
+                    <option class="condominium-meeting"><?= __('Condominium Meeting') ?></option>
+                    <option class="debenture-holders-meeting"><?= __('Debenture holders Meeting') ?></option>
+                    <option class="unitholder-meeting-trust"><?= __('Unitholder Meeting (Trust)') ?></option>
+                    <option class="unitholder-meeting-units"><?= __('Unitholder Meeting (Units)') ?></option>
+                    <option class="association-meeting"><?= __('Association Meeting') ?></option>
                 </select>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#myDeleteModal">
-                     <?= __('make-meeting-for') ?>
+                    <?= __('make-meeting-for') ?>
                 </button>
             </div>
         </div>

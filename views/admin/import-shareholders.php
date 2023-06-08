@@ -1,68 +1,67 @@
 <?
 if (count($notValidColumns)) {
     echo '<div class="font-weight-bold text-danger text-center text-lg py-4 mb-2" >Columns (' . implode(",", $notValidColumns) . ') Are Not Valid, Please Update Required Fields From <a href="/admin/manage-company">Manage Company</a></div>';
-}
-else{
+} else {
 ?>
 
 
-<link rel="stylesheet" href="<?= assets('/assets/plugins/jqvmap/jqvmap.min.css') ?>" />
-<link rel="stylesheet" href="<?= assets('/assets/file.css') ?>" />
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <!-- Shareholer Selection -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 " style="display: inline;"><?= __('import-shareholders-data') ?></h6><span style="float: right" class="m-0 " id="log">
-                </span>
-
-            </div>
-
-            <div class="card-body">
-                <div id="result"></div>
-                <div class="columns">
-
-                    <div class="col1">
-                        <h6><?= __('required-files') ?></h6>
-                        <ul id="" class="back">
-
-                            <?
-                            foreach ($requiredFields as $key => $value) {
-                                echo '<li id="' . $value->id . '" class="li-class">' . $value->title . '</li>';
-                            }
-                            ?>
-
-                        </ul>
-                        <iframe name="hidden-iframe" style="display: none;"></iframe>
-                        <div class="upload-btn-wrapper">
-                            <form action="agm/import.php" enctype="multipart/form-data" id="import_form" method="post" target="hidden-iframe">
-                                <input type="hidden" name="action" value="save_data">
-                                <input type="hidden" name="shorting_field" value="" id="after_shorting">
-                                <button class="btn btn-excel btn-sm"><?= __('select-excel-file') ?></button>
-                                <input required class="btn-excel" type="file" name="uploadFile" onchange="handleFile()" id='file' accept=".xlsx, .xls, .csv" />
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="col2">
-                        <h6><?= __('fields-in-excel-files') ?></h6>
-                        <ul id="sortable" class="back b1">
-                            <!--      <li id="result" class="ui-state-default"></li> -->
-                        </ul>
-                        <button onclick="sortFields()" id="sort_btn" class="btn btn-primary btn-sm"><?= __('sort') ?></button>
-                        <button id="import_btn" type="button" class="btn-primary btn-sm" style="display: none;"><?= __('import') ?></button>
-                    </div>
+    <link rel="stylesheet" href="<?= assets('/assets/plugins/jqvmap/jqvmap.min.css') ?>" />
+    <link rel="stylesheet" href="<?= assets('/assets/file.css') ?>" />
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Shareholer Selection -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 " style="display: inline;"><?= __('import-shareholders-data') ?></h6><span style="float: right" class="m-0 " id="log">
+                    </span>
 
                 </div>
 
+                <div class="card-body">
+                    <div id="result"></div>
+                    <div class="columns">
 
+                        <div class="col1">
+                            <h6><?= __('required-files') ?></h6>
+                            <ul id="" class="back">
+
+                                <?
+                                foreach ($requiredFields as $key => $value) {
+                                    echo '<li id="' . $value->id . '" class="li-class">' . $value->title . '</li>';
+                                }
+                                ?>
+
+                            </ul>
+                            <iframe name="hidden-iframe" style="display: none;"></iframe>
+                            <div class="upload-btn-wrapper">
+                                <form action="agm/import.php" enctype="multipart/form-data" id="import_form" method="post" target="hidden-iframe">
+                                    <input type="hidden" name="action" value="save_data">
+                                    <input type="hidden" name="shorting_field" value="" id="after_shorting">
+                                    <button class="btn btn-excel btn-sm"><?= __('select-excel-file') ?></button>
+                                    <input required class="btn-excel" type="file" name="uploadFile" onchange="handleFile()" id='file' accept=".xlsx, .xls, .csv" />
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col2">
+                            <h6><?= __('fields-in-excel-files') ?></h6>
+                            <ul id="sortable" class="back b1">
+                                <!--      <li id="result" class="ui-state-default"></li> -->
+                            </ul>
+                            <button onclick="sortFields()" id="sort_btn" class="btn btn-primary btn-sm"><?= __('sort') ?></button>
+                            <button id="import_btn" type="button" class="btn-primary btn-sm" style="display: none;"><?= __('import') ?></button>
+                        </div>
+
+                    </div>
+
+
+                </div>
             </div>
-        </div>
-    </div><!--/. container-fluid -->
-</section>
-<!-- /.content -->
-<?}?>
+        </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+<? } ?>
 
 <?php include __DIR__ . "/../layouts/footer.php"; ?>
 <?php include __DIR__ . "/../layouts/scripts.php"; ?>
@@ -150,11 +149,13 @@ else{
 
         document.getElementById("sortable").innerHTML = "";
         for (let i in header) {
+            let key = header[i];
             if (header[i] == 'Account_ID') {
-                header[i] = 'i_holder';
+                key = 'i_holder';
             }
             var ul = document.getElementById("sortable");
             var li = document.createElement("li");
+            li.dataset.key = key;
             li.setAttribute("id", "l" + i);
             li.setAttribute("class", "li-class");
             li.appendChild(document.createTextNode(header[i]));
@@ -177,10 +178,10 @@ else{
         var presentFields = [];
         let lis = document.getElementById('sortable').childNodes;
         for (var i = 0; i < lis.length; i++) {
-            var arrValue = lis[i].innerHTML;
+            var arrValue = lis[i].dataset.key;
             presentFields.push(arrValue);
         }
-
+        console.log(presentFields);
         shorting_list = presentFields;
         $("#after_shorting").val(shorting_list);
         //alert();

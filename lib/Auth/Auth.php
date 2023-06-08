@@ -7,7 +7,7 @@ use App\Models\User;
 class  Auth
 {
     private static $instance = null;
-    public $user = null;
+    protected $user = null;
     private function __construct()
     {
         if ($_SESSION['uname']) {
@@ -31,5 +31,9 @@ class  Auth
             self::$instance = new Auth();
         }
         return self::$instance;
+    }
+
+    public function user(){
+        return $this->user;
     }
 }

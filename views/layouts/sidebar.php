@@ -117,7 +117,7 @@ $adminLinks = [
 
 function can($link): bool
 {
-  $role = auth()->user?->{'role-id'};
+  $role = auth()->user()?->{'role-id'};
   if (isset($link['roles']) && in_array($role, $link['roles'])) {
     return true;
   }

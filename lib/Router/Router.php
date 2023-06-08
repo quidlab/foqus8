@@ -13,7 +13,11 @@ class Router
 {
     protected $routes = [];
     public const HOME = '/admin/dashboard';
-
+    static $HOMES = [
+        2 => '/display',
+        3 => '/display',
+        5 => '/display',
+    ];
 
 
     public function get(string $path, $handler, Middleware ...$middlewares): object
@@ -72,7 +76,15 @@ class Router
             try {
                 call_user_func([$middleware, 'handler']); // MOSTAFA_TODO add exxception for non existing functions
             } catch (\Throwable $th) {
-                throw $th;
+                $accept = explode(',', getallheaders()['Accept'])[0];
+                if ($accept  == 'text/html') {
+                    return $th;
+                }
+                return response()->json([
+                    "message" => $th->getMessage(),
+                    "code" => $th->getCode(),
+                    'status' => false,
+                ], $th->getCode());
             }
         }
         /* call middlewares end */
@@ -129,5 +141,14 @@ class Router
         call_user_func_array($callback, [
             array_merge($_GET, $_POST, $_FILES)
         ]);
+    }
+
+
+    /* 
+        defines redirect path after login process depending on user role-id
+    */
+    static function HOME()
+    {
+        return isset(static::$HOMES[auth()->user()->{'role-id'}]) ? static::$HOMES[auth()->user()->{'role-id'}] : self::HOME;
     }
 }
